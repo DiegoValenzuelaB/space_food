@@ -1,0 +1,70 @@
+@import "tailwindcss/preflight";
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 0, 0, 0;
+  --background-end-rgb: 0, 0, 0;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Nave que sigue al mouse */
+.ufo {
+  width: 50px;
+  height: 10px;
+  background: linear-gradient(
+    90deg,
+    rgba(120, 255, 214, 0.2) 0%,
+    rgba(120, 255, 214, 0.8) 50%,
+    rgba(120, 255, 214, 0.2) 100%
+  );
+  border-radius: 50%;
+  box-shadow: 0 0 15px 5px rgba(120, 255, 214, 0.5);
+  opacity: 0.8;
+  transition: top 0.1s, left 0.1s; /* Transición suave para el movimiento */
+}
+
+.ufo::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 20px;
+  width: 20px;
+  height: 10px;
+  background: rgba(180, 255, 240, 0.9);
+  border-radius: 50% 50% 0 0;
+}
+
+.ufo::after {
+  content: "";
+  position: absolute;
+  bottom: -15px;
+  left: 15px;
+  width: 30px;
+  height: 5px;
+  background: linear-gradient(0deg, rgba(120, 255, 214, 0) 0%, rgba(120, 255, 214, 0.8) 100%);
+  border-radius: 50%;
+  filter: blur(3px);
+  animation: ufoBeam 2s ease-in-out infinite;
+}
+
+@keyframes ufoBeam {
+  0%, 100% {
+    opacity: 0.3;
+    height: 5px;
+  }
+  50% {
+    opacity: 0.7;
+    height: 15px;
+  }
+}
