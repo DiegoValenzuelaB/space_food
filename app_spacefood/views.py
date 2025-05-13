@@ -1,0 +1,13 @@
+from django.shortcuts import render
+
+def home(request):
+    aux = {
+        'segment': 'home'
+    }
+    return render(request, 'core/pages/home.html', aux)
+
+def register(request):
+    aux = {
+        'segment': 'register'
+    }
+    return render(request, 'core/pages/register.html', aux)

@@ -1,0 +1,78 @@
+{% extends 'core/layout/base.html' %}
+{% load static %}
+{% block contenido %}
+    <div class="welcome-title">
+        <h2>¡Bienvenido!</h2>
+        <h2>Prueba nuestra comida de otro universo!</h2>
+    </div>
+
+    <div class="container-carousel">
+        <div class="slider">
+        <input type="radio" name="testimonial" id="t-1">
+        <input type="radio" name="testimonial" id="t-2">
+        <input type="radio" name="testimonial" id="t-3" checked>
+        <input type="radio" name="testimonial" id="t-4">
+        <input type="radio" name="testimonial" id="t-5">
+
+        <div class="testimonials">
+            <label class="item" for="t-1">
+                    <img src="{% static 'core/imgs/comidas/Designer 1.jpeg' %}" alt="Space Image 1">
+                    <div class="caption">
+                        <h2>Alienígena del Delta</h2>
+                        <p>Una criatura misteriosa observada cerca del cráter azul de Saturno.</p>
+                    </div>
+                </label>
+                <label class="item" for="t-2">
+                    <img src="{% static 'core/imgs/comidas/Designer 2.jpeg' %}" alt="Space Image 2">
+                    <div class="caption">
+                        <h2>Alienígena del Delta</h2>
+                        <p>Una criatura misteriosa observada cerca del cráter azul de Saturno.</p>
+                    </div>
+                </label>
+                <label class="item" for="t-3">
+                    <img src="{% static 'core/imgs/comidas/Designer 3.jpeg' %}" alt="Space Image 3">
+                    <div class="caption">
+                        <h2>Alienígena del Delta</h2>
+                        <p>Una criatura misteriosa observada cerca del cráter azul de Saturno.</p>
+                    </div>
+                </label>
+                <label class="item" for="t-4">
+                    <img src="{% static 'core/imgs/comidas/Designer 4.jpeg' %}" alt="Space Image 4">
+                    <div class="caption">
+                        <h2>Alienígena del Delta</h2>
+                        <p>Una criatura misteriosa observada cerca del cráter azul de Saturno.</p>
+                    </div>
+                </label>
+                <label class="item" for="t-5">
+                    <img src="{% static 'core/imgs/comidas/Designer 5.jpeg' %}" alt="Space Image 5">
+                    <div class="caption">
+                        <h2>Alienígena del Delta</h2>
+                        <p>Una criatura misteriosa observada cerca del cráter azul de Saturno.</p>
+                    </div>
+                </label>
+        </div>
+
+        <div class="dots">
+            <label for="t-1"></label>
+            <label for="t-2"></label>
+            <label for="t-3"></label>
+            <label for="t-4"></label>
+            <label for="t-5"></label>
+        </div>
+    </div>
+
+    <div class="promo-card-container">
+    <div class="promo-card">
+        <div class="promo-card-image">
+            <img src="{% static 'core/imgs/comidas/vaso.jpg' %}" alt="Vaso Especial">
+        </div>
+        <div class="promo-card-content">
+            <h3>¡Vaso Cósmico Edición Especial!</h3>
+            <p>Único, exclusivo y disponible solo en nuestra web. ¡Siente el universo en tus manos!</p>
+            <button class="buy-btn">¡Cómpralo Ahora!</button>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

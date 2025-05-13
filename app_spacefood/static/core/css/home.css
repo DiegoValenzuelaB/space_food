@@ -1,0 +1,440 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-image: url("/static/core/imgs/space3.gif");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  font-family: 'Orbitron', sans-serif;
+}
+
+main {
+    flex: 1;
+}
+
+.navbar {
+    height: 50px;
+    padding: 0;
+    margin: 0;
+}
+
+.img-logo {
+    height: 100%;
+    max-height: 50px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #000001b9;
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+li {
+    border-right: 1px solid #bbb;
+}
+
+li:last-child {
+    border-right: none;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover {
+    background-color: #2f2f2f;
+    color: #00ffe7;
+}
+
+.active {
+    background-color: #009e8e;
+}
+
+.welcome-title {
+    text-align: center;
+    color: #00ffe7;
+    font-family: 'Orbitron', sans-serif;
+    text-shadow: 0 0 10px rgba(0, 255, 231, 0.7), 0 0 20px rgba(0, 255, 231, 0.7);
+    margin-top: 30px;
+    margin-bottom: 30px;
+    animation: glowing 1.5s ease-in-out infinite alternate;
+    h2{
+        font-size: 25px;
+    }
+}
+
+/* Efecto de resplandor en el texto */
+@keyframes glowing {
+    0% {
+        text-shadow: 0 0 5px rgba(0, 255, 231, 0.7), 0 0 10px rgba(0, 255, 231, 0.7);
+    }
+    100% {
+        text-shadow: 0 0 20px rgba(0, 255, 231, 1), 0 0 30px rgba(0, 255, 231, 1);
+    }
+}
+
+.container-carousel {
+    position: relative;
+    width: 100%;
+    margin: auto;
+    overflow: hidden;
+}
+
+.slider input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.slider .item {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.slider .item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 12px;
+}
+
+/* FULL overlay */
+.caption {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.644); /* semi-transparente */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #00c6b2;
+    font-family: 'Orbitron', sans-serif;
+    text-align: center;
+    padding: 15px;
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out;
+    border-radius: 12px;
+}
+
+/* Hover: mostrar superposición */
+.item:hover .caption {
+    opacity: 1;
+}
+
+/* Tipografía alienígena estilizada */
+.caption h2 {
+    font-size: 2rem;
+    margin: 0 0 1rem 0;
+    text-shadow: 0 0 8px #00ffe7;
+}
+
+.caption p {
+    font-size: 1rem;
+    text-shadow: 0 0 4px #00ffe7;
+    line-height: 1.5;
+}
+
+.testimonials label:hover .caption {
+  opacity: 1;
+}
+
+.testimonials {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 300px; /* o el tamaño que desees */
+    perspective: 1000px;
+    overflow: visible; /* para que los elementos puedan sobresalir */
+    max-width: 100%;
+}
+
+.testimonials .item {
+    width: 250px;
+    height: 250px;
+    border-radius: 10px;
+    background-color: black; /* Fondo interno (no se verá) */
+    position: absolute;
+    border: 1px solid white; /* Borde blanco visible */
+    top: 0;
+    box-sizing: border-box;
+    text-align: center;
+    transition: transform 0.4s;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    user-select: none;
+    cursor: pointer;
+    padding: 0;
+    overflow: hidden;
+}
+
+.testimonials .item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    aspect-ratio: 1 / 1; /* Asegura que el espacio sea siempre cuadrado */
+}
+
+.testimonials .item h1{
+    font-size: 114px;
+    color: white;
+}
+
+.dots{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dots label{
+    height: 7px;
+    width: 7px;
+    border-radius: 50%;
+    cursor: pointer;
+    background-color: #413B52;
+    margin: 7px;
+    transition-duration: 0.2s;
+}
+
+#t-1:checked ~ .dots label[for="t-1"],
+#t-2:checked ~ .dots label[for="t-2"],
+#t-3:checked ~ .dots label[for="t-3"],
+#t-4:checked ~ .dots label[for="t-4"],
+#t-5:checked ~ .dots label[for="t-5"]{
+    transition: scale (2);
+    background-color: #fff;
+    box-shadow: 0px, 0px 0px 3px #dddddd24;
+}
+
+#t-1:checked ~ .dots label[for="t-2"],
+#t-2:checked ~ .dots label[for="t-1"],
+#t-2:checked ~ .dots label[for="t-3"],
+#t-3:checked ~ .dots label[for="t-2"],
+#t-3:checked ~ .dots label[for="t-4"],
+#t-4:checked ~ .dots label[for="t-3"],
+#t-4:checked ~ .dots label[for="t-5"],
+#t-5:checked ~ .dots label[for="t-4"]{
+    transform: scale(1.5);
+}
+
+#t-1:checked ~ .testimonials label[for="t-3"],
+#t-2:checked ~ .testimonials label[for="t-4"],
+#t-3:checked ~ .testimonials label[for="t-5"],
+#t-4:checked ~ .testimonials label[for="t-1"],
+#t-5:checked ~ .testimonials label[for="t-2"] {
+    transform: translate3d(450px, 0, -180px) rotateY(-25deg);
+}
+
+#t-1:checked ~ .testimonials label[for="t-2"],
+#t-2:checked ~ .testimonials label[for="t-3"],
+#t-3:checked ~ .testimonials label[for="t-4"],
+#t-4:checked ~ .testimonials label[for="t-5"],
+#t-5:checked ~ .testimonials label[for="t-1"] {
+    transform: translate3d(225px, 0, -90px) rotateY(-15deg);
+}
+
+#t-2:checked ~ .testimonials label[for="t-1"],
+#t-3:checked ~ .testimonials label[for="t-2"],
+#t-4:checked ~ .testimonials label[for="t-3"],
+#t-5:checked ~ .testimonials label[for="t-4"],
+#t-1:checked ~ .testimonials label[for="t-5"] {
+    transform: translate3d(-225px, 0, -90px) rotateY(15deg);
+}
+
+#t-3:checked ~ .testimonials label[for="t-1"],
+#t-4:checked ~ .testimonials label[for="t-2"],
+#t-5:checked ~ .testimonials label[for="t-3"],
+#t-2:checked ~ .testimonials label[for="t-5"],
+#t-1:checked ~ .testimonials label[for="t-4"] {
+    transform: translate3d(-450px, 0, -180px) rotateY(25deg);
+}
+
+#t-1:checked ~ .testimonials label[for="t-1"],
+#t-2:checked ~ .testimonials label[for="t-2"],
+#t-3:checked ~ .testimonials label[for="t-3"],
+#t-4:checked ~ .testimonials label[for="t-4"],
+#t-5:checked ~ .testimonials label[for="t-5"] {
+    z-index: 3;
+}
+
+#t-1:checked ~ .testimonials label[for="t-2"],
+#t-2:checked ~ .testimonials label[for="t-3"],
+#t-3:checked ~ .testimonials label[for="t-4"],
+#t-4:checked ~ .testimonials label[for="t-5"],
+#t-5:checked ~ .testimonials label[for="t-1"],
+#t-2:checked ~ .testimonials label[for="t-1"],
+#t-3:checked ~ .testimonials label[for="t-2"],
+#t-4:checked ~ .testimonials label[for="t-3"],
+#t-5:checked ~ .testimonials label[for="t-4"],
+#t-1:checked ~ .testimonials label[for="t-5"] {
+    z-index: 2;
+}
+
+#t-1:checked ~ .testimonials label[for="t-3"],
+#t-2:checked ~ .testimonials label[for="t-4"],
+#t-3:checked ~ .testimonials label[for="t-5"],
+#t-4:checked ~ .testimonials label[for="t-1"],
+#t-5:checked ~ .testimonials label[for="t-2"],
+#t-3:checked ~ .testimonials label[for="t-1"],
+#t-4:checked ~ .testimonials label[for="t-2"],
+#t-5:checked ~ .testimonials label[for="t-3"],
+#t-2:checked ~ .testimonials label[for="t-5"],
+#t-1:checked ~ .testimonials label[for="t-4"] {
+    z-index: 1;
+}
+
+
+.promo-card-container {
+    display: flex;
+    justify-content: center;
+    margin: 40px 0;
+}
+
+.promo-card {
+    display: flex;
+    background: linear-gradient(135deg, #00000098, #00000098);
+    width: 680px; /* Ajusta el tamaño para que sea más largo */
+    height: 280px; /* Tamaño adecuado para una card horizontal */
+    border-radius: 20px;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.promo-card:hover {
+    transform: scale(1.05);
+}
+
+.promo-card-image {
+    width: 40%; /* Ocupa el 40% del ancho */
+    height: 100%;
+    overflow: hidden;
+}
+
+.promo-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.promo-card-content {
+    padding: 20px;
+    width: 60%; /* Ocupa el 60% del ancho */
+    text-align: left;
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.promo-card-content h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px rgba(0, 255, 231, 1);
+}
+
+.promo-card-content p {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    text-shadow: 0 0 5px rgba(0, 255, 231, 1);
+}
+
+.buy-btn {
+    background-color: #00c6b24e;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 150px;
+}
+
+.buy-btn:hover {
+    background-color: #009e8e;
+    box-shadow: 0 0 10px rgba(0, 255, 231, 0.7);
+}
+
+.footer-color {
+    background-color: #000000b9; /* Color de fondo del footer */
+    padding-top: 20px;
+    padding-bottom: 10px;
+}
+
+footer h2 {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+footer p, footer a {
+    font-size: 14px;
+}
+
+footer a.btn {
+    font-size: 14px;
+    padding: 5px 10px;
+}
+
+.copy {
+    color: white;
+}
+
+.logo {
+    padding-top: 50px;
+}
+
+/* 2. El <main> crece para rellenar el espacio sobrante */
+main.flex-fill {
+  flex: 1;
+}
+
+/* 1. Limitar el ancho máximo del formulario */
+.formulario {
+  max-width: 900px;    /* ancho máximo, para centrar y no ocupar toda la pantalla */
+  margin: 0 auto;      /* centrar horizontalmente */
+  padding: 0 10px;     /* un poco de espacio lateral */
+}
+
+/* 2. Campos de formulario más pequeños */
+.form-control-sm-custom {
+  font-size: 0.85rem;           /* ligeramente más pequeño */
+  padding: 0.25rem 0.5rem;      /* menos altura y acolchado */
+  height: auto;                 /* que el padding marque la altura */
+  border-radius: 0.25rem;       /* esquinas más suaves */
+}
+
+/* 3. Labels más ligeros */
+.form-floating > label {
+  font-size: 0.85rem;           /* encoger un poco la etiqueta */
+  padding-left: 0.5rem;         /* opcional, para alinear mejor */
+}

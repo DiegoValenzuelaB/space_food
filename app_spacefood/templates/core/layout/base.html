@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} SpaceFood {% endblock %}</title>
+    {% block extra %}
+        <link rel="stylesheet" href="{% static 'core/css/home.css' %}">
+    {% endblock %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+
+  </head>
+
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg p-0 m-0" style="width: 100%;">
+        <div class="container-fluid p-0 m-0">
+            
+            <!-- Botón para móviles -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <!-- Menú colapsable -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav w-100">
+                <!-- Logo -->
+                <li>
+                    <a class="navbar-brand p-0 m-0 d-flex align-items-center" href="{% url 'home' %}" style="height: 100%;">
+                        <img src="{% static 'core/imgs/logo.png' %}" class="img-logo" alt="Logo" style="height: 100%;">
+                    </a>  
+                </li>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="#news">News</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li style="margin-left:auto;"><a class="active" href="#about">About</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-fill">
+      {% block contenido %}{% endblock %}
+    </main>
+    
+        <!-- footer -->
+    <footer class="footer-color">
+      <section>
+        <div class="container text-center mt-footer">
+          <div class="row justify-content-between">
+            <div class="col-md-4">
+              <h2 class="text-white my-3 mt-4">Contactanos</h2>
+              <p class=" bi bi-telephone-fill text-white">  +56999887766</p>
+              <p class=" bi bi-envelope-at-fill text-white"> spacefood@gmail.com</p>
+            </div>
+            <div class="col-sm-12 col-md-4 col-lg-4 mt-5 mb-5 img-fluid ">
+              <a href="{% url 'home' %}"><img src="{% static 'core/imgs/logo.png' %}" alt=""
+                width="200"></a>
+            </div>
+            <div class="col-md-4 text-white">
+              <h2 class="my-3 mt-4">Redes</h2>
+              <a class="btn btn-secondary bi bi-whatsapp my-1" href=""> WhatsApp</a>
+              <a class="btn btn-secondary bi bi-facebook my-1" href=""> Facebook</a>
+              <br/>
+              <a class="btn btn-secondary bi bi-instagram mt-1 my-5" href=""> Instagram</a>
+              <br>
+            </div>
+          <div style="border-top: 2px solid white;" class="">
+              <p class="bi bi-c-circle text-white mt-3"> Coryrigth @SpaceFood</p>
+          </div> 
+          </div>
+        </div>
+      </section>
+    </footer>
+
+  </body>
+
+</html>
