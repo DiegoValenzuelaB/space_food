@@ -11,3 +11,9 @@ def register(request):
         'segment': 'register'
     }
     return render(request, 'core/pages/register.html', aux)
+
+def login(request):
+    aux = {
+        'segment': 'login'
+    }
+    return render(request, 'core/pages/login.html', aux)

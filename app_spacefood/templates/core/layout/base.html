@@ -28,18 +28,18 @@
         </button>
         
         <!-- Menú colapsable -->
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav w-100">
-                <!-- Logo -->
-                <li>
-                    <a class="navbar-brand p-0 m-0 d-flex align-items-center" href="{% url 'home' %}" style="height: 100%;">
-                        <img src="{% static 'core/imgs/logo.png' %}" class="img-logo" alt="Logo" style="height: 100%;">
-                    </a>  
-                </li>
-                <li><a href="{% url 'home' %}">Home</a></li>
-                <li><a href="#news">News</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                    <li style="margin-left:auto;"><a class="active" href="#about">About</a></li>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav w-100">
+                  <!-- Logo -->
+                  <li>
+                      <a class="navbar-brand p-0 m-0 d-flex align-items-center" href="{% url 'home' %}" style="height: 100%;">
+                          <img src="{% static 'core/imgs/logo.png' %}" class="img-logo" alt="Logo" style="height: 100%;">
+                      </a>  
+                  </li>
+                  <li><a href="{% url 'home' %}">Home</a></li>
+                  <li><a href="{% url 'register' %}">Registrate</a></li>
+                  <li><a href="{% url 'login' %}">Login</a></li>
+                  <li style="margin-left:auto;"><a class="active" href="#about">About</a></li>
                 </ul>
             </div>
         </div>

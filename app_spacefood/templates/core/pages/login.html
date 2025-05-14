@@ -1,0 +1,58 @@
+{% extends 'core/layout/base.html' %}
+{% load static %}
+
+{% block contenido %}
+<div class="container mt-5">
+  <div class="logo-login text-center mb-4">
+    <img src="{% static 'core/imgs/logo.png' %}" alt="Logo SpaceFood" width="300">
+  </div>
+
+  <div class="welcome-title-login mb-4">
+    <h2>¡Bienvenido a un mundo nuevo!</h2>
+  </div>
+
+  <form class="row gx-4 gy-4 needs-validation formulario mx-auto" novalidate>
+
+    <!-- Correo  -->
+    <div class="col-12">
+      <div class="form-floating">
+        <input type="email"
+               class="form-control form-control-sm-custom"
+               id="correo"
+               name="correo"
+               placeholder="name@example.com"
+               required>
+        <label for="correo">Correo</label>
+        <div class="invalid-feedback">
+          Ingresa un correo electrónico válido.
+        </div>
+      </div>
+    </div>
+
+    <!-- Contraseña -->
+    <div class="col-12">
+      <div class="form-floating">
+        <input type="password"
+               class="form-control form-control-sm-custom"
+               id="contrasena"
+               name="contrasena"
+               placeholder="Contraseña"
+               minlength="6"
+               required>
+        <label for="contrasena">Contraseña</label>
+        <div class="invalid-feedback">
+          La contraseña debe tener al menos 6 caracteres.
+        </div>
+      </div>
+    </div>
+
+    <!-- Botón Login -->
+    <div class="col-12 text-center mt-3 sin-cuenta">
+      <button type="submit" class="btn-login">Ingresar</button>
+      <p>¿No tienes una cuenta? <a href="{% url 'register' %}">Regístrate aquí</a></p>
+    </div>
+
+  </form>
+</div>
+
+{% endblock %}

@@ -1,8 +1,5 @@
 html, body {
-  margin: 0;
-  padding: 0;
   min-height: 100vh;
-  display: flex;
   flex-direction: column;
   background-image: url("/static/core/imgs/space3.gif");
   background-size: cover;
@@ -16,14 +13,13 @@ main {
     flex: 1;
 }
 
+/* Navbar */
 .navbar {
     height: 50px;
-    padding: 0;
-    margin: 0;
 }
 
 .img-logo {
-    height: 100%;
+    height: 50%;
     max-height: 50px;
     margin-left: 10px;
     margin-right: 10px;
@@ -66,6 +62,7 @@ li a:hover {
     background-color: #009e8e;
 }
 
+/* Home */
 .welcome-title {
     text-align: center;
     color: #00ffe7;
@@ -119,14 +116,13 @@ li a:hover {
     border-radius: 12px;
 }
 
-/* FULL overlay */
 .caption {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.644); /* semi-transparente */
+    background: rgba(0, 0, 0, 0.644);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -167,9 +163,9 @@ li a:hover {
     align-items: center;
     justify-content: center;
     position: relative;
-    height: 300px; /* o el tamaño que desees */
+    height: 300px;
     perspective: 1000px;
-    overflow: visible; /* para que los elementos puedan sobresalir */
+    overflow: visible;
     max-width: 100%;
 }
 
@@ -177,9 +173,9 @@ li a:hover {
     width: 250px;
     height: 250px;
     border-radius: 10px;
-    background-color: black; /* Fondo interno (no se verá) */
+    background-color: black;
     position: absolute;
-    border: 1px solid white; /* Borde blanco visible */
+    border: 1px solid white;
     top: 0;
     box-sizing: border-box;
     text-align: center;
@@ -195,7 +191,7 @@ li a:hover {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    aspect-ratio: 1 / 1; /* Asegura que el espacio sea siempre cuadrado */
+    aspect-ratio: 1 / 1;
 }
 
 .testimonials .item h1{
@@ -306,7 +302,6 @@ li a:hover {
     z-index: 1;
 }
 
-
 .promo-card-container {
     display: flex;
     justify-content: center;
@@ -316,14 +311,16 @@ li a:hover {
 .promo-card {
     display: flex;
     background: linear-gradient(135deg, #00000098, #00000098);
-    width: 680px; /* Ajusta el tamaño para que sea más largo */
-    height: 280px; /* Tamaño adecuado para una card horizontal */
+    width: 680px;
+    height: 280px;
     border-radius: 20px;
     box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
-    overflow: hidden;
     position: relative;
     transition: transform 0.3s ease-in-out;
     cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
 }
 
 .promo-card:hover {
@@ -351,6 +348,7 @@ li a:hover {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    height: 100%; 
 }
 
 .promo-card-content h3 {
@@ -377,7 +375,6 @@ li a:hover {
     letter-spacing: 2px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-bottom: 150px;
 }
 
 .buy-btn:hover {
@@ -385,10 +382,9 @@ li a:hover {
     box-shadow: 0 0 10px rgba(0, 255, 231, 0.7);
 }
 
+/* Footer */
 .footer-color {
-    background-color: #000000b9; /* Color de fondo del footer */
-    padding-top: 20px;
-    padding-bottom: 10px;
+    background-color: #000000b9;
 }
 
 footer h2 {
@@ -402,39 +398,179 @@ footer p, footer a {
 
 footer a.btn {
     font-size: 14px;
-    padding: 5px 10px;
 }
 
 .copy {
     color: white;
 }
 
-.logo {
-    padding-top: 50px;
-}
-
-/* 2. El <main> crece para rellenar el espacio sobrante */
+/* 2. El <main> crece para rellenar el espacio sobrante del footer */
 main.flex-fill {
   flex: 1;
 }
 
-/* 1. Limitar el ancho máximo del formulario */
+/* Formulario Register */
+/* Limitar el ancho máximo del formulario */
 .formulario {
-  max-width: 900px;    /* ancho máximo, para centrar y no ocupar toda la pantalla */
-  margin: 0 auto;      /* centrar horizontalmente */
-  padding: 0 10px;     /* un poco de espacio lateral */
+  max-width: 800px;
+  row-gap: 0;
 }
 
-/* 2. Campos de formulario más pequeños */
+/* Campos de formulario más pequeños */
 .form-control-sm-custom {
-  font-size: 0.85rem;           /* ligeramente más pequeño */
-  padding: 0.25rem 0.5rem;      /* menos altura y acolchado */
-  height: auto;                 /* que el padding marque la altura */
-  border-radius: 0.25rem;       /* esquinas más suaves */
+  font-size: 0.85rem;
+  height: auto;
+  border-radius: 10px;
 }
 
-/* 3. Labels más ligeros */
+.form-control {
+  font-size: 0.85rem;
+  height: auto;
+  border-radius: 10px;
+}
+
+/* Labels más ligeros */
 .form-floating > label {
-  font-size: 0.85rem;           /* encoger un poco la etiqueta */
-  padding-left: 0.5rem;         /* opcional, para alinear mejor */
+  font-size: 0.85rem;
+  padding-left: 0.5rem;
+}
+
+/* Dale espacio entre cada recuadro */
+.formulario .form-floating {
+  margin-bottom: 15px;
+  max-width: 600px;
+  margin: 0 auto;       
+}
+
+/* Botón registrer */
+.btn-register {
+    background-color: #00c6b24e;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 100px;
+}
+
+.btn-register:hover {
+    background-color: #009e8e;
+    box-shadow: 0 0 10px rgba(0, 255, 231, 0.7);
+}
+
+/* Login */
+/* Botón registrer */
+.btn-login {
+    background-color: #00c6b24e;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.btn-login:hover {
+    background-color: #009e8e;
+    box-shadow: 0 0 10px rgba(0, 255, 231, 0.7);
+}
+
+.sin-cuenta p a {
+    color: rgba(0, 255, 231, 0.7);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.sin-cuenta p {
+    color: white;
+    margin-bottom: 150px;
+}
+
+.sin-cuenta p a:hover {
+  color: #00ffe7;
+  text-shadow:
+    0 0 5px rgba(0, 255, 231, 0.7),
+    0 0 10px rgba(0, 255, 231, 0.7),
+    0 0 20px rgba(0, 255, 231, 0.5);
+}
+
+.welcome-title-login {
+    text-align: center;
+    color: #00ffe7;
+    font-family: 'Orbitron', sans-serif;
+    text-shadow: 0 0 10px rgba(0, 255, 231, 0.7), 0 0 20px rgba(0, 255, 231, 0.7);
+    padding-bottom: 20px;
+    animation: glowing 1.5s ease-in-out infinite alternate;
+    h2{
+        font-size: 25px;
+    }
+}
+
+/* Cards home */
+
+.cards-home {
+  display: flex;
+  justify-content: center; /* centra las tarjetas */
+  gap: 20px;               /* separación de 20px entre cada una */
+  flex-wrap: nowrap;       /* evita que hagan wrap */
+  padding: 0 10px;         /* opcional, para dejar espacio lateral */
+  overflow-x: auto;        /* si la pantalla es muy estrecha, permite scroll */
+  margin-bottom: 50px;
+}
+
+/* Tarjeta vertical responsive */
+.promo-card.vertical {
+  background-color: rgba(0, 0, 0, 0.75);
+  color: #00ffe7;
+  border: 1px solid #00c6b2;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 255, 231, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+
+  /* Responsividad: cada tarjeta ocupa 1/5 del contenedor menos los gaps */
+  flex: 0 1 calc((100% - 4 * 20px) / 5);
+  height: auto;            /* deja que el contenido defina la altura */
+  max-width: 220px;        /* opcional, para no crecer demasiado */
+}
+
+.promo-card.vertical img {
+  width: 100%;
+  height: auto;            /* mantiene la proporción original */
+  object-fit: cover;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.promo-card-content-vertical {
+  padding: 15px;
+  text-align: center;
+  flex: 1;                 /* para que el contenido llene el espacio sobrante */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Ajusta el botón para que esté abajo y no estire la tarjeta */
+.promo-card-content-vertical button {
+  margin-top: 10px;
+}
+
+/* Anula el efecto hover solo en las cards dentro de .cards-home */
+.cards-home .promo-card.vertical:hover {
+  transform: none !important;
+  box-shadow: 0 0 15px rgba(0, 255, 231, 0.3) !important;
 }
