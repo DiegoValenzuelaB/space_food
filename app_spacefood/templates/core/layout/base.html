@@ -5,12 +5,16 @@
     {% load bootstrap5 %}
     {% bootstrap_css %}
     {% bootstrap_javascript %}
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>{% block title %} SpaceFood {% endblock %}</title>
-    {% block extra %}
-        <link rel="stylesheet" href="{% static 'core/css/home.css' %}">
-    {% endblock %}
+
+    <link rel="stylesheet" href="{% static 'core/css/home.css' %}">
+
+    {% block extra %}{% endblock %}
+    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
 
@@ -18,38 +22,40 @@
 
   <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg p-0 m-0" style="width: 100%;">
-        <div class="container-fluid p-0 m-0">
-            
-            <!-- Botón para móviles -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-black bg-opacity-50 py-2 shadow-sm">
+      <div class="container-fluid">
+        <!-- Logo al extremo izquierdo -->
+        <a class="navbar-brand" href="{% url 'home' %}">
+          <img src="{% static 'core/imgs/logo.png' %}" class="img-logo" alt="Logo">
+        </a>
+
+        <!-- Toggler justo después de la marca -->
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false"
+                aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
         </button>
-        
+
         <!-- Menú colapsable -->
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav w-100">
-                  <!-- Logo -->
-                  <li>
-                      <a class="navbar-brand p-0 m-0 d-flex align-items-center" href="{% url 'home' %}" style="height: 100%;">
-                          <img src="{% static 'core/imgs/logo.png' %}" class="img-logo" alt="Logo" style="height: 100%;">
-                      </a>  
-                  </li>
-                  <li><a href="{% url 'home' %}">Home</a></li>
-                  <li><a href="{% url 'register' %}">Registrate</a></li>
-                  <li><a href="{% url 'login' %}">Login</a></li>
-                  <li style="margin-left:auto;"><a class="active" href="#about">About</a></li>
-                </ul>
-            </div>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav align-items-center w-100">
+            <!-- Enlaces pegados al logo -->
+            <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Regístrate</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+            <!-- About se empuja al final -->
+            + <li class="nav-item ms-lg-auto"><a class="nav-link active" href="#about">About</a></li>
+          </ul>
         </div>
+      </div>
     </nav>
 
     <main class="flex-fill">
       {% block contenido %}{% endblock %}
     </main>
     
-        <!-- footer -->
+    <!-- footer -->
     <footer class="footer-color">
       <section>
         <div class="container text-center mt-footer">

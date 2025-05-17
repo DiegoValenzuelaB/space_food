@@ -3,11 +3,10 @@
 
 {% block contenido %}
 <div class="container mt-5">
-  <div class="logo text-center mb-4">
+  <div class="logo text-center">
     <img src="{% static 'core/imgs/logo.png' %}" alt="Logo SpaceFood" width="300">
   </div>
 
-  <!-- Formulario con validación de Bootstrap -->
   <form class="row gx-4 gy-4 needs-validation formulario mx-auto" novalidate>
     <!-- Nombre -->
     <div class="col-md-6">
@@ -20,6 +19,14 @@
       </div>
     </div>
 
+    <!-- Segundo Nombre (opcional) -->
+    <div class="col-md-6">
+      <div class="form-floating">
+        <input type="text" class="form-control form-control-sm-custom" id="segundoNombre" placeholder="Segundo Nombre">
+        <label for="segundoNombre">Segundo Nombre (opcional)</label>
+      </div>
+    </div>
+
     <!-- Apellido -->
     <div class="col-md-6">
       <div class="form-floating">
@@ -27,6 +34,17 @@
         <label for="apellido">Apellido</label>
         <div class="invalid-feedback">
           Por favor ingresa tu apellido.
+        </div>
+      </div>
+    </div>
+
+    <!-- Segundo Apellido -->
+    <div class="col-md-6">
+      <div class="form-floating">
+        <input type="text" class="form-control form-control-sm-custom" id="segundoApellido" placeholder="Segundo Apellido" required>
+        <label for="segundoApellido">Segundo Apellido</label>
+        <div class="invalid-feedback">
+          Por favor ingresa tu segundo apellido.
         </div>
       </div>
     </div>
@@ -53,13 +71,35 @@
       </div>
     </div>
 
+    <!-- Teléfono -->
+    <div class="col-md-6">
+      <div class="form-floating">
+        <input type="tel" class="form-control form-control-sm-custom" id="telefono" placeholder="912345678" pattern="^\+?\d{9}$" required>
+        <label for="telefono">Teléfono</label>
+        <div class="invalid-feedback">
+          Ingresa un teléfono válido (solo números, 9 dígitos).
+        </div>
+      </div>
+    </div>
+
+    <!-- Dirección -->
+    <div class="col-md-6">
+      <div class="form-floating">
+        <input type="text" class="form-control form-control-sm-custom" id="direccion" placeholder="Dirección" required>
+        <label for="direccion">Dirección</label>
+        <div class="invalid-feedback">
+          Por favor ingresa tu dirección.
+        </div>
+      </div>
+    </div>
+
     <!-- Contraseña -->
     <div class="col-md-6">
       <div class="form-floating">
-        <input type="password" class="form-control form-control-sm-custom" id="contrasena" placeholder="Contraseña" minlength="6" required>
+        <input type="password" class="form-control form-control-sm-custom" id="contrasena" placeholder="Contraseña" minlength="8" required>
         <label for="contrasena">Contraseña</label>
         <div class="invalid-feedback">
-          La contraseña debe tener al menos 6 caracteres.
+          La contraseña debe tener al menos 8 caracteres.
         </div>
       </div>
     </div>
@@ -87,7 +127,7 @@
     </div>
 
     <!-- Botón Registrar -->
-    <div class="col-12 text-center mt-3">
+    <div class="col-12 text-center">
       <button type="submit" class="btn-register">Registrarse</button>
     </div>
   </form>
@@ -101,7 +141,6 @@
     Array.prototype.slice.call(forms)
       .forEach(function(form) {
         form.addEventListener('submit', function(event) {
-          // Validación de confirmación de contraseña
           const pass = form.querySelector('#contrasena');
           const confirm = form.querySelector('#confirmarContrasena');
           if (pass.value !== confirm.value) {
@@ -120,69 +159,61 @@
   })()
 </script>
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const rutInput = document.getElementById('rut');
-        const form = document.querySelector('form.needs-validation');
+  document.addEventListener('DOMContentLoaded', () => {
+    const rutInput = document.getElementById('rut');
+    const form = document.querySelector('form.needs-validation');
 
-        // 1) Formatea sobre la marcha (puntos y guión)
-        rutInput.addEventListener('input', e => {
-            let v = e.target.value.replace(/\D/g, '');
-            if (v.length > 1) {
-                const dv = v.slice(-1);
-                const cuerpo = v.slice(0, -1);
-                e.target.value = cuerpo
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, '.')
-                    + '-' + dv;
-            } else {
-                e.target.value = v;
-            }
-        });
-
-        // 2) Función que calcula y comprueba el DV
-        function validarRut(rut) {
-            // Limpia puntos y guión
-            const clean = rut.replace(/\./g, '').replace(/-/g, '').toUpperCase();
-            const cuerpo = clean.slice(0, -1);
-            const dv = clean.slice(-1);
-
-            let suma = 0;
-            let multiplo = 2;
-            // Recorre el cuerpo de derecha a izquierda
-            for (let i = cuerpo.length - 1; i >= 0; i--) {
-            suma += parseInt(cuerpo.charAt(i), 10) * multiplo;
-            multiplo = multiplo < 7 ? multiplo + 1 : 2;
-            }
-
-            const resto = suma % 11;
-            const dvEsperado = (11 - resto) === 11 ? '0'
-                            : (11 - resto) === 10 ? 'K'
-                            : String(11 - resto);
-
-            return dvEsperado === dv;
-        }
-
-        // 3) Al enviar, comprueba RUT junto al resto de validaciones
-        form.addEventListener('submit', event => {
-            // fuerza el chequeo de Bootstrap
-            if (!form.checkValidity()) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-
-            // chequeo adicional de RUT
-            const rutVal = rutInput.value;
-            if (!validarRut(rutVal)) {
-                rutInput.classList.add('is-invalid');
-                rutInput.classList.remove('is-valid');
-                event.preventDefault();
-                event.stopPropagation();
-            } else {
-                rutInput.classList.add('is-valid');
-                rutInput.classList.remove('is-invalid');
-                }
-
-            form.classList.add('was-validated');
-        });
+    // Formatea RUT sobre la marcha
+    rutInput.addEventListener('input', e => {
+      let v = e.target.value.replace(/\D/g, '');
+      if (v.length > 1) {
+        const dv = v.slice(-1);
+        const cuerpo = v.slice(0, -1);
+        e.target.value = cuerpo
+          .replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+          + '-' + dv;
+      } else {
+        e.target.value = v;
+      }
     });
+
+    function validarRut(rut) {
+      const clean = rut.replace(/\./g, '').replace(/-/g, '').toUpperCase();
+      const cuerpo = clean.slice(0, -1);
+      const dv = clean.slice(-1);
+      let suma = 0;
+      let multiplo = 2;
+      for (let i = cuerpo.length - 1; i >= 0; i--) {
+        suma += parseInt(cuerpo.charAt(i), 10) * multiplo;
+        multiplo = multiplo < 7 ? multiplo + 1 : 2;
+      }
+      const resto = suma % 11;
+      const dvEsperado = (11 - resto) === 11 ? '0'
+                      : (11 - resto) === 10 ? 'K'
+                      : String(11 - resto);
+      return dvEsperado === dv;
+    }
+
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+
+      // Validación de RUT
+      const rutVal = rutInput.value;
+      if (!validarRut(rutVal)) {
+        rutInput.classList.add('is-invalid');
+        rutInput.classList.remove('is-valid');
+        event.preventDefault();
+        event.stopPropagation();
+      } else {
+        rutInput.classList.add('is-valid');
+        rutInput.classList.remove('is-invalid');
+      }
+
+      form.classList.add('was-validated');
+    });
+  });
 </script>
 {% endblock %}
