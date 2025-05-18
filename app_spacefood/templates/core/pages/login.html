@@ -1,6 +1,11 @@
 {% extends 'core/layout/base.html' %}
 {% load static %}
 
+{% block css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'core/css/login.css' %}">
+{% endblock %}
+
 {% block contenido %}
 <div class="container mt-5">
   <div class="logo-login text-center mb-4">
@@ -37,11 +42,11 @@
                id="contrasena"
                name="contrasena"
                placeholder="Contraseña"
-               minlength="6"
+               minlength="8"
                required>
         <label for="contrasena">Contraseña</label>
         <div class="invalid-feedback">
-          La contraseña debe tener al menos 6 caracteres.
+          La contraseña debe tener al menos 8 caracteres.
         </div>
       </div>
     </div>
@@ -55,4 +60,5 @@
   </form>
 </div>
 
+<script src="{% static 'core/js/login.js' %}"></script>
 {% endblock %}

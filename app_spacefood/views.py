@@ -17,3 +17,9 @@ def login(request):
         'segment': 'login'
     }
     return render(request, 'core/pages/login.html', aux)
+
+def home_admin(request):
+    aux = {
+        'segment': 'home_admin'
+    }
+    return render(request, 'core/pages/home_admin.html', aux)

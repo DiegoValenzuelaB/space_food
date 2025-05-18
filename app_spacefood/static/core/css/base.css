@@ -1,0 +1,136 @@
+/* ===== Base global styles ===== */
+html,
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  font-family: 'Orbitron', sans-serif;
+  background-image: url("/static/core/imgs/space3.gif");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  position: relative;
+  height: 100%;
+}
+
+/* Empujar el footer al final */
+main.flex-fill {
+  flex: 1 0 auto;
+}
+
+main {
+  flex: 1;
+}
+
+/* ===== Navbar ===== */
+.navbar {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  position: relative;
+  z-index: 1000;
+}
+
+.navbar .container-fluid {
+  padding: 0;
+  margin: 0;
+}
+
+.navbar-toggler {
+  border: none;
+  padding: 0.25rem 0.75rem;
+  margin-left: 1rem;
+}
+
+/* Cuando el collapse está abierto */
+.collapse.show {
+  position: absolute;
+  z-index: 1000;
+}
+
+.navbar-collapse {
+  z-index: 1000;
+}
+
+.navbar-collapse .navbar-nav li {
+  border: none !important;
+}
+
+/* Enlaces de navegación */
+.navbar-nav .nav-link {
+  color: #fff;
+  padding: 0.75rem 1rem;
+  transition: color 0.2s, background-color 0.2s;
+}
+
+.navbar-nav li a {
+  color: #fff;
+  padding: 0.875rem 1rem;
+  text-decoration: none;
+}
+
+.navbar-nav .nav-link:hover {
+  background-color: transparent !important;
+  color: #00ffe7 !important;
+}
+
+/* Logo dentro del navbar */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 1.25rem;
+  margin: 0;
+}
+
+.navbar-brand .img-logo {
+  height: 2rem;
+}
+
+/* Responsive: asegurar que el collapse cubra todo */
+@media (max-width: 991px) {
+  .navbar-collapse {
+    position: static !important;
+    width: 100%;
+  }
+
+  .collapse.navbar-collapse .navbar-nav {
+    justify-content: center;
+  }
+}
+
+.active {
+  background-color: #009e8e;
+}
+
+/* ===== Footer ===== */
+footer {
+  flex-shrink: 0;
+}
+
+.footer-color {
+  background-color: #000000b9;
+  padding: 2rem 0;
+}
+
+footer h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+footer p,
+footer a {
+  font-size: 0.875rem;
+  color: #fff;
+  margin: 0.25rem 0;
+}
+
+footer a.btn {
+  font-size: 0.875rem;
+}

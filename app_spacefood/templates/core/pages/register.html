@@ -1,219 +1,142 @@
 {% extends 'core/layout/base.html' %}
 {% load static %}
 
+{% block css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'core/css/register.css' %}">
+{% endblock %}
+
 {% block contenido %}
-<div class="container mt-5">
-  <div class="logo text-center">
-    <img src="{% static 'core/imgs/logo.png' %}" alt="Logo SpaceFood" width="300">
+  <div class="container mt-5">
+    <div class="logo text-center">
+      <img src="{% static 'core/imgs/logo.png' %}" alt="Logo SpaceFood" width="300">
+    </div>
+
+    <form class="row gx-4 gy-4 needs-validation formulario mx-auto" novalidate>
+      <!-- Nombre -->
+      <div class="col-md-6">
+        <div class="form-floating">
+          <input type="text" class="form-control form-control-sm-custom" id="nombre" placeholder="Nombre" required>
+          <label for="nombre">Nombre</label>
+          <div class="invalid-feedback">
+            Por favor ingresa tu nombre.
+          </div>
+        </div>
+      </div>
+
+      <!-- Segundo Nombre (opcional) -->
+      <div class="col-md-6">
+        <div class="form-floating">
+          <input type="text" class="form-control form-control-sm-custom" id="segundoNombre" placeholder="Segundo Nombre">
+          <label for="segundoNombre">Segundo Nombre (opcional)</label>
+        </div>
+      </div>
+
+      <!-- Apellido -->
+      <div class="col-md-6">
+        <div class="form-floating">
+          <input type="text" class="form-control form-control-sm-custom" id="apellido" placeholder="Apellido" required>
+          <label for="apellido">Apellido</label>
+          <div class="invalid-feedback">
+            Por favor ingresa tu apellido.
+          </div>
+        </div>
+      </div>
+
+      <!-- Segundo Apellido -->
+      <div class="col-md-6">
+        <div class="form-floating">
+          <input type="text" class="form-control form-control-sm-custom" id="segundoApellido" placeholder="Segundo Apellido" required>
+          <label for="segundoApellido">Segundo Apellido</label>
+          <div class="invalid-feedback">
+            Por favor ingresa tu segundo apellido.
+          </div>
+        </div>
+      </div>
+
+      <!-- RUT -->
+      <div class="col-md-6">
+        <div class="form-floating">
+          <input type="text" class="form-control form-control-sm-custom" id="rut" placeholder="11.111.111-1" pattern="^[0-9]{1,2}\.[0-9]{3}\.[0-9]{3}-[0-9kK]{1}$" required>
+          <label for="rut">RUT</label>
+          <div class="invalid-feedback">
+            Ingresa un RUT válido (formato 11.111.111-1).
+          </div>
+        </div>
+      </div>
+
+      <!-- Correo -->
+      <div class="col-md-6">
+        <div class="form-floating">
+          <input type="email" class="form-control form-control-sm-custom" id="correo" placeholder="name@example.com" required>
+          <label for="correo">Correo</label>
+          <div class="invalid-feedback">
+            Ingresa un correo electrónico válido.
+          </div>
+        </div>
+      </div>
+
+      <!-- Teléfono -->
+      <div class="col-md-6">
+        <div class="form-floating">
+          <input type="tel" class="form-control form-control-sm-custom" id="telefono" placeholder="912345678" pattern="^\+?\d{9}$" required>
+          <label for="telefono">Teléfono</label>
+          <div class="invalid-feedback">
+            Ingresa un teléfono válido (solo números, 9 dígitos).
+          </div>
+        </div>
+      </div>
+
+      <!-- Dirección -->
+      <div class="col-md-6">
+        <div class="form-floating">
+          <input type="text" class="form-control form-control-sm-custom" id="direccion" placeholder="Dirección" required>
+          <label for="direccion">Dirección</label>
+          <div class="invalid-feedback">
+            Por favor ingresa tu dirección.
+          </div>
+        </div>
+      </div>
+
+      <!-- Contraseña -->
+      <div class="col-md-6">
+        <div class="form-floating">
+          <input type="password" class="form-control form-control-sm-custom" id="contrasena" placeholder="Contraseña" minlength="8" required>
+          <label for="contrasena">Contraseña</label>
+          <div class="invalid-feedback">
+            La contraseña debe tener al menos 8 caracteres.
+          </div>
+        </div>
+      </div>
+
+      <!-- Confirmar Contraseña -->
+      <div class="col-md-6">
+        <div class="form-floating">
+          <input type="password" class="form-control form-control-sm-custom" id="confirmarContrasena" placeholder="Confirmar Contraseña" required>
+          <label for="confirmarContrasena">Confirmar Contraseña</label>
+          <div class="invalid-feedback">
+            Las contraseñas no coinciden.
+          </div>
+        </div>
+      </div>
+
+      <!-- Fecha de Nacimiento -->
+      <div class="col-md-6 mx-auto">
+        <div class="form-floating">
+          <input type="date" class="form-control" id="fechaNacimiento" placeholder="Fecha nacimiento" required>
+          <label for="fechaNacimiento">Fecha nacimiento</label>
+          <div class="invalid-feedback">
+            Por favor ingresa tu fecha de nacimiento.
+          </div>
+        </div>
+      </div>
+
+      <!-- Botón Registrar -->
+      <div class="col-12 text-center">
+        <button type="submit" class="btn-register">Registrarse</button>
+      </div>
+    </form>
   </div>
 
-  <form class="row gx-4 gy-4 needs-validation formulario mx-auto" novalidate>
-    <!-- Nombre -->
-    <div class="col-md-6">
-      <div class="form-floating">
-        <input type="text" class="form-control form-control-sm-custom" id="nombre" placeholder="Nombre" required>
-        <label for="nombre">Nombre</label>
-        <div class="invalid-feedback">
-          Por favor ingresa tu nombre.
-        </div>
-      </div>
-    </div>
-
-    <!-- Segundo Nombre (opcional) -->
-    <div class="col-md-6">
-      <div class="form-floating">
-        <input type="text" class="form-control form-control-sm-custom" id="segundoNombre" placeholder="Segundo Nombre">
-        <label for="segundoNombre">Segundo Nombre (opcional)</label>
-      </div>
-    </div>
-
-    <!-- Apellido -->
-    <div class="col-md-6">
-      <div class="form-floating">
-        <input type="text" class="form-control form-control-sm-custom" id="apellido" placeholder="Apellido" required>
-        <label for="apellido">Apellido</label>
-        <div class="invalid-feedback">
-          Por favor ingresa tu apellido.
-        </div>
-      </div>
-    </div>
-
-    <!-- Segundo Apellido -->
-    <div class="col-md-6">
-      <div class="form-floating">
-        <input type="text" class="form-control form-control-sm-custom" id="segundoApellido" placeholder="Segundo Apellido" required>
-        <label for="segundoApellido">Segundo Apellido</label>
-        <div class="invalid-feedback">
-          Por favor ingresa tu segundo apellido.
-        </div>
-      </div>
-    </div>
-
-    <!-- RUT -->
-    <div class="col-md-6">
-      <div class="form-floating">
-        <input type="text" class="form-control form-control-sm-custom" id="rut" placeholder="11.111.111-1" pattern="^[0-9]{1,2}\.[0-9]{3}\.[0-9]{3}-[0-9kK]{1}$" required>
-        <label for="rut">RUT</label>
-        <div class="invalid-feedback">
-          Ingresa un RUT válido (formato 11.111.111-1).
-        </div>
-      </div>
-    </div>
-
-    <!-- Correo -->
-    <div class="col-md-6">
-      <div class="form-floating">
-        <input type="email" class="form-control form-control-sm-custom" id="correo" placeholder="name@example.com" required>
-        <label for="correo">Correo</label>
-        <div class="invalid-feedback">
-          Ingresa un correo electrónico válido.
-        </div>
-      </div>
-    </div>
-
-    <!-- Teléfono -->
-    <div class="col-md-6">
-      <div class="form-floating">
-        <input type="tel" class="form-control form-control-sm-custom" id="telefono" placeholder="912345678" pattern="^\+?\d{9}$" required>
-        <label for="telefono">Teléfono</label>
-        <div class="invalid-feedback">
-          Ingresa un teléfono válido (solo números, 9 dígitos).
-        </div>
-      </div>
-    </div>
-
-    <!-- Dirección -->
-    <div class="col-md-6">
-      <div class="form-floating">
-        <input type="text" class="form-control form-control-sm-custom" id="direccion" placeholder="Dirección" required>
-        <label for="direccion">Dirección</label>
-        <div class="invalid-feedback">
-          Por favor ingresa tu dirección.
-        </div>
-      </div>
-    </div>
-
-    <!-- Contraseña -->
-    <div class="col-md-6">
-      <div class="form-floating">
-        <input type="password" class="form-control form-control-sm-custom" id="contrasena" placeholder="Contraseña" minlength="8" required>
-        <label for="contrasena">Contraseña</label>
-        <div class="invalid-feedback">
-          La contraseña debe tener al menos 8 caracteres.
-        </div>
-      </div>
-    </div>
-
-    <!-- Confirmar Contraseña -->
-    <div class="col-md-6">
-      <div class="form-floating">
-        <input type="password" class="form-control form-control-sm-custom" id="confirmarContrasena" placeholder="Confirmar Contraseña" required>
-        <label for="confirmarContrasena">Confirmar Contraseña</label>
-        <div class="invalid-feedback">
-          Las contraseñas no coinciden.
-        </div>
-      </div>
-    </div>
-
-    <!-- Fecha de Nacimiento -->
-    <div class="col-md-6 mx-auto">
-      <div class="form-floating">
-        <input type="date" class="form-control" id="fechaNacimiento" placeholder="Fecha nacimiento" required>
-        <label for="fechaNacimiento">Fecha nacimiento</label>
-        <div class="invalid-feedback">
-          Por favor ingresa tu fecha de nacimiento.
-        </div>
-      </div>
-    </div>
-
-    <!-- Botón Registrar -->
-    <div class="col-12 text-center">
-      <button type="submit" class="btn-register">Registrarse</button>
-    </div>
-  </form>
-</div>
-
-<!-- Script de validación de Bootstrap -->
-<script>
-  (function() {
-    'use strict'
-    const forms = document.querySelectorAll('.needs-validation')
-    Array.prototype.slice.call(forms)
-      .forEach(function(form) {
-        form.addEventListener('submit', function(event) {
-          const pass = form.querySelector('#contrasena');
-          const confirm = form.querySelector('#confirmarContrasena');
-          if (pass.value !== confirm.value) {
-            confirm.setCustomValidity('Las contraseñas no coinciden.');
-          } else {
-            confirm.setCustomValidity('');
-          }
-
-          if (!form.checkValidity()) {
-            event.preventDefault();
-            event.stopPropagation();
-          }
-          form.classList.add('was-validated');
-        }, false)
-      })
-  })()
-</script>
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const rutInput = document.getElementById('rut');
-    const form = document.querySelector('form.needs-validation');
-
-    // Formatea RUT sobre la marcha
-    rutInput.addEventListener('input', e => {
-      let v = e.target.value.replace(/\D/g, '');
-      if (v.length > 1) {
-        const dv = v.slice(-1);
-        const cuerpo = v.slice(0, -1);
-        e.target.value = cuerpo
-          .replace(/\B(?=(\d{3})+(?!\d))/g, '.')
-          + '-' + dv;
-      } else {
-        e.target.value = v;
-      }
-    });
-
-    function validarRut(rut) {
-      const clean = rut.replace(/\./g, '').replace(/-/g, '').toUpperCase();
-      const cuerpo = clean.slice(0, -1);
-      const dv = clean.slice(-1);
-      let suma = 0;
-      let multiplo = 2;
-      for (let i = cuerpo.length - 1; i >= 0; i--) {
-        suma += parseInt(cuerpo.charAt(i), 10) * multiplo;
-        multiplo = multiplo < 7 ? multiplo + 1 : 2;
-      }
-      const resto = suma % 11;
-      const dvEsperado = (11 - resto) === 11 ? '0'
-                      : (11 - resto) === 10 ? 'K'
-                      : String(11 - resto);
-      return dvEsperado === dv;
-    }
-
-    form.addEventListener('submit', event => {
-      if (!form.checkValidity()) {
-        event.preventDefault();
-        event.stopPropagation();
-      }
-
-      // Validación de RUT
-      const rutVal = rutInput.value;
-      if (!validarRut(rutVal)) {
-        rutInput.classList.add('is-invalid');
-        rutInput.classList.remove('is-valid');
-        event.preventDefault();
-        event.stopPropagation();
-      } else {
-        rutInput.classList.add('is-valid');
-        rutInput.classList.remove('is-invalid');
-      }
-
-      form.classList.add('was-validated');
-    });
-  });
-</script>
+  <script src="{% static 'core/js/register.js' %}"></script>
 {% endblock %}
