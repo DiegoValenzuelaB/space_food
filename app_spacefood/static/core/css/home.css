@@ -14,6 +14,11 @@
   margin-bottom: 2rem;
 }
 
+
+.welcome-title h1 {
+  margin-bottom: 2rem;
+}
+
 /* Efecto de resplandor en el texto */
 @keyframes glowing {
   0% {

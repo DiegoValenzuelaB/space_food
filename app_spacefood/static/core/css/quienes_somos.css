@@ -1,0 +1,72 @@
+.quienes-somos h1 { 
+  font-family: 'Orbitron', sans-serif; 
+  color: #00ffe7;
+}
+
+h2 {
+    color: #ffcc00;
+}
+
+p {
+    color: rgb(168, 192, 192);
+}
+
+h5 {
+  color: #8b7621;
+}
+
+.section-title {
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #ffcc00;
+  padding-bottom: 0.5rem;
+}
+
+.equipo-avatar {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+}
+
+.logo-redondo {
+  width: 230px;         /* O el tamaño que necesites */
+  height: 230px;        /* Debe ser igual al ancho */
+  border-radius: 50%;   /* Hace que la imagen sea redonda */
+  object-fit: cover;    /* Asegura que la imagen se recorte bien */
+  box-shadow: 0 0 10px rgba(0,0,0,0.2); /* Opcional: sombra sutil */
+}
+
+.quienes-somos-list h4 {
+  margin-top: 1rem;
+  color: #8b7621;
+}
+
+.btn-register {
+  background-color: #00c6b24e;
+  color: white;
+  padding: 0.625rem 1.25rem;
+  border: none;
+  border-radius: 1.5625rem;
+  font-size: 1.125rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 1rem;
+}
+
+.btn-register:hover {
+  background-color: #009e8e;
+  box-shadow: 0 0 0.625rem rgba(0, 255, 231, 0.7);
+}
+
+.quienes-somos-footer {
+  border-top: 2px solid #ffcc00;
+}
+
+.quienes-somos-footer a i {
+  color: #ffcc00;
+}
+
+.quienes-somos-footer a i:hover {
+  color: #9d7e02; /* o cualquier color de hover deseado */
+}

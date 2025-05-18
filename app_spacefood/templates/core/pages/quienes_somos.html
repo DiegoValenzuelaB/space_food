@@ -1,0 +1,156 @@
+{% extends 'core/layout/base.html' %}
+{% load static %}
+
+{% block css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'core/css/quienes_somos.css' %}">
+{% endblock %}
+
+{% block contenido %}
+<div class="container quienes-somos mt-5">
+  <!-- Hero / Encabezado -->
+  <div class="row align-items-center mb-5">
+    <div class="col-md-6">
+      <h1 class="display-4">Quiénes Somos</h1>
+      <p class="lead">
+        ¡Bienvenidos a Space Food! Fundada a principios de este año, nuestra misión es conectar seres de diferentes mundos y galaxias para que prueben lo mejor de la gastronomía interplanetaria.
+      </p>
+    </div>
+    <div class="col-md-6 text-center">
+        <img src="{% static 'core/imgs/equipo/local/local.png' %}" alt="Logo SpaceFood" class="logo-redondo">
+    </div>
+  </div>
+
+  <!-- Sección: Nuestra Historia -->
+  <div class="row mb-5">
+    <div class="col-12">
+      <h2 class="section-title">Nuestra Historia</h2>
+      <p>
+        A inicios de 2025, un grupo de visionarios apasionados por la exploración espacial y la cocina decidió fundar SpaceFood. La idea surgió cuando, durante una conferencia sobre colonias marcianas, debatieron cómo sería compartir recetas y sabores de distintos rincones del universo. 
+        Desde entonces, nos hemos propuesto crear una plataforma donde todo ser humano, androide o entidad cósmica pueda descubrir y compartir platillos de más de cien sistemas estelares.
+      </p>
+      <p>
+        Empezamos como un pequeño proyecto en la órbita baja terrestre, combinando tecnología blockchain para registrar recetas y una red de corresponsales extraterrestres que envían ingredientes raros desde planetas como Zhar-5 y Nebulon Prime. 
+        Hoy, contamos con comunidades activas en la Vía Láctea, Orión, Andrómeda y más allá.
+      </p>
+    </div>
+  </div>
+
+  <!-- Sección: Nuestra Misión y Visión -->
+  <div class="row mb-5">
+    <div class="col-md-6">
+      <h2 class="section-title">Misión</h2>
+      <p>
+        Crear un espacio neutral donde todos los habitantes del cosmos puedan probar distintas culturas culinaria, aprendiendo unos de otros sin importar el sistema solar de origen. Queremos que cada plato sirva de puente para el entendimiento, la cooperación y la amistad intergaláctica.
+      </p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="section-title">Visión</h2>
+      <p>
+        Ser la plataforma líder para la exploración gastronómica entre planetas. Imaginamos un futuro en el que la comida sirva como lenguaje universal: desde el condimento volcánico de Vulcan hasta la dulzura cristalina de Endoria. 
+        Aspiramos a que Space Food sea publicada en todas las lunas de sistemas habitables antes de 2030.
+      </p>
+    </div>
+  </div>
+
+  <!-- Sección: ¿Qué Ofrecemos? -->
+  <div class="row mb-5">
+    <div class="col-12">
+      <h2 class="section-title">¿Qué Ofrecemos?</h2>
+      <ul class="list-unstyled quienes-somos-list">
+        <li>
+          <h4>🌌 Recetas Auténticas de Otros Mundos</h4>
+          <p>
+            Más de 500 recetas originarias de distintos planetas. Desde sopas termodinámicas de Quorax IX hasta postres efervescentes de Lyrae Beta. Cada receta viene acompañada de instrucciones adaptadas para humanos y otras formas de vida.
+          </p>
+        </li>
+        <li>
+          <h4>🚀 Ingredientes Cósmicos a Tu Alcance</h4>
+          <p>
+            Gracias a nuestra red de proveedores interplanetarios, puedes solicitar ingredientes únicos: especias lumínicas de Proxima Centauri o frutos gelatinosos de Tau Ceti III, nosotros nos encargamos de darle el mejor sabor para tu paladar.
+          </p>
+        </li>
+        <li>
+          <h4>🛸 Eventos y Festivales Gastronómicos</h4>
+          <p>
+            Organizamos encuentros virtuales y presenciales en estaciones espaciales, ciudades flotantes y paraboloides orbitando planetas vecinos. Celebra Halloween Andromédico o el Solsticio de Helio en nuestro calendario galáctico de festivales.
+          </p>
+        </li>
+        <li>
+          <h4>🤖 Comunidad y Colaboraciones</h4>
+          <p>
+            Planeamos en un futuro poder crear foros donde chefs alienígenas, humanos, cíborgs y hologramas intercambian tips, trucos y secretos culinarios. También facilitar colaboraciones con restaurantes interplanetarios para que tu platillo llegue a mesas de todo el cosmos.
+          </p>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Sección: El Equipo Interplanetario -->
+  <div class="row mb-5">
+    <div class="col-12 text-center">
+      <h2 class="section-title">Nuestro Equipo</h2>
+    </div>
+  </div>
+  <div class="row justify-content-center quienes-somos-equipo">
+    <!-- Miembro 1 -->
+    <div class="col-sm-6 col-md-3 text-center mb-4">
+      <img src="{% static 'core/imgs/equipo/zorg.png' %}" alt="Capitán Zorg" class="rounded-circle mb-3 equipo-avatar">
+      <h5>Capitán Zorg</h5>
+      <p class="equipo-rol">Fundador & Explorador Culinario<br><small>Planeta Xenon</small></p>
+      <p>
+        Visionario encargado de la adquisición de recetas raras y de liderar expediciones a sistemas estelares remotos.
+      </p>
+    </div>
+    <!-- Miembro 2 -->
+    <div class="col-sm-6 col-md-3 text-center mb-4">
+      <img src="{% static 'core/imgs/equipo/grace.png' %}" alt="Dra. Lyra" class="rounded-circle mb-3 equipo-avatar">
+      <h5>Dra. Grace</h5>
+      <p class="equipo-rol">Jefa de Investigación Gastronómica<br><small>Luna Pandora</small></p>
+      <p>
+        Experta en análisis químico de ingredientes exóticos y en adaptar sabores a los paladares humanos y no humanos.
+      </p>
+    </div>
+    <!-- Miembro 3 -->
+    <div class="col-sm-6 col-md-3 text-center mb-4">
+      <img src="{% static 'core/imgs/equipo/depredador.png' %}" alt="Android X7" class="rounded-circle mb-3 equipo-avatar">
+      <h5>Depredador</h5>
+      <p class="equipo-rol">Desarrollador & Analista de Datos<br><small>Órbita de Kepler-22b</small></p>
+      <p>
+        Diseñador de la plataforma web y responsable del algoritmo que recomienda platillos según tu ascendencia estelar y tus preferencias de sabor.
+      </p>
+    </div>
+    <!-- Miembro 4 -->
+    <div class="col-sm-6 col-md-3 text-center mb-4">
+      <img src="{% static 'core/imgs/equipo/eva.png' %}" alt="Mira the Lucid" class="rounded-circle mb-3 equipo-avatar">
+      <h5>Eva</h5>
+      <p class="equipo-rol">Embajadora Cultural Intergaláctica<br><small>Nave nodriza Axiom</small></p>
+      <p>
+        Su misión es tejer redes de amistad entre culturas, organizar festivales virtuales y hacer streaming de experiencias culinarias únicas.
+      </p>
+    </div>
+  </div>
+
+  <!-- Sección: Únete a Nuestra Comunidad -->
+  <div class="row mb-5">
+    <div class="col-12">
+      <h2 class="section-title">¿Quieres Ser Parte?</h2>
+      <p>
+        Regístrate gratuitamente para probar nuevas receta intergaláctica, conocer culturas interplanetarias o simplemente para explorar menús que desafían la imaginación.  
+        Estamos construyendo un universo donde todos los sabores tienen cabida.
+      </p>
+      <a href="{% url 'register' %}" class="btn btn-primary btn-register">Únete ahora</a>
+    </div>
+  </div>
+
+  <!-- Pie de página con enlace a redes -->
+  <div class="row quienes-somos-footer py-4">
+    <div class="col-12 text-center">
+        <p>Síguenos en nuestras redes interplanetarias:</p>
+        <a href="" target="_blank" class="me-3"><i class="fab fa-whatsapp fa-2x"></i></a>
+        <a href="" target="_blank" class="me-3"><i class="fab fa-facebook fa-2x"></i></a>
+        <a href="" target="_blank"><i class="fab fa-instagram fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+{% endblock %}

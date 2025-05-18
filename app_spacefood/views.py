@@ -55,3 +55,15 @@ def login(request):
         'segment': 'login'
     }
     return render(request, 'core/pages/login.html', aux)
+
+def quienes_somos(request):
+    aux = {
+        'segment': 'quienes_somos'
+    }
+    return render(request, 'core/pages/quienes_somos.html', aux)
+
+def miperfil(request):
+    aux = {
+        'segment': 'miperfil'
+    }
+    return render(request, 'core/pages/miperfil.html', aux)
