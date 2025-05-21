@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app_spacefood',
     'bootstrap5',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

@@ -1,11 +1,29 @@
 {% extends 'core/layout/base.html' %}
 {% load static %}
-
 {% block css %}
   {{ block.super }}
   <link rel="stylesheet" href="{% static 'core/css/miperfil.css' %}">
-{% endblock %}
+  {% endblock %}
+  
+  
+  
+  {% block contenido %}
+  <script type="module" src="{% static 'core/js/sdk_firebase.js' %}"></script>
+  <script type="module" src="{% static 'core/js/miperfil.js' %}"></script>
 
-{% block contenido %}
+  <h1>Mi Perfil</h1>
+  <p><strong>Primer Nombre:</strong> <span id="p_nombre"></span></p>
+  <p><strong>Segundo Nombre:</strong> <span id="s_nombre"></span></p>
+  <p><strong>Primer Apellido:</strong> <span id="p_apellido"></span></p>
+  <p><strong>Segundo Apellido:</strong> <span id="s_apellido"></span></p>
+  <p><strong>Rut:</strong> <span id="rut"></span></p>
+  <p><strong>Teléfono:</strong> <span id="telefono"></span></p>
+  <p><strong>Dirección:</strong> <span id="direccion"></span></p>
+  <p><strong>Fecha de Nacimiento:</strong> <span id="fecha_nacimiento"></span></p>
+  <p><strong>Email:</strong> <span id="email"></span></p>
+  <p><strong>Contraseña:</strong> <span id="contrasena"></span></p>
+  
+  <a href="{% url 'login' %}"><button id="btnLogout" >Cerrar Sesión</button></a>
 
+  
 {% endblock %}

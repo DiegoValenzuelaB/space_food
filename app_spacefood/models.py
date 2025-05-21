@@ -30,7 +30,7 @@ class Usuario(models.Model):
     s_nombre = models.CharField(max_length=100, blank=True, null=True)
     p_apellido = models.CharField(max_length=100)
     s_apellido = models.CharField(max_length=100)
-    rut = models.CharField(max_length=20, unique=True)
+    rut = models.CharField(max_length=20, unique=True, primary_key=True)
     correo_user = models.EmailField(unique=True)
     contrasena = models.CharField(max_length=100)
     direccion_user = models.CharField(max_length=100)

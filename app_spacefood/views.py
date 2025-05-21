@@ -6,6 +6,9 @@ from django.shortcuts import render, redirect
 from django.db import transaction, IntegrityError
 from django.contrib import messages
 from .models import Usuario, TipoUser, Sucursal
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 from firebase_admin import auth as firebase_auth
 
@@ -98,12 +101,37 @@ def register(request):
 
     return render(request, 'core/pages/register.html')
 
+@csrf_exempt
 def login(request):
-    aux = {
-        'segment': 'login'
-    }
-    return render(request, 'core/pages/login.html', aux)
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            id_token = data.get('idToken')
 
+            # Verifica el token con Firebase Admin SDK
+            decoded_token = firebase_auth.verify_id_token(id_token)
+            uid = decoded_token['uid']
+            email = decoded_token.get('email')
+
+            # Busca el usuario en MySQL según email
+            try:
+                usuario_db = Usuario.objects.get(correo_user=email)
+            except Usuario.DoesNotExist:
+                return JsonResponse({'success': False, 'message': 'Usuario no encontrado en base de datos.'})
+
+            # Guarda datos en sesión Django
+            request.session['rut'] = usuario_db.rut
+            request.session['nombre'] = f"{usuario_db.p_nombre} {usuario_db.p_apellido}"
+            request.session['correo'] = usuario_db.correo_user
+            request.session['tipo_usuario'] = usuario_db.tipo_user.id_tipo_user
+
+            return JsonResponse({'success': True})
+
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': f'Error de autenticación: {str(e)}'})
+
+    # Si es GET, muestra formulario login normal (o redirige)
+    return render(request, 'core/pages/login.html', {'segment': 'login'})
 def quienes_somos(request):
     aux = {
         'segment': 'quienes_somos'
@@ -115,3 +143,4 @@ def miperfil(request):
         'segment': 'miperfil'
     }
     return render(request, 'core/pages/miperfil.html', aux)
+

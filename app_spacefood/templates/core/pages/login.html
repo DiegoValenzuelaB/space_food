@@ -16,8 +16,8 @@
     <h2>¡Bienvenido a un mundo nuevo!</h2>
   </div>
 
-  <form class="row gx-4 gy-4 needs-validation formulario mx-auto" novalidate>
-
+  <form method="post" action="{% url 'login' %}" class="row gx-4 gy-4 needs-validation formulario mx-auto" novalidate>
+    {% csrf_token %}
     <!-- Correo  -->
     <div class="col-12">
       <div class="form-floating">
@@ -60,5 +60,7 @@
   </form>
 </div>
 
-<script src="{% static 'core/js/login.js' %}"></script>
+<script type="module" src="{% static 'core/js/login.js' %}"></script>
+<script type="module" src="{% static 'core/js/sdk_firebase.js' %}"></script>
+
 {% endblock %}
