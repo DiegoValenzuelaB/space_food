@@ -21,6 +21,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="..." crossorigin="anonymous" />
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   </head>
 
   <body>
@@ -90,6 +92,26 @@
     </footer>
       <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js" type="module"></script>
       <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js" type="module"></script>
+
+      <script type="text/template" id="django-messages-template">
+        [
+          {% for message in messages %}
+            {
+              "tags": "{{ message.tags }}",
+              "text": "{{ message|escapejs }}"
+            }{% if not forloop.last %},{% endif %}
+          {% endfor %}
+        ]
+      </script>
+
+      <script>
+        window.djangoMessages = JSON.parse(document.getElementById('django-messages-template').textContent);
+      </script>
+
+      {% block js %}
+      <script src="{% static 'core/js/sweetalerts.js' %}"></script>
+      {% endblock %}
+
   </body>
 
 </html>

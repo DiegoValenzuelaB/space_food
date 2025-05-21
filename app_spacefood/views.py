@@ -37,6 +37,10 @@ def register(request):
         tipo_user_obj   = TipoUser.objects.get(id_tipo_user=1)
         sucursal_obj    = Sucursal.objects.get(id_sucursal=1)
 
+        if Usuario.objects.filter(rut=rut).exists():
+            messages.error(request, "El usuario ya se encuentra registrado.")
+            return render(request, 'core/pages/register.html')
+
         # 2) Valida que las contraseñas coincidan
         if contrasena != confirmar:
             messages.error(request, "Las contraseñas no coinciden.")
@@ -84,7 +88,7 @@ def register(request):
                 firebase_auth.delete_user(uid_fb)
             except:
                 pass
-            messages.error(request, "No se pudo guardar el usuario en la base de datos.")
+            messages.error(request, "No se ha podido registrar el usuario. Verifica los datos.")
             return render(request, 'core/pages/register.html')
 
         except Exception as e:
@@ -96,7 +100,7 @@ def register(request):
             return render(request, 'core/pages/register.html')
 
         # 5) Todo OK: rediriges o muestras mensaje de éxito
-        messages.success(request, "Usuario registrado correctamente.")
+        messages.success(request, "El usuario se ha registrado correctamente")
         return redirect('login')
 
     return render(request, 'core/pages/register.html')

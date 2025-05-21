@@ -65,3 +65,7 @@
   background-color: #009e8e;
   box-shadow: 0 0 0.625rem rgba(0, 255, 231, 0.7);
 }
+
+.capitalize-field {
+  text-transform: titlecase;
+}

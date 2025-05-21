@@ -19,7 +19,12 @@
       <!-- Nombre -->
       <div class="col-md-6">
         <div class="form-floating">
-          <input type="text" class="form-control form-control-sm-custom" id="nombre" name="nombre" placeholder="Nombre" required>
+          <input type="text"
+                 class="form-control form-control-sm-custom capitalize-field"
+                 id="nombre"
+                 name="nombre"
+                 placeholder="Nombre"
+                 required>
           <label for="nombre">Nombre</label>
           <div class="invalid-feedback">
             Por favor ingresa tu nombre.
@@ -30,7 +35,11 @@
       <!-- Segundo Nombre (opcional) -->
       <div class="col-md-6">
         <div class="form-floating">
-          <input type="text" class="form-control form-control-sm-custom" id="segundoNombre" name="segundoNombre" placeholder="Segundo Nombre">
+          <input type="text"
+                 class="form-control form-control-sm-custom capitalize-field"
+                 id="segundoNombre"
+                 name="segundoNombre"
+                 placeholder="Segundo Nombre">
           <label for="segundoNombre">Segundo Nombre (opcional)</label>
         </div>
       </div>
@@ -38,7 +47,12 @@
       <!-- Apellido -->
       <div class="col-md-6">
         <div class="form-floating">
-          <input type="text" class="form-control form-control-sm-custom" id="apellido" name="apellido" placeholder="Apellido" required>
+          <input type="text"
+                 class="form-control form-control-sm-custom capitalize-field"
+                 id="apellido"
+                 name="apellido"
+                 placeholder="Apellido"
+                 required>
           <label for="apellido">Apellido</label>
           <div class="invalid-feedback">
             Por favor ingresa tu apellido.
@@ -49,7 +63,12 @@
       <!-- Segundo Apellido -->
       <div class="col-md-6">
         <div class="form-floating">
-          <input type="text" class="form-control form-control-sm-custom" id="segundoApellido" name="segundoApellido" placeholder="Segundo Apellido" required>
+          <input type="text"
+                 class="form-control form-control-sm-custom capitalize-field"
+                 id="segundoApellido"
+                 name="segundoApellido"
+                 placeholder="Segundo Apellido"
+                 required>
           <label for="segundoApellido">Segundo Apellido</label>
           <div class="invalid-feedback">
             Por favor ingresa tu segundo apellido.
@@ -60,7 +79,13 @@
       <!-- RUT -->
       <div class="col-md-6">
         <div class="form-floating">
-          <input type="text" class="form-control form-control-sm-custom" id="rut" name="rut" placeholder="11.111.111-1" pattern="^[0-9]{1,2}\.[0-9]{3}\.[0-9]{3}-[0-9kK]{1}$" required>
+          <input type="text"
+                 class="form-control form-control-sm-custom"
+                 id="rut"
+                 name="rut"
+                 placeholder="11.111.111-1"
+                 pattern="^[0-9]{1,2}\.[0-9]{3}\.[0-9]{3}-[0-9kK]{1}$"
+                 required>
           <label for="rut">RUT</label>
           <div class="invalid-feedback">
             Ingresa un RUT válido (formato 11.111.111-1).
@@ -71,7 +96,12 @@
       <!-- Correo -->
       <div class="col-md-6">
         <div class="form-floating">
-          <input type="email" class="form-control form-control-sm-custom" id="correo" name="correo" placeholder="name@example.com" required>
+          <input type="email"
+                 class="form-control form-control-sm-custom"
+                 id="correo"
+                 name="correo"
+                 placeholder="name@example.com"
+                 required>
           <label for="correo">Correo</label>
           <div class="invalid-feedback">
             Ingresa un correo electrónico válido.
@@ -82,7 +112,12 @@
       <!-- Teléfono -->
       <div class="col-md-6">
         <div class="form-floating">
-          <input type="tel" class="form-control form-control-sm-custom" id="telefono" name="telefono" placeholder="912345678" pattern="^\+?\d{9}$" required>
+          <input type="tel"
+                 class="form-control form-control-sm-custom"
+                 id="telefono"
+                 name="telefono"
+                 placeholder="912345678"
+                 required>
           <label for="telefono">Teléfono</label>
           <div class="invalid-feedback">
             Ingresa un teléfono válido (solo números, 9 dígitos).
@@ -93,7 +128,12 @@
       <!-- Dirección -->
       <div class="col-md-6">
         <div class="form-floating">
-          <input type="text" class="form-control form-control-sm-custom" id="direccion" name="direccion" placeholder="Dirección" required>
+          <input type="text"
+                 class="form-control form-control-sm-custom capitalize-field"
+                 id="direccion"
+                 name="direccion"
+                 placeholder="Dirección"
+                 required>
           <label for="direccion">Dirección</label>
           <div class="invalid-feedback">
             Por favor ingresa tu dirección.
@@ -104,7 +144,13 @@
       <!-- Contraseña -->
       <div class="col-md-6">
         <div class="form-floating">
-          <input type="password" class="form-control form-control-sm-custom" id="contrasena" name="contrasena" placeholder="Contraseña" minlength="8" required>
+          <input type="password"
+                 class="form-control form-control-sm-custom"
+                 id="contrasena"
+                 name="contrasena"
+                 placeholder="Contraseña"
+                 minlength="8"
+                 required>
           <label for="contrasena">Contraseña</label>
           <div class="invalid-feedback">
             La contraseña debe tener al menos 8 caracteres.
@@ -115,7 +161,12 @@
       <!-- Confirmar Contraseña -->
       <div class="col-md-6">
         <div class="form-floating">
-          <input type="password" class="form-control form-control-sm-custom" id="confirmarContrasena" name="confirmarContrasena" placeholder="Confirmar Contraseña" required>
+          <input type="password"
+                 class="form-control form-control-sm-custom"
+                 id="confirmarContrasena"
+                 name="confirmarContrasena"
+                 placeholder="Confirmar Contraseña"
+                 required>
           <label for="confirmarContrasena">Confirmar Contraseña</label>
           <div class="invalid-feedback">
             Las contraseñas no coinciden.
@@ -126,7 +177,12 @@
       <!-- Fecha de Nacimiento -->
       <div class="col-md-6 mx-auto">
         <div class="form-floating">
-          <input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento" placeholder="Fecha nacimiento" required>
+          <input type="date"
+                 class="form-control"
+                 id="fechaNacimiento"
+                 name="fechaNacimiento"
+                 placeholder="Fecha nacimiento"
+                 required>
           <label for="fechaNacimiento">Fecha nacimiento</label>
           <div class="invalid-feedback">
             Por favor ingresa tu fecha de nacimiento.
@@ -142,4 +198,5 @@
   </div>
 
   <script src="{% static 'core/js/register.js' %}"></script>
+
 {% endblock %}
