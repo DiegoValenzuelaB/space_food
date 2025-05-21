@@ -69,7 +69,7 @@ document.getElementById('btnLogout').addEventListener('click', async () => {
     console.log('Sesión cerrada en Firebase');
 
     // Redirige al login
-    window.location.href = '/login/';
+    window.location.href = '/';
   } catch (error) {
     console.error('Error al cerrar sesión:', error);
   }

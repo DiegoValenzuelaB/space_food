@@ -126,6 +126,7 @@ def login(request):
             # Guarda datos en sesión Django
             request.session['rut'] = usuario_db.rut
             request.session['nombre'] = f"{usuario_db.p_nombre} {usuario_db.p_apellido}"
+            request.session['p_nombre'] = usuario_db.p_nombre
             request.session['correo'] = usuario_db.correo_user
             request.session['tipo_usuario'] = usuario_db.tipo_user.id_tipo_user
 
@@ -136,6 +137,7 @@ def login(request):
 
     # Si es GET, muestra formulario login normal (o redirige)
     return render(request, 'core/pages/login.html', {'segment': 'login'})
+
 def quienes_somos(request):
     aux = {
         'segment': 'quienes_somos'
@@ -147,4 +149,10 @@ def miperfil(request):
         'segment': 'miperfil'
     }
     return render(request, 'core/pages/miperfil.html', aux)
+
+def panelusuarios(request):
+    aux = {
+        'segment': 'panelusuarios'
+    }
+    return render(request, 'core/pages/panelusuarios.html', aux)
 

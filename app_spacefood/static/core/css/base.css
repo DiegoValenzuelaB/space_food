@@ -107,6 +107,18 @@ main {
   background-color: #009e8e;
 }
 
+.navbar .user-icon {
+  font-size: 1.2rem;
+  margin: 10px;
+  line-height: 1;        /* para que no afecte la altura de la navbar */
+}
+
+.navbar-nav .nav-item.ms-lg-auto .nav-link:hover .navbar-text,
+.navbar-nav .nav-item.ms-lg-auto .nav-link:hover .user-icon {
+  color: #00ffe7 !important;
+  cursor: pointer;
+}
+
 /* ===== Footer ===== */
 footer {
   flex-shrink: 0;

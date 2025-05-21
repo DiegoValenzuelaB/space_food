@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const result = await response.json();
 
       if (result.success) {
-        window.location.href = "/miperfil";
+        window.location.href = "/home";
       } else {
         alert("Error en servidor: " + result.message);
       }
