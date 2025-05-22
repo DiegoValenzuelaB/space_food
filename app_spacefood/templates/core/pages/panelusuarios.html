@@ -8,4 +8,23 @@
 
 {% block contenido %}
 
+  <table id="tabla-usuarios">
+    <thead>
+      <tr>
+        <th>Primer Nombre</th>
+        <th>Segundo Nombre</th>
+        <th>Primer Apellido</th>
+        <th>Segundo Apellido</th>
+        <th>RUT</th>
+        <th>Teléfono</th>
+        <th>Dirección</th>
+        <th>Fecha Nacimiento</th>
+        <th>Correo</th>
+        <th>tipo_user</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script type="module" src="{% static 'core/js/panelusuarios.js' %}"></script>
 {% endblock %}

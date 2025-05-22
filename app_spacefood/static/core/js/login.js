@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const user = userCredential.user;
 
       const idToken = await user.getIdToken();
+      localStorage.setItem("idToken", idToken);
 
       const response = await fetch("/login/", {
         method: "POST",
@@ -34,6 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (result.success) {
         window.location.href = "/home";
+        localStorage.setItem("idToken", idToken);
       } else {
         alert("Error en servidor: " + result.message);
       }

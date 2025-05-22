@@ -100,10 +100,10 @@ def listar_usuarios(request):
     except Usuario.DoesNotExist:
         return JsonResponse({'error': 'Usuario no encontrado'}, status=404)
 
-    if usuario.tipo_user.id_tipo_user != 1:
+    if usuario.tipo_user.id_tipo_user != 5:
         return JsonResponse({'error': 'No tienes permiso para ver los usuarios'}, status=403)
     
-    if usuario.tipo_user.id_tipo_user == 1:
+    if usuario.tipo_user.id_tipo_user == 5:
         print("Usuario Administrador")
         usuarios = Usuario.objects.all()
         datos = []
@@ -117,6 +117,7 @@ def listar_usuarios(request):
                 'telefono': u.telefono_user,
                 'direccion': u.direccion_user,
                 'fecha_nacimiento': u.fecha_nac_user.strftime('%d-%m-%Y') if u.fecha_nac_user else '',
-                'correo': u.correo_user
+                'correo': u.correo_user,
+                'tipo_user': u.tipo_user.desc_tipo_user,
             })
         return Response({'usuarios': datos})

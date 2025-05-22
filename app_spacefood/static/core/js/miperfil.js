@@ -66,6 +66,7 @@ document.getElementById('btnLogout').addEventListener('click', async () => {
 
     // Cierra la sesión en Firebase
     await signOut(auth);
+    localStorage.removeItem("idToken");
     console.log('Sesión cerrada en Firebase');
 
     // Redirige al login
