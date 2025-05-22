@@ -119,5 +119,66 @@ def listar_usuarios(request):
                 'fecha_nacimiento': u.fecha_nac_user.strftime('%d-%m-%Y') if u.fecha_nac_user else '',
                 'correo': u.correo_user,
                 'tipo_user': u.tipo_user.desc_tipo_user,
+                'activo': u.activo,
             })
         return Response({'usuarios': datos})
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def listar_tipo_user(request):
+    tipos_usuario = TipoUser.objects.all()
+    datos = []
+    for tipo in tipos_usuario:
+        datos.append({
+            'id_tipo_user': tipo.id_tipo_user,
+            'desc_tipo_user': tipo.desc_tipo_user,
+        })
+    return Response({'tipos_usuario': datos})
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def actualizar_tipo_user(request):
+    data = request.data
+    rut = data.get('rut')
+    id_tipo_user = data.get('id_tipo_user')
+    activo = data.get('activo')  # puede venir como True, False, 'true', 'false'
+
+    if not rut or not id_tipo_user:
+        return JsonResponse({'error': 'Rut o id_tipo_user no proporcionados'}, status=400)
+
+    try:
+        usuario = Usuario.objects.get(rut=rut)
+        tipo_usuario = TipoUser.objects.get(id_tipo_user=id_tipo_user)
+
+        usuario.tipo_user = tipo_usuario
+
+        if activo is not None:
+            if isinstance(activo, str):
+                activo = activo.lower() == "true"
+            usuario.activo = activo
+
+        usuario.save()
+
+        return JsonResponse({'mensaje': 'Usuario actualizado correctamente'})
+
+    except Usuario.DoesNotExist:
+        return JsonResponse({'error': 'Usuario no encontrado'}, status=404)
+    except TipoUser.DoesNotExist:
+        return JsonResponse({'error': 'Tipo de usuario no encontrado'}, status=404)
+
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def listar_estados_user(request):
+    usuarios = Usuario.objects.all()
+    datos = []
+    for u in usuarios:
+        datos.append({
+            'rut': u.rut,
+            'activo': u.activo,
+            'estado_desc': 'Activo' if u.activo else 'Inactivo'
+        })
+    return Response({'usuarios': datos})

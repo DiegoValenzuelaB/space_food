@@ -4,18 +4,19 @@
 
 /* Contenedor centrado y con máximo ancho */
 .user-table-container {
-  margin: 1.5rem auto;
-  max-width: 90.2rem;
+  display: flex;
+  justify-content: center;  /* centra horizontalmente */
+  align-items: center;      /* centra verticalmente si quieres */
   margin-top: 2.5rem;
   margin-bottom: 3.75rem;
 }
 
 /* Tabla compacta */
 .user-table {
-  width: 100%;
+  max-width: 90%;
   border-collapse: separate;
   border-spacing: 0 0;
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   background: rgba(0, 0, 0, 0.6);
   overflow: hidden;
   border: 0.0625rem solid #00c6b2;
@@ -25,7 +26,7 @@
 
 .user-table thead th:first-child,
 .user-table tbody td:first-child {
-  padding-left: 1.25rem;
+  padding-left: 1.2rem;
 }
 
 /* Encabezados con fondo y esquinas redondeadas */
@@ -58,6 +59,7 @@
   overflow: hidden;
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
+  font-size: 0.71rem;
 }
 
 /* Mantener los anchos relativos */
@@ -123,3 +125,6 @@
 /* Editar y Bloquear */
 .btn-edit { color: #ffcc00; }
 .btn-block { color: #ff0000; }
+
+.btn-save { color: #ffcc00; }
+.btn-cancel { color: #ff0000; }

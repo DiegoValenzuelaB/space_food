@@ -37,6 +37,7 @@ def register(request):
         tipo_user_obj   = TipoUser.objects.get(id_tipo_user=1)
         sucursal_obj    = Sucursal.objects.get(id_sucursal=1)
 
+
         if Usuario.objects.filter(rut=rut).exists():
             messages.error(request, "El usuario ya se encuentra registrado.")
             return render(request, 'core/pages/register.html')
@@ -78,7 +79,8 @@ def register(request):
                     fecha_nac_user  = fecha_nac_user,
                     telefono_user   = telefono_user,
                     tipo_user       = tipo_user_obj,
-                    sucursal        = sucursal_obj
+                    sucursal        = sucursal_obj,
+                    activo          = True,
                     # ¡ojo! no pasamos firebase_uid aquí
                 )
 

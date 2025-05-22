@@ -38,6 +38,7 @@ class Usuario(models.Model):
     telefono_user = models.CharField(max_length=20)
     tipo_user = models.ForeignKey(TipoUser, on_delete=models.DO_NOTHING, db_column='tipo_user_id')
     sucursal = models.ForeignKey('Sucursal', on_delete=models.DO_NOTHING, db_column='sucursal_id')  # 👈 agrega este campo
+    activo = models.BooleanField(default=True)
 
     class Meta:
         db_table = 'usuario'       # 🔁 Apunta a la tabla creada en XAMPP
