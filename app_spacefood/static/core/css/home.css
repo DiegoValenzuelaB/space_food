@@ -365,8 +365,8 @@
   background-color: rgba(0, 0, 0, 0.75);
   color: #00ffe7;
   border: 0.0625rem solid #00c6b2;
-  border-radius: .9375rem;
-  box-shadow: 0 0 .9375rem rgba(0,255,231,.3);
+  border-radius: 0.9375rem;
+  box-shadow: 0 0 0.9375rem rgba(0,255,231,.3);
   transition: transform .3s ease, box-shadow .3s ease;
   cursor: pointer;
 }

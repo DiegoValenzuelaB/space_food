@@ -42,32 +42,34 @@
               <a class="nav-link" href="{% url 'home' %}">Home</a>
             </li>
 
-            {% if not request.session.p_nombre %}
-              <!-- Register + Login (antes de Quienes somos) -->
-              <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Regístrate</a></li>
-              <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
-              <li class="nav-item"><a class="nav-link" href="{% url 'panelusuarios' %}">Panel usuarios</a></li>
-            {% endif %}
+            <!-- Panel usuarios (siempre visible, una sola vez) -->
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'panelusuarios' %}">Panel usuarios</a>
+            </li>
 
-            {% if request.session.p_nombre %}
-              <!-- Saludo + icono (empujados al extremo derecho) -->
+            {% if not request.session.p_nombre %}
+              <!-- Register + Login -->
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'register' %}">Regístrate</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}">Login</a>
+              </li>
+            {% else %}
+              <!-- Saludo + icono -->
               <li class="nav-item ms-lg-auto">
                 <a class="nav-link d-flex align-items-center p-0" href="{% url 'miperfil' %}">
-                  <span class="navbar-text me-1">
-                    Hola, {{ request.session.p_nombre }}
-                  </span>
+                  <span class="navbar-text me-1">Hola, {{ request.session.p_nombre }}</span>
                   <i class="fas fa-user user-icon"></i>
                 </a>
               </li>
-
             {% endif %}
 
-            <!-- Quienes somos: solo lleva ms-lg-auto cuando NO hay sesión -->
+            <!-- Quienes somos -->
             <li class="nav-item {% if not request.session.p_nombre %}ms-lg-auto{% endif %}">
-              <a class="nav-link active" href="{% url 'quienes_somos' %}">
-                Quienes somos
-              </a>
+              <a class="nav-link active" href="{% url 'quienes_somos' %}">Quienes somos</a>
             </li>
+
           </ul>
 
         </div>
