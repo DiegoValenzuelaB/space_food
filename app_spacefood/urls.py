@@ -13,4 +13,5 @@ urlpatterns = [
     path('api/miperfil/', api_miperfil, name='api_miperfil'),
     path('api/logout/', logout_view, name='api_logout'),
     path('panelusuarios/', panelusuarios, name='panelusuarios'),
+    path('api/listar_usuarios/', listar_usuarios, name='listar_usuarios'),
 ]

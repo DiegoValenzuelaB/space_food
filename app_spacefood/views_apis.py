@@ -50,13 +50,13 @@ def api_miperfil(request):
 
     usuario_data = {
         'p_nombre': usuario_db.p_nombre,
-        's_nombre': usuario_db.s_nombre,
+        's_nombre': usuario_db.s_nombre if usuario_db.s_nombre else '(No definido)',
         'p_apellido': usuario_db.p_apellido,
         's_apellido': usuario_db.s_apellido,
         'rut': usuario_db.rut,
         'telefono_user': usuario_db.telefono_user,
         'direccion_user': usuario_db.direccion_user,
-        'fecha_nac_user': usuario_db.fecha_nac_user.strftime('%Y-%m-%d') if usuario_db.fecha_nac_user else '',
+        'fecha_nac_user': usuario_db.fecha_nac_user.strftime('%d-%m-%Y') if usuario_db.fecha_nac_user else '',
         'correo_user': usuario_db.correo_user,
     }
 
@@ -82,3 +82,41 @@ def logout_view(request):
 
     logout(request)
     return Response({'detail': 'Sesión cerrada y tokens revocados'}, status=status.HTTP_200_OK)
+
+
+#key: rut
+#value: el rut del administrador
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def listar_usuarios(request):
+
+    rut = request.GET.get('rut')
+
+    if not rut:
+        return JsonResponse({'error': 'Rut no proporcionado'}, status=400)
+
+    try:
+        usuario = Usuario.objects.get(rut=rut)
+    except Usuario.DoesNotExist:
+        return JsonResponse({'error': 'Usuario no encontrado'}, status=404)
+
+    if usuario.tipo_user.id_tipo_user != 1:
+        return JsonResponse({'error': 'No tienes permiso para ver los usuarios'}, status=403)
+    
+    if usuario.tipo_user.id_tipo_user == 1:
+        print("Usuario Administrador")
+        usuarios = Usuario.objects.all()
+        datos = []
+        for u in usuarios:
+            datos.append({
+                'p_nombre': u.p_nombre,
+                's_nombre': u.s_nombre if u.s_nombre else '(No definido)',
+                'p_apellido': u.p_apellido,
+                's_apellido': u.s_apellido,
+                'rut': u.rut,
+                'telefono': u.telefono_user,
+                'direccion': u.direccion_user,
+                'fecha_nacimiento': u.fecha_nac_user.strftime('%d-%m-%Y') if u.fecha_nac_user else '',
+                'correo': u.correo_user
+            })
+        return Response({'usuarios': datos})
