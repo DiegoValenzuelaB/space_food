@@ -1,0 +1,125 @@
+/* ===========================
+   Estilos para Panel de Usuarios
+   =========================== */
+
+/* Contenedor centrado y con máximo ancho */
+.user-table-container {
+  margin: 1.5rem auto;
+  max-width: 90.2rem;
+  margin-top: 2.5rem;
+  margin-bottom: 3.75rem;
+}
+
+/* Tabla compacta */
+.user-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 0;
+  font-size: 0.7rem;
+  background: rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  border: 0.0625rem solid #00c6b2;
+  border-radius: 0.9375rem;
+  box-shadow: 0 0 0.9375rem rgba(0,255,231,0.3);
+}
+
+.user-table thead th:first-child,
+.user-table tbody td:first-child {
+  padding-left: 1.25rem;
+}
+
+/* Encabezados con fondo y esquinas redondeadas */
+.user-table thead th {
+  text-transform: uppercase;
+  color: #00ffe7;
+  letter-spacing: 0.05rem;
+  padding: 0.4rem;
+  padding-top: 0.875rem;
+  padding-bottom: 0.875rem;
+}
+
+/* Filas con efecto de glow interno */
+.user-table tbody tr {
+  box-shadow: inset 0 0 0 0.0625rem #00c6b2;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.user-table tbody tr:hover {
+  background: rgba(0, 198, 178, 0.1);
+  box-shadow: inset 0 0 1rem rgba(0, 255, 231, 0.4);
+}
+
+/* Celdas */
+.user-table tbody td {
+  padding: 0.4rem 0.6rem;
+  color: #ffffff;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+/* Mantener los anchos relativos */
+/* 1ª columna (1º Nombre) */
+.user-table th:nth-child(1),
+.user-table td:nth-child(1) { width: 8%; }
+
+/* 2ª columna (2º Nombre) */
+.user-table th:nth-child(2),
+.user-table td:nth-child(2) { width: 8%; }
+
+/* 3ª columna (1º Apellido) */
+.user-table th:nth-child(3),
+.user-table td:nth-child(3) { width: 8%; }
+
+/* 4ª columna (2º Apellido) */
+.user-table th:nth-child(4),
+.user-table td:nth-child(4) { width: 8%; }
+
+/* 5ª columna (RUT) */
+.user-table th:nth-child(5),
+.user-table td:nth-child(5) { width: 8%; }
+
+/* 6ª columna (Teléfono) */
+.user-table th:nth-child(6),
+.user-table td:nth-child(6) { width: 8%; }
+
+/* 7ª columna (Dirección) */
+.user-table th:nth-child(7),
+.user-table td:nth-child(7) { width: 12%; }
+
+/* 8ª columna (Correo) */
+.user-table th:nth-child(8),
+.user-table td:nth-child(8) { width: 12%; }
+
+/* 9ª columna (Tipo) */
+.user-table th:nth-child(9),
+.user-table td:nth-child(9) { width: 8%; }
+
+/* 10ª columna (Sucursal) */
+.user-table th:nth-child(10),
+.user-table td:nth-child(10) { width: 8%; }
+
+/* 11ª columna (Fecha Nacimiento) */
+.user-table th:nth-child(11),
+.user-table td:nth-child(11) { width: 8%; }
+
+/* Botones icono (acciones) */
+.btn-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  margin-right: 0.3rem;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.btn-icon:hover {
+  transform: scale(1.2);
+  color: #00ffe7;
+}
+
+/* Editar y Bloquear */
+.btn-edit { color: #ffcc00; }
+.btn-block { color: #ff0000; }

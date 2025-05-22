@@ -33,22 +33,29 @@
         <a class="navbar-brand" href="{% url 'home' %}">
           <img src="{% static 'core/imgs/logo.png' %}" class="img-logo" alt="Logo">
         </a>
-        <button class="navbar-toggler" …></button>
 
+        <!-- BOTÓN TOGGLER -->
+        <button class="navbar-toggler" 
+                type="button"
+                data-bs-toggle="collapse" 
+                data-bs-target="#navbarNav" 
+                aria-controls="navbarNav" 
+                aria-expanded="false" 
+                aria-label="Alternar navegación">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Menú colapsable -->
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav align-items-center w-100">
-            <!-- Home -->
             <li class="nav-item">
               <a class="nav-link" href="{% url 'home' %}">Home</a>
             </li>
-
-            <!-- Panel usuarios (siempre visible, una sola vez) -->
             <li class="nav-item">
               <a class="nav-link" href="{% url 'panelusuarios' %}">Panel usuarios</a>
             </li>
 
             {% if not request.session.p_nombre %}
-              <!-- Register + Login -->
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'register' %}">Regístrate</a>
               </li>
@@ -56,7 +63,6 @@
                 <a class="nav-link" href="{% url 'login' %}">Login</a>
               </li>
             {% else %}
-              <!-- Saludo + icono -->
               <li class="nav-item ms-lg-auto">
                 <a class="nav-link d-flex align-items-center p-0" href="{% url 'miperfil' %}">
                   <span class="navbar-text me-1">Hola, {{ request.session.p_nombre }}</span>
@@ -65,17 +71,13 @@
               </li>
             {% endif %}
 
-            <!-- Quienes somos -->
             <li class="nav-item {% if not request.session.p_nombre %}ms-lg-auto{% endif %}">
               <a class="nav-link active" href="{% url 'quienes_somos' %}">Quienes somos</a>
             </li>
-
           </ul>
-
         </div>
       </div>
     </nav>
-
 
     <main class="flex-fill">
       {% block contenido %}{% endblock %}

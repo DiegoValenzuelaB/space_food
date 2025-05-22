@@ -92,7 +92,7 @@ main {
 }
 
 /* Responsive: asegurar que el collapse cubra todo */
-@media (max-width: 991px) {
+@media (max-width: 61.9375rem) {
   .navbar-collapse {
     position: static !important;
     width: 100%;
@@ -109,7 +109,7 @@ main {
 
 .navbar .user-icon {
   font-size: 1.2rem;
-  margin: 10px;
+  margin: 0.625rem;
   line-height: 1;        /* para que no afecte la altura de la navbar */
 }
 

@@ -48,6 +48,14 @@ document.addEventListener("DOMContentLoaded", () => {
             <td>${u.fecha_nacimiento}</td>
             <td>${u.correo}</td>
             <td>${u.tipo_user}</td>
+            <td>
+              <button class="btn-icon btn-edit">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="btn-icon btn-block">
+                <i class="fas fa-ban"></i>
+              </button>
+            </td>
           `;
           tbody.appendChild(fila);
         });
