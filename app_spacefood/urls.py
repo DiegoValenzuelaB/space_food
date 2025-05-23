@@ -30,4 +30,5 @@ urlpatterns = [
     path('pago/exitosa/', pago_exitosa, name='mp_success'),
     path('pago/fallida/', pago_fallida, name='mp_failure'),
     path('pago/pendiente/', pago_pendiente, name='mp_pending'),
+    path('api/productos/', listar_productos, name='listar_productos'),
 ]

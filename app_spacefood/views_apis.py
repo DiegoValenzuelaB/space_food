@@ -279,9 +279,9 @@ def crear_preference(request):
                 "unit_price": float(total),
             }],
             "back_urls": {
-                "success": "https://28c5-186-189-95-219.ngrok-free.app/pago/exitosa/",
-                "failure": "https://28c5-186-189-95-219.ngrok-free.app/pago/fallida/",
-                "pending": "https://28c5-186-189-95-219.ngrok-free.app/pago/pendiente/",
+                "success": "https://8931-186-189-95-219.ngrok-free.app/pago/exitosa/",
+                "failure": "https://8931-186-189-95-219.ngrok-free.app/pago/fallida/",
+                "pending": "https://8931-186-189-95-219.ngrok-free.app/pago/pendiente/",
             },
             # "auto_return": "approved",  # LO COMENTAMOS POR AHORA
         }
@@ -327,3 +327,11 @@ def payment_status(request):
 def clear_cart(request):
     request.session['cart'] = {}
     return Response({'ok': True})
+
+@api_view(['GET'])
+@verificar_firebase_token
+@permission_classes([IsAuthenticated])
+def listar_productos(request):
+    productos = Producto.objects.all()
+    serializer = Producto(productos, many=True)
+    return JsonResponse({'productos': serializer.data}, safe=False)
