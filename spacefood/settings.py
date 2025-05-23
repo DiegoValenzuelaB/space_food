@@ -130,3 +130,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MERCADOPAGO_ACCESS_TOKEN = 'TEST-7850470991568439-052303-9c35edae31086c9e2250e724111e790d-2174830936'
+
+# Visa	4509953566233704	12/2025	  123	 APRO	 12345678

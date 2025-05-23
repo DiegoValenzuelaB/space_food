@@ -11,16 +11,23 @@ function formatPrice(value) {
 
 async function apiPost(url, data) {
   const csrftoken = document.cookie.split('; ')
-    .find(row=>row.startsWith('csrftoken='))
+    .find(row => row.startsWith('csrftoken='))
     ?.split('=')[1];
+
   const res = await fetch(url, {
     method: 'POST',
+    credentials: 'same-origin',
     headers: {
-      'Content-Type':'application/json',
+      'Content-Type': 'application/json',
       'X-CSRFToken': csrftoken
     },
     body: JSON.stringify(data)
   });
+
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.error || 'Error desconocido');
+  }
   return res.json();
 }
 
@@ -30,7 +37,6 @@ function renderCart(items) {
   const badge    = document.querySelector('#openCartBtn .badge');
 
   container.innerHTML = '';
-
   if (!items.length) {
     container.innerHTML = '<p class="text-center mt-4">Tu carrito está vacío.</p>';
     totalEl.textContent = '$0.00';
@@ -40,12 +46,10 @@ function renderCart(items) {
 
   let total = 0;
   let count = 0;
-
   items.forEach(item => {
     const lineTotal = item.price * item.quantity;
     total += lineTotal;
     count += item.quantity;
-
     const div = document.createElement('div');
     div.className = 'cart-item d-flex justify-content-between align-items-center mb-2';
     div.innerHTML = `
@@ -62,13 +66,12 @@ function renderCart(items) {
     `;
     container.appendChild(div);
   });
-
   totalEl.textContent = formatPrice(total);
   badge.textContent   = count;
 }
 
 async function loadCart() {
-  const { cart } = await fetch('/api/cart/').then(r=>r.json());
+  const { cart } = await fetch('/api/cart/').then(r => r.json());
   renderCart(Object.values(cart));
 }
 
@@ -86,11 +89,9 @@ async function removeItem(id) {
 }
 
 function openCart() {
-  const openCartBtn = document.getElementById('openCartBtn');
-  openCartBtn.click();
+  document.getElementById('openCartBtn').click();
 }
 
-// Lógica del modal de despacho
 function initShipMethodModal() {
   const optDomicilio = document.getElementById('optDomicilio');
   const optTienda    = document.getElementById('optTienda');
@@ -104,26 +105,21 @@ function initShipMethodModal() {
 
   function togglePanels() {
     if (optDomicilio.checked) {
-      panelDom.classList.remove('d-none');
-      panelTienda.classList.add('d-none');
+      panelDom.classList.remove('d-none'); panelTienda.classList.add('d-none');
     } else {
-      panelTienda.classList.remove('d-none');
-      panelDom.classList.add('d-none');
+      panelTienda.classList.remove('d-none'); panelDom.classList.add('d-none');
     }
   }
-
   optDomicilio.addEventListener('change', togglePanels);
   optTienda.addEventListener('change', togglePanels);
-
   modalEl.addEventListener('show.bs.modal', async () => {
     togglePanels();
     try {
-      const res = await fetch('/api/sucursales/');
-      const { sucursales } = await res.json();
+      const { sucursales } = await fetch('/api/sucursales/').then(r => r.json());
       tiendaSelect.innerHTML = '<option value="">-- Elige una tienda --</option>';
       sucursales.forEach(s => {
         const opt = document.createElement('option');
-        opt.value       = s.nombre;
+        opt.value = s.nombre;
         opt.textContent = `${s.nombre} (${s.comuna})`;
         tiendaSelect.appendChild(opt);
       });
@@ -132,7 +128,6 @@ function initShipMethodModal() {
       console.error(e);
     }
   });
-
   confirmBtn.addEventListener('click', () => {
     let textoFinal = '';
     if (optDomicilio.checked) {
@@ -147,7 +142,8 @@ function initShipMethodModal() {
   });
 }
 
-// Inicialización general
+// Nuevo flujo de popup con alerta y reset de carrito
+
 document.addEventListener('DOMContentLoaded', () => {
   loadCart();
   document.querySelectorAll('.buy-btn').forEach(btn => {
@@ -159,4 +155,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
   initShipMethodModal();
+
+  const finalizarBtn = document.getElementById('finalizarCompraBtn');
+  finalizarBtn.addEventListener('click', async () => {
+    const totalText = document.getElementById('cartTotalPrice').textContent;
+    const total = Number(totalText.replace(/\D/g, ''));  
+    if (total <= 0) {
+      return Swal.fire('Tu carrito está vacío', 'Agrega productos antes de pagar.', 'warning');
+    }
+    try {
+      const { id, sandbox_init_point, init_point } = await apiPost('/api/mercadopago/preference/', { total });
+      const checkoutUrl = sandbox_init_point || init_point;
+      const popup = window.open(checkoutUrl, 'MP', 'width=500,height=700');
+
+      if (!popup) {
+        return Swal.fire('Error', 'No se pudo abrir la ventana de pago. Desactiva tu bloqueador.', 'error');
+      }
+
+      // Iniciar polling tras breve retardo para evitar alerta inmediata
+
+    } catch (e) {
+      console.error(e);
+      Swal.fire('Error', e.message, 'error');
+    }
+  });
 });

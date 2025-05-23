@@ -15,7 +15,13 @@ from firebase_admin import auth as firebase_auth
 from firebase_admin.auth import RevokedIdTokenError
 import json
 from django.conf import settings
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.shortcuts import render
+import mercadopago
+import traceback
 
+mp = mercadopago.SDK(settings.MERCADOPAGO_ACCESS_TOKEN)
 
 def verificar_firebase_token(view_func):
     def wrapper(request, *args, **kwargs):
@@ -256,3 +262,74 @@ def listar_sucursales(request):
         for suc in sucursales
     ]
     return Response({'sucursales': datos})
+
+@csrf_exempt
+@require_POST
+def crear_preference(request):
+    try:
+        data = json.loads(request.body)
+        total = data.get("total", 0)
+
+        mp = mercadopago.SDK(settings.MERCADOPAGO_ACCESS_TOKEN)
+        preference_data = {
+            "items": [{
+                "title": "Compra en SpaceFood",
+                "quantity": 1,
+                "unit_price": float(total),
+            }],
+            "back_urls": {
+                "success": "http://127.0.0.1:8000/pago/exitosa/",
+                "failure": "http://127.0.0.1:8000/pago/fallida/",
+                "pending": "http://127.0.0.1:8000/pago/pendiente/",
+            },
+            # "auto_return": "approved",  # LO COMENTAMOS POR AHORA
+        }
+
+        preference_response = mp.preference().create(preference_data)
+        resp = preference_response["response"]
+        print("MP response completa:", json.dumps(resp, indent=2))  # verás todo en la consola
+
+        return JsonResponse(resp)
+
+    except Exception as e:
+        traceback.print_exc()
+        return JsonResponse({"error": str(e)}, status=500)
+    
+def pago_exitosa(request):
+    # Parámetros que MercadoPago envía por GET
+    collection_id   = request.GET.get('collection_id')
+    collection_status = request.GET.get('collection_status')
+    preference_id   = request.GET.get('preference_id')
+    payment_type     = request.GET.get('payment_type')
+    external_reference = request.GET.get('external_reference')  # si lo usas
+
+    # Consulta al SDK para obtener detalles completos
+    payment_info = mp.payment().get(collection_id)
+    payment_data = payment_info["response"]
+
+    contexto = {
+        'status': collection_status,
+        'amount': payment_data.get('transaction_amount'),
+        'date':   payment_data.get('date_created'),
+        'title':  payment_data['order'].get('items')[0].get('title'),
+        'quantity': payment_data['order']['items'][0].get('quantity'),
+        'payment_type': payment_type,
+        'collection_id': collection_id,
+    }
+    return render(request, 'pago/exitosa.html', contexto)
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def payment_status(request):
+    payment_id = request.GET.get('payment_id')
+    if not payment_id:
+        return Response({'error': 'payment_id no proporcionado'}, status=400)
+    info = mp.payment().get(payment_id)
+    status = info['response'].get('status')
+    return Response({'status': status})
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def clear_cart(request):
+    request.session['cart'] = {}
+    return Response({'ok': True})

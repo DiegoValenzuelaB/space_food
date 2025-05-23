@@ -22,4 +22,8 @@ urlpatterns = [
     path('api/cart/update/', cart_update, name='cart_update'),
     path('api/cart/remove/', cart_remove, name='cart_remove'),
     path('api/sucursales/', listar_sucursales, name='api_sucursales'),
+    path('api/mercadopago/preference/', crear_preference, name='mp_preference'),
+    path('api/payment-status/', payment_status, name='payment_status'),
+    path('api/cart/clear/', clear_cart, name='cart_clear'),
+
 ]
