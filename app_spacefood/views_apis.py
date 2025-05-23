@@ -8,10 +8,13 @@ from django.contrib.auth import logout
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.exceptions import AuthenticationFailed
-from django.views.decorators.http import require_GET
+from django.views.decorators.http import require_GET, require_POST
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from firebase_admin import auth as firebase_auth
 from firebase_admin.auth import RevokedIdTokenError
+import json
+from django.conf import settings
 
 
 def verificar_firebase_token(view_func):
@@ -182,3 +185,74 @@ def listar_estados_user(request):
             'estado_desc': 'Activo' if u.activo else 'Inactivo'
         })
     return Response({'usuarios': datos})
+
+def _get_cart(session):
+    return session.setdefault('cart', {})
+
+def cart_detail(request):
+    return JsonResponse({'cart': _get_cart(request.session)})
+
+@csrf_exempt
+@require_POST
+def cart_add(request):
+    data    = json.loads(request.body)
+    pid     = data.get('id')
+    img_url = data.get('img')
+
+    prod = Producto.objects.get(pk=pid)
+    cart = _get_cart(request.session)
+    key  = str(pid)
+    entry = cart.get(key, {'quantity': 0})
+    entry['quantity'] += 1
+
+    entry.update({
+      'id':    pid,
+      'name':  prod.nom_producto,
+      'price': float(prod.precio_prod),
+      'img':   img_url,
+    })
+
+    cart[key] = entry
+    request.session.modified = True
+    return JsonResponse({'cart': cart})
+
+@csrf_exempt
+@require_POST
+def cart_update(request):
+    data = json.loads(request.body)
+    pid  = data.get('id')
+    qty  = data.get('quantity', 1)
+    cart = _get_cart(request.session)
+    key  = str(pid)
+    if key in cart:
+        if qty > 0:
+            cart[key]['quantity'] = qty
+        else:
+            cart.pop(key)
+    request.session.modified = True
+    return JsonResponse({'cart': cart})
+
+@csrf_exempt
+@require_POST
+def cart_remove(request):
+    data = json.loads(request.body)
+    key  = str(data.get('id'))
+    cart = _get_cart(request.session)
+    cart.pop(key, None)
+    request.session.modified = True
+    return JsonResponse({'cart': cart})
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def listar_sucursales(request):
+
+    sucursales = Sucursal.objects.all()
+    datos = [
+        {
+            'id':   suc.id_sucursal,
+            'nombre': suc.nom_sucursal,
+            'comuna': suc.comuna_id
+        }
+        for suc in sucursales
+    ]
+    return Response({'sucursales': datos})

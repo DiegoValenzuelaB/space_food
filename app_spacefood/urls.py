@@ -17,4 +17,9 @@ urlpatterns = [
     path('api/listar_tipo_user/', listar_tipo_user, name='listar_tipo_user'),
     path('api/actualizar_tipo_user/', actualizar_tipo_user, name='actualizar_tipo_user'),
     path('api/listar_estados_user/', listar_estados_user, name='listar_estados_user'),
+    path('api/cart/',        cart_detail, name='cart_detail'),
+    path('api/cart/add/',    cart_add,    name='cart_add'),
+    path('api/cart/update/', cart_update, name='cart_update'),
+    path('api/cart/remove/', cart_remove, name='cart_remove'),
+    path('api/sucursales/', listar_sucursales, name='api_sucursales'),
 ]

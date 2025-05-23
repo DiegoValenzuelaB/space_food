@@ -25,7 +25,43 @@
 
   </head>
 
-  <body>
+<body>
+    <!-- Overlay -->
+    <div id="cartOverlay"></div>
+
+    <!-- Cart Drawer -->
+    <aside id="cartDrawer" aria-hidden="true">
+      <header>
+        <h5>Tu Carrito</h5>
+        <button class="close-btn" id="closeCartBtn" aria-label="Cerrar carrito">
+          &times;
+        </button>
+      </header>
+      <div class="cart-items flex-fill" id="cartItemsContainer">
+        <p class="text-center mt-4">Tu carrito está vacío.</p>
+      </div>
+      <div class="mb-3 text-center">
+        <button
+          type="button"
+          id="shipMethodBtn"
+          class="btn btn-outline-secondary"
+          data-bs-toggle="modal"
+          data-bs-target="#shipMethodModal">
+          Seleccionar método de despacho
+        </button>
+      </div>
+      <!-- Nuevo: resumen de totales -->
+      <div class="p-3 border-top" id="cartSummary">
+        <div class="d-flex justify-content-between">
+          <strong>Total:</strong>
+          <span id="cartTotalPrice">$0.00</span>
+        </div>
+      </div>
+      <footer class="mt-auto">
+        <button class="btn btn-primary w-100">Finalizar Compra</button>
+      </footer>
+    </aside>
+
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-black bg-opacity-50 py-2 shadow-sm">
       <div class="container-fluid">
@@ -34,7 +70,7 @@
           <img src="{% static 'core/imgs/logo.png' %}" class="img-logo" alt="Logo">
         </a>
 
-        <!-- BOTÓN TOGGLER -->
+        <!-- Toggler -->
         <button class="navbar-toggler" 
                 type="button"
                 data-bs-toggle="collapse" 
@@ -45,7 +81,7 @@
           <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- Menú colapsable -->
+        <!-- Menu -->
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav align-items-center w-100">
             <li class="nav-item">
@@ -70,6 +106,14 @@
                 </a>
               </li>
             {% endif %}
+
+            <!-- Cart Button -->
+            <li class="nav-item ms-lg-3">
+              <button id="openCartBtn" class="btn btn-outline-light position-relative">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">0</span>
+              </button>
+            </li>
 
             <li class="nav-item {% if not request.session.p_nombre %}ms-lg-auto{% endif %}">
               <a class="nav-link active" href="{% url 'quienes_somos' %}">Quienes somos</a>
@@ -112,27 +156,96 @@
         </div>
       </section>
     </footer>
-      <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js" type="module"></script>
-      <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js" type="module"></script>
 
-      <script type="text/template" id="django-messages-template">
-        [
-          {% for message in messages %}
-            {
-              "tags": "{{ message.tags }}",
-              "text": "{{ message|escapejs }}"
-            }{% if not forloop.last %},{% endif %}
-          {% endfor %}
-        ]
-      </script>
+    <!-- Scripts -->
+    <script>
+      // Toggle cart drawer
+      const openCartBtn = document.getElementById('openCartBtn');
+      const closeCartBtn = document.getElementById('closeCartBtn');
+      const cartDrawer = document.getElementById('cartDrawer');
+      const cartOverlay = document.getElementById('cartOverlay');
 
-      <script>
-        window.djangoMessages = JSON.parse(document.getElementById('django-messages-template').textContent);
-      </script>
+      function openCart() {
+        cartDrawer.classList.add('open');
+        cartOverlay.classList.add('show');
+      }
+      function closeCart() {
+        cartDrawer.classList.remove('open');
+        cartOverlay.classList.remove('show');
+      }
 
-      {% block js %}
+      openCartBtn.addEventListener('click', openCart);
+      closeCartBtn.addEventListener('click', closeCart);
+      cartOverlay.addEventListener('click', closeCart);
+    </script>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js" type="module"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js" type="module"></script>
+    
+    <!-- Alertas sweetalert2 -->
+    <script type="text/template" id="django-messages-template">
+      [
+        {% for message in messages %}
+          {
+            "tags": "{{ message.tags }}",
+            "text": "{{ message|escapejs }}"
+          }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+      ]
+    </script>
+
+    <script>
+      window.djangoMessages = JSON.parse(document.getElementById('django-messages-template').textContent);
+    </script>
+
+    {% block js %}
       <script src="{% static 'core/js/sweetalerts.js' %}"></script>
-      {% endblock %}
+      <script src="{% static 'core/js/carrito.js' %}"></script>
+    {% endblock %}
+
+    <!-- Modal de carrito de compras -->
+    <div class="modal fade" id="shipMethodModal" tabindex="-1" aria-labelledby="shipMethodModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered square-modal-dialog">
+        <div class="modal-content square-modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="shipMethodModalLabel">Método de despacho</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+
+            <!-- Opciones principales -->
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="shippingMethod" id="optDomicilio" value="domicilio">
+              <label class="form-check-label" for="optDomicilio">Despacho a domicilio</label>
+            </div>
+            <div class="form-check mb-3">
+              <input class="form-check-input" type="radio" name="shippingMethod" id="optTienda" value="tienda" checked>
+              <label class="form-check-label" for="optTienda">Retiro en tienda</label>
+            </div>
+
+              <!-- Panel Despacho a domicilio -->
+            <div id="panelDomicilio" class="d-none mb-3">
+              <label for="direccionInput" class="form-label">Ingrese su dirección de despacho:</label>
+              <!-- value se llenará por JS -->
+              <input type="text" class="form-control" id="direccionInput" placeholder="Calle, número, ciudad...">
+            </div>
+
+            <!-- Panel Retiro en tienda -->
+            <div id="panelTienda" class="d-none mb-3">
+              <label class="form-label">Seleccione su tienda más cercana:</label>
+              <select class="form-select" id="tiendaSelect">
+                <option value="">-- Cargando tiendas... --</option>
+              </select>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" id="confirmShipMethod" class="btn btn-primary">Confirmar</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
   </body>
 

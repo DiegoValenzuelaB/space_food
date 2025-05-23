@@ -12,12 +12,20 @@ import json
 
 from firebase_admin import auth as firebase_auth
 
-
 def home(request):
-    aux = {
-        'segment': 'home'
-    }
-    return render(request, 'core/pages/home.html', aux)
+    # Todos los productos para la cuadrícula
+    productos = Producto.objects.all()
+
+    # Producto destacado (id 1 de ejemplo)
+    try:
+        featured = Producto.objects.get(pk=1)
+    except Producto.DoesNotExist:
+        featured = None
+
+    return render(request, 'core/pages/home.html', {
+        'productos': productos,
+        'featured': featured,
+    })
 
 def register(request):
     if request.method == 'POST':
@@ -157,4 +165,5 @@ def panelusuarios(request):
         'segment': 'panelusuarios'
     }
     return render(request, 'core/pages/panelusuarios.html', aux)
+
 

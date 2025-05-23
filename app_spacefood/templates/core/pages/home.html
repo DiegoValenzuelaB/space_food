@@ -67,19 +67,25 @@
         </div>
     </div>
 
-    <div class="promo-card-container">
-        <div class="promo-card">
+    <!-- TARJETA DESTACADA “CÓMPRALO AHORA” -->
+    {% if featured %}
+        <div class="promo-card-container">
+            <div class="promo-card">
             <div class="promo-card-image">
-                <img src="{% static 'core/imgs/comidas/vaso.jpg' %}" alt="Vaso Especial">
+                <img src="{% static 'core/imgs/comidas/vaso.jpg' %}" alt="{{ featured.nom_producto }}">
             </div>
             <div class="promo-card-content">
-                <h3>¡Vaso Cósmico Edición Especial!</h3>
-                <p>Único, exclusivo y disponible solo en nuestra web. ¡Siente el universo en tus manos!</p>
-                <h3>$3.990</h3>
-                <button class="buy-btn">¡Cómpralo Ahora!</button>
+                <h3>{{ featured.nom_producto }}</h3>
+                <p>{{ featured.desc_prod }}</p>
+                <h3>Precio: ${{ featured.precio_prod }}</h3>
+                <button class="buy-btn" data-id="{{ featured.id_producto }}" data-img="{% static 'core/imgs/comidas/vaso.jpg' %}">
+                ¡Cómpralo Ahora!
+                </button>
+            </div>
             </div>
         </div>
-    </div>
+        {% endif %}
+
 
     <div class="cards-home">
         <div class="promo-card vertical">

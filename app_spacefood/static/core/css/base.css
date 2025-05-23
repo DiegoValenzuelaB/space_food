@@ -146,3 +146,85 @@ footer a {
 footer a.btn {
   font-size: 0.875rem;
 }
+
+/* Carrito de compras */
+#cartDrawer {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 40%; /* less than half */
+  max-width: 21.875rem;
+  height: 100%;
+  background-color: rgba(255,255,255,0.98);
+  box-shadow: -0.25rem 0 0.75rem rgba(0,0,0,0.3);
+  transition: right 0.3s ease;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+#cartDrawer.open {
+  right: 0;
+}
+
+#cartDrawer header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 0.0625rem solid #ddd;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+#cartDrawer .close-btn {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+/* Overlay when open */
+#cartOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+  z-index: 1500;
+}
+
+#cartOverlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+#openCartBtn {
+  margin-right: 1.5625rem;
+}
+
+.square-modal-dialog {
+  max-width: 400px;   /* Ancho fijo del modal */
+}
+.square-modal-content {
+  aspect-ratio: 1 / 1; /* Alto = ancho */
+}
+.modal-body {
+  overflow-y: auto;   /* Scroll si hay mucho contenido */
+}
+
+/* Asegúrate de que el overlay y el drawer del carrito queden detrás del modal */
+#cartOverlay {
+  z-index: 1040;   /* por defecto bootstrap modal-backdrop es 1040 */
+}
+#cartDrawer {
+  z-index: 1045;   /* un poco por encima del overlay del carrito */
+}
+
+/* z-index para que el modal siempre quede por encima */
+.modal-backdrop { z-index: 1050 !important; }
+.modal          { z-index: 1060 !important; }

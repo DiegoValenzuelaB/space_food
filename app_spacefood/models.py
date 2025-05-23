@@ -46,3 +46,62 @@ class Usuario(models.Model):
 
     def __str__(self):
         return f"{self.p_nombre} {self.p_apellido}"
+    
+
+class TipoProducto(models.Model):
+    id_tipo_producto = models.AutoField(primary_key=True)
+    desc_tipo_prod = models.CharField(max_length=100)
+
+    class Meta:
+        db_table = 'tipo_producto'
+        managed = False
+
+    def __str__(self):
+        return self.nombre
+
+
+class Marca(models.Model):
+    id_marca = models.AutoField(primary_key=True)
+    desc_marca = models.CharField(max_length=100)
+
+    class Meta:
+        db_table = 'marca'
+        managed = False
+
+    def __str__(self):
+        return self.nombre
+
+
+class Inventario(models.Model):
+    id_inventario = models.AutoField(primary_key=True)
+    desc_inventario = models.CharField(max_length=100)
+    cant_dispo = models.IntegerField('Cantidad disponible')
+    fecha_ingreso = models.DateField('Fecha de ingreso')
+    sucursal_id = models.ForeignKey(Sucursal, on_delete=models.DO_NOTHING, db_column='sucursal_id')
+
+    class Meta:
+        db_table = 'inventario'
+        managed = False
+
+    def __str__(self):
+        return f"Inv. {self.id_inventario}"
+
+
+class Producto(models.Model):
+    id_producto       = models.AutoField(primary_key=True)
+    nom_producto      = models.CharField('Nombre',    max_length=100)
+    desc_prod         = models.CharField('Descripción', max_length=255)
+    precio_prod       = models.DecimalField('Precio',   max_digits=12, decimal_places=2)
+    stock             = models.IntegerField('Stock')
+    fecha_elaboracion = models.DateField('Elaboración')
+    fecha_vencimiento = models.DateField('Vencimiento', blank=True, null=True)
+    tipo_producto     = models.ForeignKey(TipoProducto, on_delete=models.DO_NOTHING, db_column='tipo_producto_id')
+    marca             = models.ForeignKey(Marca,        on_delete=models.DO_NOTHING, db_column='marca_id')
+    inventario        = models.ForeignKey(Inventario,   on_delete=models.DO_NOTHING, db_column='inventario_id')
+
+    class Meta:
+        db_table = 'producto'
+        managed  = False
+
+    def __str__(self):
+        return self.nom_producto
