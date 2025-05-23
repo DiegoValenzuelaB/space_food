@@ -98,26 +98,36 @@
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'login' %}">Login</a>
               </li>
+
+              {# Cuando NO está logueado, empujamos carrito+“Quienes somos” al extremo derecho #}
+              <li class="nav-item ms-auto">
+                <button id="openCartBtn" class="btn btn-outline-light position-relative">
+                  <i class="fas fa-shopping-cart"></i>
+                  <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">0</span>
+                </button>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="{% url 'quienes_somos' %}">Quienes somos</a>
+              </li>
+
             {% else %}
-              <li class="nav-item ms-lg-auto">
+              {# Cuando SÍ está logueado, empujamos “Hola, nombre”+carrito+“Quienes somos” juntos al extremo derecho #}
+              <li class="nav-item ms-auto">
                 <a class="nav-link d-flex align-items-center p-0" href="{% url 'miperfil' %}">
                   <span class="navbar-text me-1">Hola, {{ request.session.p_nombre }}</span>
                   <i class="fas fa-user user-icon"></i>
                 </a>
               </li>
+              <li class="nav-item" style="margin-left:10px">
+                <button id="openCartBtn" class="btn btn-outline-light position-relative">
+                  <i class="fas fa-shopping-cart"></i>
+                  <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">0</span>
+                </button>
+              </li>
+              <li class="nav-item" style="margin-left:10px">
+                <a class="nav-link active" href="{% url 'quienes_somos' %}">Quienes somos</a>
+              </li>
             {% endif %}
-
-            <!-- Cart Button -->
-            <li class="nav-item ms-lg-3">
-              <button id="openCartBtn" class="btn btn-outline-light position-relative">
-                <i class="fas fa-shopping-cart"></i>
-                <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">0</span>
-              </button>
-            </li>
-
-            <li class="nav-item {% if not request.session.p_nombre %}ms-lg-auto{% endif %}">
-              <a class="nav-link active" href="{% url 'quienes_somos' %}">Quienes somos</a>
-            </li>
           </ul>
         </div>
       </div>
@@ -181,7 +191,7 @@
 
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js" type="module"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js" type="module"></script>
-    
+
     <!-- Alertas sweetalert2 -->
     <script type="text/template" id="django-messages-template">
       [

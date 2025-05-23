@@ -54,10 +54,10 @@ function renderCart(items) {
         <strong>${item.name}</strong><br>
         ${formatPrice(item.price * item.quantity)}
       </div>
-      <div class="btn-group btn-group-sm">
-        <button class="btn btn-secondary" onclick="updateQuantity('${item.id}', -1)">-</button>
-        <button class="btn btn-secondary" onclick="updateQuantity('${item.id}', +1)">+</button>
-        <button class="btn btn-danger"  onclick="removeItem('${item.id}')">×</button>
+      <div class="d-flex" style="gap: 5px;">
+        <button class="btn qty-btn btn-sm rounded" onclick="updateQuantity('${item.id}', -1)">-</button>
+        <button class="btn qty-btn btn-sm rounded" onclick="updateQuantity('${item.id}', +1)">+</button>
+        <button class="btn remove-btn btn-sm rounded" onclick="removeItem('${item.id}')">×</button>
       </div>
     `;
     container.appendChild(div);
