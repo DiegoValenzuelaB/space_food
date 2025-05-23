@@ -8,6 +8,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="is-authenticated" content="{{ request.session.p_nombre|yesno:'true,false' }}">
 
     <title>{% block title %} SpaceFood {% endblock %}</title>
 
@@ -207,6 +208,24 @@
 
     <script>
       window.djangoMessages = JSON.parse(document.getElementById('django-messages-template').textContent);
+    </script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const params = new URLSearchParams(window.location.search);
+        const status = params.get('status');
+        if (status === 'approved') {
+          Swal.fire('¡Compra exitosa!', 'Gracias por tu compra.', 'success');
+        } else if (status === 'failed') {
+          Swal.fire('Algo salió mal', 'Tu pago no se completó.', 'error');
+        } else if (status === 'pending') {
+          Swal.fire('Pago pendiente', 'Tu pago está pendiente de aprobación.', 'info');
+        }
+        // opcional: limpiar el query string para que no vuelva a saltar al refrescar
+        if (status) {
+          history.replaceState({}, '', window.location.pathname);
+        }
+      });
     </script>
 
     {% block js %}

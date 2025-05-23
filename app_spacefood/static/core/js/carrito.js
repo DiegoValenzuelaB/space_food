@@ -1,5 +1,12 @@
 console.log('carrito.js cargado, buscando botones buy-btn…');
 
+// carrito.js
+window.isAuthenticated = document
+  .querySelector('meta[name="is-authenticated"]')
+  .getAttribute('content') === 'true';
+
+console.log('carrito.js cargado, isAuthenticated=', window.isAuthenticated);
+
 function formatPrice(value) {
   return new Intl.NumberFormat('es-CL', {
     style: 'currency',
@@ -142,41 +149,62 @@ function initShipMethodModal() {
   });
 }
 
-// Nuevo flujo de popup con alerta y reset de carrito
-
-document.addEventListener('DOMContentLoaded', () => {
-  loadCart();
-  document.querySelectorAll('.buy-btn').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const prod = { id: btn.dataset.id, img: btn.dataset.img };
-      const resp = await apiPost('/api/cart/add/', prod);
-      renderCart(Object.values(resp.cart));
-      openCart();
-    });
-  });
-  initShipMethodModal();
-
+function initFinalizarCompra() {
   const finalizarBtn = document.getElementById('finalizarCompraBtn');
   finalizarBtn.addEventListener('click', async () => {
+    if (!window.isAuthenticated) {
+      return Swal.fire({
+        icon: 'warning',
+        title: 'Debes iniciar sesión',
+        text: 'Por favor inicia sesión para completar la compra.',
+      });
+    }
+
     const totalText = document.getElementById('cartTotalPrice').textContent;
-    const total = Number(totalText.replace(/\D/g, ''));  
+    const total = Number(totalText.replace(/\D/g, ''));
     if (total <= 0) {
       return Swal.fire('Tu carrito está vacío', 'Agrega productos antes de pagar.', 'warning');
     }
+
     try {
-      const { id, sandbox_init_point, init_point } = await apiPost('/api/mercadopago/preference/', { total });
-      const checkoutUrl = sandbox_init_point || init_point;
-      const popup = window.open(checkoutUrl, 'MP', 'width=500,height=700');
-
-      if (!popup) {
-        return Swal.fire('Error', 'No se pudo abrir la ventana de pago. Desactiva tu bloqueador.', 'error');
-      }
-
-      // Iniciar polling tras breve retardo para evitar alerta inmediata
-
+      const { sandbox_init_point, init_point } =
+        await apiPost('/api/mercadopago/preference/', { total });
+      window.location.href = sandbox_init_point || init_point;
     } catch (e) {
       console.error(e);
       Swal.fire('Error', e.message, 'error');
     }
   });
+}
+// ————————————————————————————————
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadCart();
+
+  // listeners para 'Agregar al carrito'
+  document.querySelectorAll('.buy-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      if (!window.isAuthenticated) {
+        return Swal.fire({
+          icon: 'warning',
+          title: 'Debes iniciar sesión',
+          text: 'Por favor inicia sesión para agregar productos al carrito.',
+        });
+      }
+      // flujo normal
+      const prod = { id: btn.dataset.id, img: btn.dataset.img };
+      try {
+        const resp = await apiPost('/api/cart/add/', prod);
+        renderCart(Object.values(resp.cart));
+        openCart();
+      } catch (e) {
+        console.error(e);
+        Swal.fire('Error', e.message, 'error');
+      }
+    });
+  });
+
+  initShipMethodModal();
+  initFinalizarCompra();
+
 });

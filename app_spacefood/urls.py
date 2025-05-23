@@ -26,4 +26,8 @@ urlpatterns = [
     path('api/payment-status/', payment_status, name='payment_status'),
     path('api/cart/clear/', clear_cart, name='cart_clear'),
 
+    # URLs para back_urls de MercadoPago
+    path('pago/exitosa/', pago_exitosa, name='mp_success'),
+    path('pago/fallida/', pago_fallida, name='mp_failure'),
+    path('pago/pendiente/', pago_pendiente, name='mp_pending'),
 ]

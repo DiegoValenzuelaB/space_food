@@ -17,7 +17,8 @@ import json
 from django.conf import settings
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
-from django.shortcuts import render
+from django.shortcuts import redirect, render
+from django.urls import reverse
 import mercadopago
 import traceback
 
@@ -278,9 +279,9 @@ def crear_preference(request):
                 "unit_price": float(total),
             }],
             "back_urls": {
-                "success": "http://127.0.0.1:8000/pago/exitosa/",
-                "failure": "http://127.0.0.1:8000/pago/fallida/",
-                "pending": "http://127.0.0.1:8000/pago/pendiente/",
+                "success": "https://28c5-186-189-95-219.ngrok-free.app/pago/exitosa/",
+                "failure": "https://28c5-186-189-95-219.ngrok-free.app/pago/fallida/",
+                "pending": "https://28c5-186-189-95-219.ngrok-free.app/pago/pendiente/",
             },
             # "auto_return": "approved",  # LO COMENTAMOS POR AHORA
         }
@@ -294,29 +295,22 @@ def crear_preference(request):
     except Exception as e:
         traceback.print_exc()
         return JsonResponse({"error": str(e)}, status=500)
+
     
 def pago_exitosa(request):
-    # Parámetros que MercadoPago envía por GET
-    collection_id   = request.GET.get('collection_id')
-    collection_status = request.GET.get('collection_status')
-    preference_id   = request.GET.get('preference_id')
-    payment_type     = request.GET.get('payment_type')
-    external_reference = request.GET.get('external_reference')  # si lo usas
+    collection_id = request.GET.get('collection_id')
+    # (opcional) tu chequeo de payment_data aquí…
+    # Si está aprobado, redirige al home con ?status=approved
+    return redirect(reverse('home') + '?status=approved')
 
-    # Consulta al SDK para obtener detalles completos
-    payment_info = mp.payment().get(collection_id)
-    payment_data = payment_info["response"]
+def pago_fallida(request):
+    # Redirige al home con ?status=failed
+    return redirect(reverse('home') + '?status=failed')
 
-    contexto = {
-        'status': collection_status,
-        'amount': payment_data.get('transaction_amount'),
-        'date':   payment_data.get('date_created'),
-        'title':  payment_data['order'].get('items')[0].get('title'),
-        'quantity': payment_data['order']['items'][0].get('quantity'),
-        'payment_type': payment_type,
-        'collection_id': collection_id,
-    }
-    return render(request, 'pago/exitosa.html', contexto)
+def pago_pendiente(request):
+    # Redirige al home con ?status=pending
+    return redirect(reverse('home') + '?status=pending')
+   
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
