@@ -14,7 +14,6 @@ function mostrarPerfil(usuario) {
   document.getElementById("direccion").textContent = usuario.direccion_user;
   document.getElementById("fecha_nacimiento").textContent = usuario.fecha_nac_user;
   document.getElementById("email").textContent = usuario.correo_user;
-  document.getElementById("contrasena").textContent = usuario.contrasena;
 }
 
 async function cargarPerfil(user) {

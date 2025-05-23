@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .models import *
-from .serializers import UsuarioSerializer
+from .serializers import *
 from django.contrib.auth import logout
 
 from rest_framework.decorators import api_view, permission_classes
@@ -329,9 +329,8 @@ def clear_cart(request):
     return Response({'ok': True})
 
 @api_view(['GET'])
-@verificar_firebase_token
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])  # Ya valida el token
 def listar_productos(request):
     productos = Producto.objects.all()
-    serializer = Producto(productos, many=True)
-    return JsonResponse({'productos': serializer.data}, safe=False)
+    serializer = ProductoSerializer(productos, many=True)
+    return Response({'productos': serializer.data})

@@ -29,22 +29,13 @@ SECRET_KEY = 'django-insecure-e=dv_#%s8#%pn51k4$mae3l!#9)%oqhv*8%t&i!2^_#(8abx#d
 DEBUG = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
+# settings.py
+
 ALLOWED_HOSTS = [
     'localhost',
-    '127.0.0.1',
-    '28c5-186-189-95-219.ngrok-free.app',  # Agrega esta línea
+    '127.0.0.1',         # si tienes uno
+    '8931-186-189-95-219.ngrok-free.app'  # <--- ¡aquí!
 ]
-
-CSRF_TRUSTED_ORIGINS = [
-    'https://28c5-186-189-95-219.ngrok-free.app',
-]
-
-SESSION_COOKIE_DOMAIN   = '28c5-186-189-95-219.ngrok-free.app'
-SESSION_COOKIE_SAMESITE = 'Lax'
-CSRF_COOKIE_SAMESITE    = 'Lax'
-
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE    = True
 
 
 # Application definition
