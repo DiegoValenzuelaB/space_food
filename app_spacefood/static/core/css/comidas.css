@@ -1,0 +1,101 @@
+#cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(28rem, 1fr)); /* 2 tarjetas */
+  gap: 2rem;
+  justify-content: center;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+/* Tarjeta promo general */
+.promo-card {
+  display: flex;
+  background: linear-gradient(135deg, #00000098, #00000098);
+  width: 100%;
+  height: 14rem;
+  border-radius: 1.25rem;
+  box-shadow: 0 0.9375rem 1.5625rem rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease-in-out;
+  cursor: pointer;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* Imagen */
+.promo-card-image {
+  width: 40%;
+  height: 100%;
+  overflow: hidden;
+  border-top-left-radius: 1.25rem;
+  border-bottom-left-radius: 1.25rem;
+}
+
+.promo-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Contenido */
+.promo-card-content {
+  padding: 1.25rem;
+  width: 60%;
+  color: white;
+  font-family: 'Orbitron', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+
+.promo-card-content h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 0.5rem rgba(0, 255, 231, 1);
+}
+
+.promo-card-content p {
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 0.3rem rgba(0, 255, 231, 1);
+}
+
+/* Botón */
+.buy-btn {
+  background-color: #00c6b24e;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.buy-btn:hover {
+  background-color: #009e8e;
+  box-shadow: 0 0 0.5rem rgba(0, 255, 231, 0.7);
+}
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+  #cards-container {
+    grid-template-columns: 1fr;
+  }
+
+  .promo-card {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .promo-card-image {
+    width: 100%;
+    height: 200px;
+    border-radius: 1.25rem 1.25rem 0 0;
+  }
+
+  .promo-card-content {
+    width: 100%;
+    padding: 1rem;
+  }
+}

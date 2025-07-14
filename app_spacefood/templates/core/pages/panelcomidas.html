@@ -1,0 +1,31 @@
+{% extends 'core/layout/base.html' %}
+{% load static %}
+
+{% block css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'core/css/panelcomidas.css' %}">
+{% endblock %}
+
+{% block contenido %}
+    <div class="user-table-container">
+        <div class="tabla-botones">
+        <!-- Aquí puedes poner botones de agregar si los necesitas -->
+        </div>
+
+        <table id="tabla-productos" class="user-table">
+            <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Precio</th>
+                <th>Stock</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+
+  <script src="{% static 'core/js/panelcomidas.js' %}"></script>
+{% endblock %}

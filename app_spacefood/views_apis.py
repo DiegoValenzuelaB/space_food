@@ -18,7 +18,7 @@ import json
 from django.conf import settings
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 import mercadopago
 import traceback
@@ -447,4 +447,71 @@ def productos_stock_bajo(request):
         return Response({"mensaje": "No hay productos con stock bajo."}, status=200)
 
     return Response({"productos_bajos": list(productos_bajos)}, status=200)
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def listar_productos(request):
+    productos = Producto.objects.all()
+    datos = []
+    for prod in productos:
+        datos.append({
+            'id_producto': prod.id_producto,
+            'nom_producto': prod.nom_producto,
+            'desc_prod': prod.desc_prod,
+            'precio_prod': float(prod.precio_prod),
+            'stock': prod.stock,
+            'fecha_elaboracion': prod.fecha_elaboracion.strftime('%d-%m-%Y') if prod.fecha_elaboracion else '',
+            'fecha_vencimiento': prod.fecha_vencimiento.strftime('%d-%m-%Y') if prod.fecha_vencimiento else '',
+            'tipo_producto_id': prod.tipo_producto.id_tipo_prod if prod.tipo_producto else None,
+            'tipo_producto_desc': prod.tipo_producto.desc_tipo_prod if prod.tipo_producto else '',
+            'marca_id': prod.marca.id_marca if prod.marca else None,
+            'marca_desc': prod.marca.desc_marca if prod.marca else '',
+            'imagen': prod.imagen
+        })
+    return Response({'productos': datos})
+
+@csrf_exempt
+def actualizar_producto(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            id_producto = data.get("id_producto")
+            nom_producto = data.get("nom_producto")
+            desc_prod = data.get("desc_prod")
+            precio_prod = data.get("precio_prod")
+            stock = data.get("stock")
+
+            producto = Producto.objects.get(pk=id_producto)
+            producto.nom_producto = nom_producto
+            producto.desc_prod = desc_prod
+            producto.precio_prod = precio_prod
+            producto.stock = stock
+            producto.save()
+
+            return JsonResponse({"success": True})
+
+        except Producto.DoesNotExist:
+            return JsonResponse({"success": False, "message": "Producto no encontrado."})
+
+        except Exception as e:
+            return JsonResponse({"success": False, "message": str(e)})
+
+    return JsonResponse({"success": False, "message": "Método no permitido."})
+
+#eliminar comida
+@csrf_exempt
+def eliminar_producto(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            id_producto = data.get("id_producto")
+            producto = Producto.objects.get(pk=id_producto)
+            producto.delete()
+            return JsonResponse({"success": True})
+        except Producto.DoesNotExist:
+            return JsonResponse({"success": False, "message": "Producto no encontrado."})
+        except Exception as e:
+            return JsonResponse({"success": False, "message": str(e)})
+    return JsonResponse({"success": False, "message": "Método no permitido."})
+
 

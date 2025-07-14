@@ -1,4 +1,8 @@
+import os
 from django.shortcuts import render, redirect
+from jupyterlab_server import slugify
+
+from spacefood import settings
 from .models import *
 
 import core.firebase_app         # ← Esto fuerza a que Firebase Admin se inicialice una sola vez
@@ -169,8 +173,86 @@ def panelusuarios(request):
     }
     return render(request, 'core/pages/panelusuarios.html', aux)
 
-def panelbodeguero(request):
+def panelcocinero(request):
     aux = {
-        'segment': 'panelbodeguero'
+        'segment': 'panelcocinero'
     }
-    return render(request, 'core/pages/panelbodeguero.html', aux)
+    return render(request, 'core/pages/panelcocinero.html', aux)
+
+def crearproducto(request):
+    if request.method == 'POST':
+        nom_producto      = request.POST.get('nom_producto')
+        desc_prod         = request.POST.get('desc_prod')
+        precio_prod       = request.POST.get('precio_prod') or 0
+        stock             = request.POST.get('stock') or 0
+        fecha_elaboracion = request.POST.get('fecha_elaboracion')
+        fecha_vencimiento = request.POST.get('fecha_vencimiento') or None
+        tipo_id           = request.POST.get('tipo_producto_id')
+        marca_id          = request.POST.get('marca_id')
+        imagen_file       = request.FILES.get('imagen')
+
+        imagen_nombre = None
+
+        if imagen_file:
+            nombre_limpio = slugify(nom_producto)
+            extension = os.path.splitext(imagen_file.name)[1]
+            nuevo_nombre = f"{nombre_limpio}{extension}"
+
+            ruta_guardado = os.path.join(
+                settings.BASE_DIR, 'app_spacefood', 'static', 'core', 'imgs', 'comidas', nuevo_nombre)
+
+            with open(ruta_guardado, 'wb+') as destino:
+                for chunk in imagen_file.chunks():
+                    destino.write(chunk)
+
+            imagen_nombre = nuevo_nombre
+
+        if nom_producto and desc_prod:
+            producto = Producto.objects.create(
+                nom_producto=nom_producto,
+                desc_prod=desc_prod,
+                precio_prod=precio_prod,
+                stock=stock,
+                fecha_elaboracion=fecha_elaboracion,
+                fecha_vencimiento=fecha_vencimiento if fecha_vencimiento else None,
+                tipo_producto_id=tipo_id,
+                marca_id=marca_id,
+                imagen=imagen_nombre
+            )
+
+            # 👇 Relacionar insumos seleccionados con cantidades
+            ingredientes_ids = request.POST.getlist('ingredientes')
+            for inv_id in ingredientes_ids:
+                cantidad = request.POST.get(f'cantidad_{inv_id}', 1)
+                try:
+                    cantidad = int(cantidad)
+                except ValueError:
+                    cantidad = 1
+
+                ProductoInventario.objects.create(
+                    producto=producto,
+                    inventario_id=inv_id,
+                    cantidad_usada=cantidad
+                )
+
+            return redirect('crearproducto')
+
+    tipos = TipoProducto.objects.all()
+    marcas = Marca.objects.all()
+    inventarios = Inventario.objects.all()
+
+    context = {
+        'tipos': tipos,
+        'marcas': marcas,
+        'inventarios': inventarios,
+        'segment': 'crearproducto'
+    }
+    return render(request, 'core/pages/crearproducto.html', context)
+
+def comidas(request):
+    productos = Producto.objects.all()
+    return render(request, 'core/pages/comidas.html', {'productos': productos})
+
+def panelcomidas(request):
+    productos = Producto.objects.all()
+    return render(request, 'core/pages/panelcomidas.html', {'productos': productos, 'segment': 'panelcomidas'})

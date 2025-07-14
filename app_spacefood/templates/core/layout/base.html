@@ -93,7 +93,16 @@
               <a class="nav-link" href="{% url 'panelusuarios' %}">Panel usuarios</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'panelbodeguero' %}">Panel bodeguero</a>
+              <a class="nav-link" href="{% url 'panelcocinero' %}">Panel cocinero</a>
+            </li>
+            <li>
+              <a class="nav-link" href="{% url 'crearproducto' %}">Crear Productos</a>
+            </li>
+            <li>
+              <a class="nav-link" href="{% url 'comidas' %}">Comidas</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'panelcomidas' %}">Panel Comidas</a>
             </li>
 
             {% if not request.session.p_nombre %}

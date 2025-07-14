@@ -14,7 +14,6 @@
   margin-bottom: 2rem;
 }
 
-
 .welcome-title h1 {
   margin-bottom: 2rem;
 }
@@ -301,9 +300,10 @@
   text-shadow: 0 0 0.3125rem rgba(0, 255, 231, 1);
 }
 
+/* Cambios para que enlaces con clase buy-btn se vean blancos sin subrayado */
 .buy-btn {
   background-color: #00c6b24e;
-  color: white;
+  color: white !important;
   padding: 0.625rem 1.25rem;
   border: none;
   border-radius: 1.5625rem;
@@ -312,11 +312,14 @@
   letter-spacing: 0.125rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  text-decoration: none; /* quita subrayado */
+  display: inline-block; /* para comportamiento como botón */
 }
 
 .buy-btn:hover {
   background-color: #009e8e;
   box-shadow: 0 0 0.625rem rgba(0, 255, 231, 0.7);
+  text-decoration: none; /* quita subrayado en hover */
 }
 
 /* Cards home */

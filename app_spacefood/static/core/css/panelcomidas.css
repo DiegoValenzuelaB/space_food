@@ -1,0 +1,204 @@
+/* ===========================
+   Estilos para Panel Comidas (idéntico a Inventario)
+   =========================== */
+
+/* Contenedor centrado */
+.user-table-container {
+  max-width: 90%;
+  margin: 2.5rem auto 3.75rem auto;
+  display: block;
+}
+
+/* Botones superiores */
+.tabla-botones {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.tabla-botones button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 0.4rem;
+  border: none;
+  background-color: #00c6b2;
+  color: black;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.tabla-botones button:hover {
+  background-color: #00ffe7;
+  color: rgb(0, 0, 0);
+  transform: scale(1.05);
+}
+
+/* Tabla base */
+.user-table {
+  max-width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 0;
+  font-size: 0.72rem;
+  background: rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  border: 0.0625rem solid #00c6b2;
+  border-radius: 0.9375rem;
+  box-shadow: 0 0 0.9375rem rgba(0, 255, 231, 0.3);
+}
+
+/* Encabezados */
+.user-table thead th:first-child,
+.user-table tbody td:first-child {
+  padding-left: 1.2rem;
+}
+
+.user-table thead th {
+  text-transform: uppercase;
+  color: #00ffe7;
+  letter-spacing: 0.05rem;
+  padding: 0.875rem 0.4rem;
+}
+
+/* Filas y celdas */
+.user-table tbody tr {
+  box-shadow: inset 0 0 0 0.0625rem #00c6b2;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.user-table tbody tr:hover {
+  background: rgba(0, 198, 178, 0.1);
+  box-shadow: inset 0 0 1rem rgba(0, 255, 231, 0.4);
+}
+
+.user-table tbody td {
+  padding: 0.75rem 0.6rem;
+  color: #ffffff;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 0.71rem;
+}
+
+/* Columnas proporcionales */
+.user-table th:nth-child(1),
+.user-table td:nth-child(1) { width: 19%; }
+
+.user-table th:nth-child(2),
+.user-table td:nth-child(2) { width: 45%; }
+
+.user-table th:nth-child(3),
+.user-table td:nth-child(3) { width: 15%; }
+
+.user-table th:nth-child(4),
+.user-table td:nth-child(4) { width: 20%; }
+
+.user-table th:nth-child(5),
+.user-table td:nth-child(5) { width: 20%; }
+
+/* Botones */
+.btn-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  margin-right: 0.3rem;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.btn-icon:hover {
+  transform: scale(1.2);
+  color: #00ffe7;
+}
+
+.btn-edit { color: #ffcc00; }
+.btn-block { color: #ff0000; }
+
+.btn-save { color: #ffcc00; }
+.btn-cancel { color: #ff0000; }
+
+/* Formulario similar */
+.formulario-agregar {
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid #00c6b2;
+  border-radius: 1rem;
+  padding: 1rem 1.5rem;
+  width: 400px;
+  color: #fff;
+  box-shadow: 0 0 1rem rgba(0, 255, 231, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.formulario-agregar input {
+  padding: 0.4rem;
+  border-radius: 0.4rem;
+  border: none;
+  font-size: 0.9rem;
+}
+
+.formulario-agregar button {
+  margin-top: 1rem;
+  background-color: #00c6b2;
+  color: black;
+  border: none;
+  padding: 0.6rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.formulario-agregar button:hover {
+  background-color: #00ffe7;
+}
+.user-table td input[type="text"],
+.user-table td input[type="number"] {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.45rem 0.6rem;
+  font-size: 0.70rem;
+  border: 1px solid #00c6b2;
+  border-radius: 0.6rem;
+  background: rgba(0, 0, 0, 0.5);
+  color: #ffffff;
+  outline: none;
+  font-family: 'Orbitron', sans-serif;
+}
+
+/* Limitar el ancho para evitar desbordamiento en columnas pequeñas */
+.user-table td:nth-child(1) input { max-width: 95%; }  /* nombre */
+.user-table td:nth-child(2) input { max-width: 100%; } /* descripción */
+.user-table td:nth-child(3) input,
+.user-table td:nth-child(4) input { max-width: 6rem; text-align: center; } /* precio y stock */
+
+.btn-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.3rem;
+  margin-right: 0.4rem;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.btn-icon:hover {
+  transform: scale(1.25);
+}
+
+.btn-edit {
+  color: #ff9900; /* Naranja */
+}
+
+.btn-edit:hover {
+  color: #ffb733; /* Naranja más claro en hover */
+}
+
+.btn-delete {
+  color: #ff3b3b; /* Rojo */
+}
+
+.btn-delete:hover {
+  color: #ff6b6b; /* Rojo más claro en hover */
+}

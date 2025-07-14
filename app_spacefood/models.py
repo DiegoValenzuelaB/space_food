@@ -49,7 +49,7 @@ class Usuario(models.Model):
     
 
 class TipoProducto(models.Model):
-    id_tipo_producto = models.AutoField(primary_key=True)
+    id_tipo_prod = models.AutoField(primary_key=True)
     desc_tipo_prod = models.CharField(max_length=100)
 
     class Meta:
@@ -57,7 +57,7 @@ class TipoProducto(models.Model):
         managed = False
 
     def __str__(self):
-        return self.nombre
+        return self.desc_tipo_prod
 
 
 class Marca(models.Model):
@@ -69,7 +69,7 @@ class Marca(models.Model):
         managed = False
 
     def __str__(self):
-        return self.nombre
+        return self.desc_marca
 
 
 class Inventario(models.Model):
@@ -98,6 +98,7 @@ class Producto(models.Model):
     fecha_vencimiento = models.DateField('Vencimiento', blank=True, null=True)
     tipo_producto     = models.ForeignKey(TipoProducto, on_delete=models.DO_NOTHING, db_column='tipo_producto_id')
     marca             = models.ForeignKey(Marca,        on_delete=models.DO_NOTHING, db_column='marca_id')
+    imagen            = models.CharField(max_length=255, null=True, blank=True)
 
     class Meta:
         db_table = 'producto'
@@ -105,3 +106,13 @@ class Producto(models.Model):
 
     def __str__(self):
         return self.nom_producto
+    
+class ProductoInventario(models.Model):
+    id = models.AutoField(primary_key=True)
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE, db_column='producto_id')
+    inventario = models.ForeignKey(Inventario, on_delete=models.CASCADE, db_column='inventario_id')
+    cantidad_usada = models.IntegerField(null=True, default=1)
+
+    class Meta:
+        db_table = 'producto_inventario'
+        managed = False
