@@ -4,16 +4,39 @@
 
 /* Contenedor centrado y con máximo ancho */
 .user-table-container {
+  max-width: 90%;
+  margin: 2.5rem auto 3.75rem auto; /* Centra con margen automático y espaciado vertical */
+  display: block; /* Quita el flex para que no afecte alineación de botones */
+}
+
+/* Contenedor de botones encima de la tabla */
+.tabla-botones {
   display: flex;
-  justify-content: center;  /* centra horizontalmente */
-  align-items: center;      /* centra verticalmente si quieres */
-  margin-top: 2.5rem;
-  margin-bottom: 3.75rem;
+  justify-content: center; /* Centrar horizontalmente */
+  gap: 1rem; /* espacio entre botones */
+  margin-bottom: 1rem; /* separación con la tabla */
+}
+
+/* Ajusta el tamaño y estilo de botones */
+.tabla-botones button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 0.4rem;
+  border: none;
+  background-color: #00c6b2;
+  color: black;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.tabla-botones button:hover {
+  background-color: #00ffe7;
 }
 
 /* Tabla compacta */
 .user-table {
-  max-width: 90%;
+  max-width: 100%;
   border-collapse: separate;
   border-spacing: 0 0;
   font-size: 0.72rem;
@@ -76,7 +99,6 @@
 .user-table th:nth-child(6),
 .user-table td:nth-child(6) { width: 15%; }
 
-
 /* Botones icono (acciones) */
 .btn-icon {
   background: none;
@@ -135,3 +157,21 @@
   background-color: #00ffe7;
 }
 
+/* Botones principales encima de la tabla */
+.tabla-botones button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 0.4rem;
+  border: none;
+  background-color: #00c6b2;
+  color: black;
+  font-weight: bold;
+  transition: background 0.1s ease, transform 0.2s ease; /* transición de tamaño */
+}
+
+.tabla-botones button:hover {
+  background-color: #00ffe7;
+  color: rgb(0, 0, 0);
+  transform: scale(1.05); /* agranda el botón suavemente */
+}

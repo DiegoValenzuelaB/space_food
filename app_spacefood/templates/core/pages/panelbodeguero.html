@@ -7,28 +7,28 @@
 {% endblock %}
 
 {% block contenido %}
-<div class="user-table-container">
-  <table id="tabla-inventario" class="user-table">
-    <thead>
-        <th>
-            <button id="btn-agregar-producto" class="btn-icon btn-edit">Agregar Producto</button>
-        </th>
-        <th>
-            <button id="btn-enviar-informe" class="btn-icon btn-send">Enviar Informe Stock Bajo</button>
-        </th>
-      <tr>
-        <th>ID</th>
-        <th>Descripción</th>
-        <th>Cantidad Original</th>
-        <th>Cantidad Disponible</th>
-        <th>Fecha de Ingreso</th>
-        <th>ID Sucursal</th>
-        <th>Sucursal</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-</div>
+    <div class="user-table-container">
+    <div class="tabla-botones">
+        <button id="btn-agregar-producto" class="btn-icon btn-edit">Agregar Producto</button>
+        <button id="btn-enviar-informe" class="btn-icon btn-send">Enviar Informe Stock Bajo</button>
+    </div>
+
+    <table id="tabla-inventario" class="user-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Descripción</th>
+            <th>Cantidad Original</th>
+            <th>Cantidad Disponible</th>
+            <th>Fecha de Ingreso</th>
+            <th>ID Sucursal</th>
+            <th>Sucursal</th>
+            <th id="th-acciones" style="display: none;">Acciones</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    </div>
 
   <script type="module" src="{% static 'core/js/panelbodeguero.js' %}"></script>
 {% endblock %}

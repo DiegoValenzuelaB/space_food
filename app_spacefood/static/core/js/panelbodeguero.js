@@ -63,7 +63,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const thAcciones = thead.querySelector("th:last-child");
 
   function crearBotonAgregar() {
-    thAcciones.innerHTML = `<button id="btn-agregar-producto" class="btn-icon btn-edit">Agregar Producto</button>`;
     const btnAgregar = document.getElementById("btn-agregar-producto");
 
     btnAgregar.addEventListener("click", () => {
@@ -152,6 +151,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
   crearBotonAgregar();
 
+  const btnEnviarInforme = document.getElementById("btn-enviar-informe");
+
+    btnEnviarInforme.addEventListener("click", () => {
+    if (!idToken) {
+        alert("No hay sesión activa. Inicia sesión.");
+        window.location.href = "/";
+        return;
+    }
+
+    fetch("/api/productos_stock_bajo/", {
+        method: "GET",
+        headers: { Authorization: `Bearer ${idToken}` }
+    })
+        .then(res => {
+        if (!res.ok) throw new Error("Error en la petición");
+        return res.json();
+        })
+        .then(data => {
+        if (data.mensaje) {
+            alert(data.mensaje);
+        } else if (data.productos_bajos && data.productos_bajos.length > 0) {
+            alert("Informe enviado al correo correctamente.");
+        } else {
+            alert("No hay productos con stock bajo para informar.");
+        }
+        })
+        .catch(err => {
+        console.error("Error enviando informe:", err);
+        alert("Error enviando informe, intenta de nuevo.");
+        });
+    });
+
   // Mostrar nombre sucursal en formulario externo (al costado)
   const inputSucursalId = document.getElementById("sucursal_id");
   const nombreSucursal = document.getElementById("nombre_sucursal");
@@ -164,3 +195,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
