@@ -1,6 +1,6 @@
 import os
 from django.shortcuts import render, redirect
-from jupyterlab_server import slugify
+from django.utils.text import slugify
 
 from spacefood import settings
 from .models import *

@@ -13,7 +13,7 @@ class TipoUser(models.Model):
 
 class Sucursal(models.Model):
     id_sucursal = models.AutoField(primary_key=True)
-    comuna_id = models.CharField(max_length=100)
+    comuna = models.ForeignKey('Comuna', on_delete=models.DO_NOTHING, db_column='comuna_id')
     nom_sucursal = models.CharField(max_length=100)
     direccion_sucursal = models.CharField(max_length=100)
     telefono_sucursal = models.CharField(max_length=100)
@@ -24,6 +24,18 @@ class Sucursal(models.Model):
 
     def __str__(self):
         return self.nom_sucursal
+    
+class Comuna(models.Model):
+    id_comuna = models.AutoField(primary_key=True)
+    region_id = models.IntegerField()
+    desc_comuna = models.CharField(max_length=100)
+
+    class Meta:
+        db_table = 'comuna'
+        managed = False
+
+    def __str__(self):
+        return self.desc_comuna
 
 class Usuario(models.Model):
     p_nombre = models.CharField(max_length=100)

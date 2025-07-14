@@ -7,6 +7,17 @@ window.isAuthenticated = document
 
 console.log('carrito.js cargado, isAuthenticated=', window.isAuthenticated);
 
+function isTokenExpired(token) {
+  if (!token) return true;
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const now = Math.floor(Date.now() / 1000);
+    return payload.exp < now;
+  } catch (e) {
+    return true;
+  }
+}
+
 function formatPrice(value) {
   return new Intl.NumberFormat('es-CL', {
     style: 'currency',
@@ -40,41 +51,47 @@ async function apiPost(url, data) {
 
 function renderCart(items) {
   const container = document.getElementById('cartItemsContainer');
-  const totalEl  = document.getElementById('cartTotalPrice');
-  const badge    = document.querySelector('#openCartBtn .badge');
+  const totalEl   = document.getElementById('cartTotalPrice');
+  const badge     = document.querySelector('#openCartBtn .badge');
 
   container.innerHTML = '';
-  if (!items.length) {
-    container.innerHTML = '<p class="text-center mt-4">Tu carrito está vacío.</p>';
-    totalEl.textContent = '$0.00';
-    badge.textContent   = '0';
-    return;
-  }
 
   let total = 0;
   let count = 0;
-  items.forEach(item => {
-    const lineTotal = item.price * item.quantity;
-    total += lineTotal;
-    count += item.quantity;
-    const div = document.createElement('div');
-    div.className = 'cart-item d-flex justify-content-between align-items-center mb-2';
-    div.innerHTML = `
-      <img src="${item.img}" style="width:50px;height:50px;object-fit:cover;">
-      <div class="flex-grow-1 mx-2">
-        <strong>${item.name}</strong><br>
-        ${formatPrice(item.price * item.quantity)}
-      </div>
-      <div class="d-flex" style="gap: 5px;">
-        <button class="btn qty-btn btn-sm rounded" onclick="updateQuantity('${item.id}', -1)">-</button>
-        <button class="btn qty-btn btn-sm rounded" onclick="updateQuantity('${item.id}', +1)">+</button>
-        <button class="btn remove-btn btn-sm rounded" onclick="removeItem('${item.id}')">×</button>
-      </div>
-    `;
-    container.appendChild(div);
-  });
+
+  if (!items.length) {
+    container.innerHTML = '<p class="text-center mt-4">Tu carrito está vacío.</p>';
+  } else {
+    items.forEach(item => {
+      const lineTotal = item.price * item.quantity;
+      total += lineTotal;
+      count += item.quantity;
+
+      const div = document.createElement('div');
+      div.className = 'cart-item d-flex justify-content-between align-items-center mb-2';
+      div.innerHTML = `
+        <img src="${item.img}" style="width:50px;height:50px;object-fit:cover;">
+        <div class="flex-grow-1 mx-2">
+          <strong>${item.name}</strong><br>
+          ${formatPrice(lineTotal)}
+        </div>
+        <div class="d-flex" style="gap: 5px;">
+          <button class="btn qty-btn btn-sm" onclick="updateQuantity('${item.id}', -1)">-</button>
+          <button class="btn qty-btn btn-sm" onclick="updateQuantity('${item.id}', +1)">+</button>
+          <button class="btn remove-btn btn-sm" onclick="removeItem('${item.id}')">×</button>
+        </div>
+      `;
+      container.appendChild(div);
+    });
+  }
+
+  // Actualizamos totales y badge
   totalEl.textContent = formatPrice(total);
-  badge.textContent   = count;
+  badge.textContent  = count;
+
+  // **** NUEVO: actualizamos flag y habilitamos/deshabilitamos botón ****
+  hasProducts = count > 0;
+  actualizarFinalizar();
 }
 
 async function loadCart() {
@@ -122,12 +139,13 @@ function initShipMethodModal() {
   modalEl.addEventListener('show.bs.modal', async () => {
     togglePanels();
     try {
-      const { sucursales } = await fetch('/api/sucursales/').then(r => r.json());
+      const { sucursales } = await fetch('/api/listar_sucursales/').then(r => r.json());
+      console.log('Sucursales:', sucursales);  // para depurar en la consola
       tiendaSelect.innerHTML = '<option value="">-- Elige una tienda --</option>';
       sucursales.forEach(s => {
         const opt = document.createElement('option');
-        opt.value = s.nombre;
-        opt.textContent = `${s.nombre} (${s.comuna})`;
+        opt.value = s.id;  // id sucursal
+        opt.textContent = `${s.nombre} (${s.comuna})`; // muestra "Sucursal Kepler (Puente Alto)"
         tiendaSelect.appendChild(opt);
       });
     } catch (e) {
@@ -141,42 +159,107 @@ function initShipMethodModal() {
       const dir = direccionIn.value.trim() || '(no ingresada)';
       textoFinal = `Domicilio: ${dir}`;
     } else {
-      const tienda = tiendaSelect.value || '(no seleccionada)';
-      textoFinal = `Retiro: ${tienda}`;
+      const selectedOption = tiendaSelect.options[tiendaSelect.selectedIndex];
+      const tiendaTexto = selectedOption ? selectedOption.textContent : '(no seleccionada)';
+      textoFinal = `Retiro: ${tiendaTexto}`;
     }
+    selectedShip = true;   
     shipBtn.textContent = textoFinal;
     bootstrap.Modal.getInstance(modalEl).hide();
+    actualizarFinalizar(); 
   });
+}
+
+let selectedShip = null;
+let selectedPay  = null;
+let hasProducts = false;
+
+function initPaymentMethodModal() {
+  const optMP    = document.getElementById('optMercadoPago');
+  const optTrans = document.getElementById('optTransferencia');
+  const confirmBtn = document.getElementById('confirmPaymentMethod');
+  const payBtn     = document.getElementById('paymentMethodBtn');
+  const modalEl    = document.getElementById('paymentMethodModal');
+
+  confirmBtn.addEventListener('click', () => {
+    if (optMP.checked) {
+      selectedPay = 'mercadopago';
+      payBtn.textContent = 'Mercado Pago';
+    } else if (optTrans.checked) {
+      selectedPay = 'transferencia';
+      payBtn.textContent = 'Transferencia';
+    }
+    // cierra el modal
+    bootstrap.Modal.getInstance(modalEl).hide();
+    // habilita o no el botón finalizar
+    actualizarFinalizar(); 
+  });
+}
+
+/**
+ * Centraliza cuándo habilitar Finalizar Compra
+ */
+function actualizarFinalizar() {
+  const btn = document.getElementById('finalizarCompraBtn');
+  if (hasProducts && selectedShip && selectedPay) {
+    btn.removeAttribute('disabled');
+  } else {
+    btn.setAttribute('disabled', '');
+  }
 }
 
 function initFinalizarCompra() {
   const finalizarBtn = document.getElementById('finalizarCompraBtn');
   finalizarBtn.addEventListener('click', async () => {
+    // 1) Verificar método de despacho
+    const shipBtn = document.getElementById('shipMethodBtn');
+    if (shipBtn.textContent.trim() === 'Seleccionar método de despacho') {
+      return Swal.fire({
+        icon: 'warning',
+        title: 'Debes elegir un método de despacho',
+        text: 'Por favor selecciona despacho a domicilio o retiro en tienda.'
+      });
+    }
+
+    // 2) Verificar autenticación
     if (!window.isAuthenticated) {
       return Swal.fire({
         icon: 'warning',
         title: 'Debes iniciar sesión',
-        text: 'Por favor inicia sesión para completar la compra.',
+        text: 'Por favor inicia sesión para completar la compra.'
       });
     }
 
+    // 3) Verificar que hay productos
     const totalText = document.getElementById('cartTotalPrice').textContent;
     const total = Number(totalText.replace(/\D/g, ''));
     if (total <= 0) {
       return Swal.fire('Tu carrito está vacío', 'Agrega productos antes de pagar.', 'warning');
     }
 
-    try {
-      const { sandbox_init_point, init_point } =
-        await apiPost('/api/mercadopago/preference/', { total });
-      window.location.href = sandbox_init_point || init_point;
-    } catch (e) {
-      console.error(e);
-      Swal.fire('Error', e.message, 'error');
+    // 4) Según método de pago seleccionado
+    if (selectedPay === 'mercadopago') {
+      // Llamada a tu API de MP y redirección
+      try {
+        const { sandbox_init_point, init_point } =
+          await apiPost('/api/mercadopago/preference/', { total });
+        window.location.href = sandbox_init_point || init_point;
+      } catch (e) {
+        console.error(e);
+        Swal.fire('Error', e.message, 'error');
+      }
+
+    } else if (selectedPay === 'transferencia') {
+      const transferModal = new bootstrap.Modal(document.getElementById('transferProofModal'));
+      transferModal.show();
+      return;
+
+    } else {
+      // Seguridad: no debería pasar
+      return Swal.fire('Error', 'Selecciona un método de pago válido.', 'error');
     }
   });
 }
-// ————————————————————————————————
 
 document.addEventListener('DOMContentLoaded', () => {
   loadCart();
@@ -204,7 +287,59 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  function initTransferProofModal() {
+    const btnConfirm = document.getElementById('confirmTransferProofBtn');
+    btnConfirm.addEventListener('click', async () => {
+      const fileInput = document.getElementById('transferProofInput');
+      if (!fileInput.files.length) {
+        return Swal.fire('Atención','Debes seleccionar una imagen.','warning');
+      }
+
+      let idToken = localStorage.getItem('idToken');
+
+      if (!idToken || isTokenExpired(idToken)) {
+        try {
+          const user = firebase.auth().currentUser;
+          if (!user) throw new Error('No hay usuario autenticado');
+          idToken = await user.getIdToken(true);  // Forzar renovación
+          localStorage.setItem('idToken', idToken); // Guardar el nuevo
+          console.log('🔁 Token renovado:', idToken);
+        } catch (e) {
+          return Swal.fire('Sesión expirada','Por favor inicia sesión nuevamente.','error');
+        }
+      }
+
+      const formData = new FormData();
+      formData.append('comprobante', fileInput.files[0]);
+
+      try {
+        const res = await fetch('/api/cart/transferencia_comprobante/', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${idToken}`,
+          },
+          body: formData
+        });
+
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.error || 'Error desconocido');
+        }
+
+        Swal.fire('¡Listo!','Comprobante enviado correctamente.','success');
+        bootstrap.Modal.getInstance(document.getElementById('transferProofModal')).hide();
+        fileInput.value = '';
+      } catch (e) {
+        console.error('Error enviando comprobante:', e);
+        Swal.fire('Error', e.message, 'error');
+      }
+    });
+
+  }
+
   initShipMethodModal();
+  initPaymentMethodModal();   // <— llama al nuevo initializer
   initFinalizarCompra();
+  initTransferProofModal(); 
 
 });

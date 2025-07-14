@@ -41,14 +41,26 @@
       <div class="cart-items flex-fill" id="cartItemsContainer">
         <p class="text-center mt-4">Tu carrito está vacío.</p>
       </div>
+      <!-- Botón de selección de método de despacho -->
       <div class="mb-3 text-center">
         <button
           type="button"
           id="shipMethodBtn"
-          class="btn btn-outline-secondary"
+          class="btn btn-outline-light"
           data-bs-toggle="modal"
           data-bs-target="#shipMethodModal">
           Seleccionar método de despacho
+        </button>
+      </div>
+      <!-- Botón de selección de método de pago -->
+      <div class="mb-3 text-center">
+        <button
+          type="button"
+          id="paymentMethodBtn"
+          class="btn btn-outline-light"
+          data-bs-toggle="modal"
+          data-bs-target="#paymentMethodModal">
+          Seleccionar método de pago
         </button>
       </div>
       <!-- Nuevo: resumen de totales -->
@@ -65,87 +77,95 @@
     </aside>
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-black bg-opacity-50 py-2 shadow-sm">
-      <div class="container-fluid">
-        <!-- Logo -->
-        <a class="navbar-brand" href="{% url 'home' %}">
-          <img src="{% static 'core/imgs/logo.png' %}" class="img-logo" alt="Logo">
-        </a>
+    {% with request.resolver_match.url_name as current_url %}
+      <nav class="navbar navbar-expand-lg navbar-dark bg-black bg-opacity-50 py-2 shadow-sm">
+        <div class="container-fluid">
+          <!-- Logo -->
+          <a class="navbar-brand" href="{% url 'home' %}">
+            <img src="{% static 'core/imgs/logo.png' %}" class="img-logo" alt="Logo">
+          </a>
 
-        <!-- Toggler -->
-        <button class="navbar-toggler" 
-                type="button"
-                data-bs-toggle="collapse" 
-                data-bs-target="#navbarNav" 
-                aria-controls="navbarNav" 
-                aria-expanded="false" 
-                aria-label="Alternar navegación">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+          <!-- Toggler -->
+          <button class="navbar-toggler" 
+                  type="button"
+                  data-bs-toggle="collapse" 
+                  data-bs-target="#navbarNav" 
+                  aria-controls="navbarNav" 
+                  aria-expanded="false" 
+                  aria-label="Alternar navegación">
+            <span class="navbar-toggler-icon"></span>
+          </button>
 
-        <!-- Menu -->
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav align-items-center w-100">
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'home' %}">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'panelusuarios' %}">Panel usuarios</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'panelcocinero' %}">Panel cocinero</a>
-            </li>
-            <li>
-              <a class="nav-link" href="{% url 'crearproducto' %}">Crear Productos</a>
-            </li>
-            <li>
-              <a class="nav-link" href="{% url 'comidas' %}">Comidas</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'panelcomidas' %}">Panel Comidas</a>
-            </li>
-
-            {% if not request.session.p_nombre %}
+          <!-- Menu -->
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav align-items-center w-100">
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'register' %}">Regístrate</a>
+                <a class="nav-link {% if current_url == 'home' %}active{% endif %}"href="{% url 'home' %}">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'login' %}">Login</a>
-              </li>
-
-              {# Cuando NO está logueado, empujamos carrito+“Quienes somos” al extremo derecho #}
-              <li class="nav-item ms-auto">
-                <button id="openCartBtn" class="btn btn-outline-light position-relative">
-                  <i class="fas fa-shopping-cart"></i>
-                  <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">0</span>
-                </button>
+                <a class="nav-link {% if current_url == 'panelusuarios' %}active{% endif %}"href="{% url 'panelusuarios' %}">Panel usuarios</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" href="{% url 'quienes_somos' %}">Quienes somos</a>
+                <a class="nav-link {% if current_url == 'panelcocinero' %}active{% endif %}" href="{% url 'panelcocinero' %}">Panel cocinero</a>
+              </li>
+              <li>
+                <a class="nav-link {% if current_url == 'crearproducto' %}active{% endif %}" href="{% url 'crearproducto' %}">Crear Productos</a>
+              </li>
+              <li>
+                <a class="nav-link {% if current_url == 'comidas' %}active{% endif %}" href="{% url 'comidas' %}">Comidas</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if current_url == 'panelcomidas' %}active{% endif %}" href="{% url 'panelcomidas' %}">Panel Comidas</a>
               </li>
 
-            {% else %}
-              {# Cuando SÍ está logueado, empujamos “Hola, nombre”+carrito+“Quienes somos” juntos al extremo derecho #}
-              <li class="nav-item ms-auto">
-                <a class="nav-link d-flex align-items-center p-0" href="{% url 'miperfil' %}">
-                  <span class="navbar-text me-1">Hola, {{ request.session.p_nombre }}</span>
-                  <i class="fas fa-user user-icon"></i>
-                </a>
-              </li>
-              <li class="nav-item" style="margin-left:10px">
-                <button id="openCartBtn" class="btn btn-outline-light position-relative">
-                  <i class="fas fa-shopping-cart"></i>
-                  <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">0</span>
-                </button>
-              </li>
-              <li class="nav-item" style="margin-left:10px">
-                <a class="nav-link active" href="{% url 'quienes_somos' %}">Quienes somos</a>
-              </li>
-            {% endif %}
-          </ul>
+              {% if not request.session.p_nombre %}
+                <li class="nav-item">
+                  <a class="nav-link {% if current_url == 'register' %}active{% endif %}"  href="{% url 'register' %}">Regístrate</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link {% if current_url == 'login' %}active{% endif %}"  href="{% url 'login' %}">Login</a>
+                </li>
+
+                {# Cuando NO está logueado, empujamos carrito+“Quienes somos” al extremo derecho #}
+                <li class="nav-item ms-auto">
+                  <button id="openCartBtn" class="btn btn-outline-light position-relative">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">0</span>
+                  </button>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link quienes-somos {% if current_url == 'quienes_somos' %}active{% endif %}"
+                    href="{% url 'quienes_somos' %}">
+                    Quienes somos
+                  </a>
+                </li>
+
+              {% else %}
+                {# Cuando SÍ está logueado, empujamos “Hola, nombre”+carrito+“Quienes somos” juntos al extremo derecho #}
+                <li class="nav-item ms-auto">
+                  <a class="nav-link d-flex align-items-center p-0 {% if current_url == 'miperfil' %}active{% endif %}" href="{% url 'miperfil' %}">
+                    <span class="navbar-text me-1">Hola, {{ request.session.p_nombre }}</span>
+                    <i class="fas fa-user user-icon"></i>
+                  </a>
+                </li>
+                <li class="nav-item" style="margin-left:10px">
+                  <button id="openCartBtn" class="btn btn-outline-light position-relative">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">0</span>
+                  </button>
+                </li>
+                <li class="nav-item" style="margin-left:10px">
+                  <a class="nav-link quienes-somos {% if current_url == 'quienes_somos' %}active{% endif %}"
+                    href="{% url 'quienes_somos' %}">
+                    Quienes somos
+                  </a>
+                </li>
+              {% endif %}
+            </ul>
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    {% endwith %}
 
     <main class="flex-fill">
       {% block contenido %}{% endblock %}
@@ -240,11 +260,6 @@
       });
     </script>
 
-    {% block js %}
-      <script src="{% static 'core/js/sweetalerts.js' %}"></script>
-      <script src="{% static 'core/js/carrito.js' %}"></script>
-    {% endblock %}
-
     <!-- Modal de carrito de compras -->
     <div class="modal fade" id="shipMethodModal" tabindex="-1" aria-labelledby="shipMethodModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered square-modal-dialog">
@@ -288,6 +303,61 @@
         </div>
       </div>
     </div>
+
+    <!-- Modal: Método de pago -->
+    <div class="modal fade" id="paymentMethodModal" tabindex="-1" aria-labelledby="paymentMethodModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered square-modal-dialog">
+        <div class="modal-content square-modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="paymentMethodModalLabel">Método de pago</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="paymentMethod" id="optMercadoPago" checked>
+              <label class="form-check-label" for="optMercadoPago">Mercado Pago (débito/crédito)</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="paymentMethod" id="optTransferencia">
+              <label class="form-check-label" for="optTransferencia">Transferencia bancaria</label>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button id="confirmPaymentMethod" class="btn btn-primary">Confirmar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Comprobante de Transferencia -->
+    <div class="modal fade" id="transferProofModal" tabindex="-1" aria-labelledby="transferProofModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-black bg-opacity-85 border border-info rounded-2xl shadow-lg">
+          <div class="modal-header border-0">
+            <h5 class="modal-title text-cyan-400" id="transferProofModalLabel">Sube el comprobante</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body text-white">
+            <p>Selecciona la imagen del comprobante de la transferencia:</p>
+            <input type="file" id="transferProofInput" accept="image/*" class="form-control mb-3"/>
+          </div>
+          <div class="modal-footer border-0 justify-content-center gap-2">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+              Cancelar
+            </button>
+            <button id="confirmTransferProofBtn" class="btn btn-primary">
+              Enviar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% block js %}
+      <script src="{% static 'core/js/sweetalerts.js' %}"></script>
+      <script src="{% static 'core/js/carrito.js' %}"></script>
+    {% endblock %}
 
   </body>
 

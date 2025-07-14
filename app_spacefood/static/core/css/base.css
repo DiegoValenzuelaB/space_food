@@ -75,11 +75,6 @@ main {
   text-decoration: none;
 }
 
-.navbar-nav .nav-link:hover {
-  background-color: transparent !important;
-  color: #00ffe7 !important;
-}
-
 /* Logo dentro del navbar */
 .navbar-brand {
   display: flex;
@@ -105,10 +100,6 @@ main {
   }
 }
 
-.active {
-  background-color: #009e8e;
-}
-
 .navbar .user-icon {
   font-size: 1.2rem;
   margin: 0.625rem;
@@ -119,6 +110,37 @@ main {
 .navbar-nav .nav-item.ms-lg-auto .nav-link:hover .user-icon {
   color: #00ffe7 !important;
   cursor: pointer;
+}
+
+
+/* 1) Por defecto “Quienes somos” brilla de fondo */
+.navbar-nav .nav-link.quienes-somos {
+  background-color: #009e8e !important;
+  color: #ffffff !important;
+}
+
+/* 2) Al hacer hover, igual: */
+.navbar-nav .nav-link.quienes-somos:hover {
+  background-color: transparent !important;
+  color: #00ffe7 !important;
+  text-shadow: 0 0 0.5rem rgba(0, 255, 231, 0.7);
+}
+
+/* 3) Cuando está ACTIVE, quita el fondo y pon texto neón */
+.navbar-nav .nav-link.quienes-somos.active {
+  background-color: transparent !important;
+  color: #00ffe7 !important;
+  text-shadow: 0 0 0.5rem rgba(0, 255, 231, 0.7);
+}
+
+.navbar-nav .nav-link:hover .navbar-text,
+.navbar-nav .nav-link:hover .user-icon,
+.navbar-nav .nav-link.active .navbar-text,
+.navbar-nav .nav-link.active .user-icon,
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+  color: #00ffe7 !important;
+  text-shadow: 0 0 0.5rem rgba(0,255,231,0.7) !important;
 }
 
 /* ===== Footer ===== */
@@ -185,54 +207,9 @@ footer a.btn {
   font-size: 1.25rem;
   cursor: pointer;
 }
-
-/* Overlay cuando está abierto */
-#cartOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.5);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease;
-  z-index: 1500;
-}
-
-#cartOverlay.show {
-  opacity: 1;
-  visibility: visible;
-}
-
-#openCartBtn {
-  margin-right: 1.5625rem;
-}
-
-.square-modal-dialog {
-  max-width: 400px;
-}
-
-.square-modal-content {
-  aspect-ratio: 1 / 1; 
-}
-
-.modal-body {
-  overflow-y: auto;
-}
-
-#cartOverlay {
-  z-index: 1040;  
-}
-
-#cartDrawer {
-  z-index: 1045;
-}
-
 /* z-index para que el modal siempre quede por encima */
 .modal-backdrop { z-index: 1050 !important; }
 .modal          { z-index: 1060 !important; }
-
 
 /* ==============================
    Estilos “CyNeón” para el Carrito
@@ -364,6 +341,166 @@ footer a.btn {
 /* Overlay */
 #cartOverlay {
   background: rgba(0, 0, 0, 0.6);
+}
+
+#shipMethodModal .modal-dialog,
+#paymentMethodModal .modal-dialog {
+  max-width: 450px;
+  margin: auto;
+}
+#shipMethodModal .modal-content,
+#paymentMethodModal .modal-content {
+  background: rgba(0, 0, 0, 0.85);
+  border: 0.125rem solid #00c6b2;
+  border-radius: 1rem;
+  box-shadow: 0 0 1.875rem rgba(0, 255, 231, 0.4);
+  overflow: hidden;
+}
+
+/* Header */
+#shipMethodModal .modal-header,
+#paymentMethodModal .modal-header {
+  border-bottom: none;
+  background: #00000099;
+  padding: 1rem 1.5rem;
+  position: relative;
+}
+#shipMethodModal .modal-header .modal-title,
+#paymentMethodModal .modal-header .modal-title {
+  color: #00ffe7;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+  text-shadow: 0 0 0.75rem rgba(0, 255, 231, 0.7);
+  margin: 0;
+}
+#shipMethodModal .modal-header .btn-close,
+#paymentMethodModal .modal-header .btn-close {
+  filter: invert(100%);
+  opacity: 0.8;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+#shipMethodModal .modal-header .btn-close:hover,
+#paymentMethodModal .modal-header .btn-close:hover {
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+/* Body */
+#shipMethodModal .modal-body,
+#paymentMethodModal .modal-body {
+  padding: 1.5rem 1.5rem 0.5rem;
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Footer */
+#shipMethodModal .modal-footer,
+#paymentMethodModal .modal-footer {
+  background: rgba(0, 0, 0, 0.85);
+  border-top: none;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+#shipMethodModal .modal-footer .btn-secondary,
+#paymentMethodModal .modal-footer .btn-secondary {
+  background: none;
+  border: 0.125rem solid #ff4d4d;
+  color: #ff4d4d;
+  font-family: 'Orbitron', sans-serif;
+  text-transform: uppercase;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+#shipMethodModal .modal-footer .btn-secondary:hover,
+#paymentMethodModal .modal-footer .btn-secondary:hover {
+  background: #ff4d4d;
+  color: #fff;
+  box-shadow: 0 0 0.75rem rgba(255, 77, 77, 0.6);
+}
+#shipMethodModal .modal-footer .btn-primary,
+#paymentMethodModal .modal-footer .btn-primary {
+  background: none;
+  border: 0.125rem solid #00c6b2;
+  color: #00c6b2;
+  font-family: 'Orbitron', sans-serif;
+  text-transform: uppercase;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+#shipMethodModal .modal-footer .btn-primary:hover,
+#paymentMethodModal .modal-footer .btn-primary:hover {
+  background: #00c6b2;
+  color: #fff;
+  box-shadow: 0 0 0.75rem rgba(0, 255, 231, 0.7);
+}
+
+/* Radios y labels idénticos */
+#shipMethodModal .form-check,
+#paymentMethodModal .form-check {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+#shipMethodModal .form-check-input,
+#paymentMethodModal .form-check-input {
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  border: 0.125rem solid #00c6b2;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  margin-right: 0.75rem;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+#shipMethodModal .form-check-input:checked,
+#paymentMethodModal .form-check-input:checked {
+  background: radial-gradient(circle at center, #00ffe7 0%, #00c6b2 70%);
+  border-color: #00ffe7;
+}
+#shipMethodModal .form-check-input:focus,
+#paymentMethodModal .form-check-input:focus {
+  outline: none;
+  box-shadow: 0 0 0.375rem rgba(0, 255, 231, 0.5);
+}
+#shipMethodModal .form-check-label,
+#paymentMethodModal .form-check-label {
+  color: #fff;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+#shipMethodModal .form-check-label:hover,
+#paymentMethodModal .form-check-label:hover {
+  color: #00ffe7;
+}
+
+/* Ambos botones con borde y texto blancos */
+#shipMethodBtn,
+#paymentMethodBtn {
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+  background: none !important;
+}
+
+/* Hover compartido: leve neón cyan */
+#shipMethodBtn:hover,
+#paymentMethodBtn:hover {
+  background-color: transparent !important;
+  color: #00ffe7 !important;
+  border-color: #00ffe7 !important;
 }
 
 
@@ -602,18 +739,6 @@ footer a.btn {
   color: #ffffff;
 }
 
-#shipMethodBtn {
-  color: #ffffff !important;
-  border-color: #ffffff !important;
-  background: none !important;
-}
-
-/* Opcional: al hacer hover, el botón toma un leve fondo semitransparente blanco */
-#shipMethodBtn:hover {
-  background-color: transparent !important;
-  color: #00ffe7 !important;
-  border-color: #00ffe7 !important;
-}
 
 .qty-btn {
   background: linear-gradient(135deg, #00c6b250, #00ffe750);
@@ -674,4 +799,124 @@ footer a.btn {
 
 #cartItemsContainer p {
   color: #ffffff;
+}
+
+/* ==============================
+   Modal: Comprobante de Transferencia
+   ============================== */
+#transferProofModal .modal-dialog {
+  max-width: 450px;
+  margin: auto;
+}
+
+#transferProofModal .modal-content {
+  background: rgba(0, 0, 0, 0.85);
+  border: 0.125rem solid #00c6b2;
+  border-radius: 1rem;
+  box-shadow: 0 0 1.875rem rgba(0, 255, 231, 0.4);
+  overflow: hidden;
+}
+
+#transferProofModal .modal-header {
+  border-bottom: none;
+  background: #00000099;
+  padding: 1rem 1.5rem;
+  position: relative;
+}
+
+#transferProofModal .modal-header .modal-title {
+  color: #00ffe7;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+  text-shadow: 0 0 0.75rem rgba(0, 255, 231, 0.7);
+  margin: 0;
+}
+
+#transferProofModal .modal-header .btn-close {
+  filter: invert(100%);
+  opacity: 0.8;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+#transferProofModal .modal-header .btn-close:hover {
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+#transferProofModal .modal-body {
+  padding: 1.5rem 1.5rem 0.5rem;
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+#transferProofModal .modal-body input[type="file"] {
+  background: rgba(0,0,0,0.6);
+  border: 0.125rem solid #00c6b2;
+  color: #fff;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+}
+
+#transferProofModal .modal-footer {
+  background: rgba(0, 0, 0, 0.85);
+  border-top: none;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+#transferProofModal .modal-footer .btn-secondary {
+  background: none;
+  border: 0.125rem solid #ff4d4d;
+  color: #ff4d4d;
+  font-family: 'Orbitron', sans-serif;
+  text-transform: uppercase;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+#transferProofModal .modal-footer .btn-secondary:hover {
+  background: #ff4d4d;
+  color: #fff;
+  box-shadow: 0 0 0.75rem rgba(255, 77, 77, 0.6);
+}
+
+#transferProofModal .modal-footer .btn-primary {
+  background: none;
+  border: 0.125rem solid #00c6b2;
+  color: #00c6b2;
+  font-family: 'Orbitron', sans-serif;
+  text-transform: uppercase;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+#transferProofModal .modal-footer .btn-primary:hover {
+  background: #00c6b2;
+  color: #fff;
+  box-shadow: 0 0 0.75rem rgba(0, 255, 231, 0.7);
+}
+
+/* Adaptaciones responsivas */
+@media (max-width: 576px) {
+  #transferProofModal .modal-dialog {
+    max-width: 90%;
+  }
+  #transferProofModal .modal-header,
+  #transferProofModal .modal-body {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  #transferProofModal .modal-footer .btn-secondary,
+  #transferProofModal .modal-footer .btn-primary {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
 }

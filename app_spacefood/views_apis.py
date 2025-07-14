@@ -6,7 +6,7 @@ from .models import *
 from .serializers import *
 from django.contrib.auth import logout
 
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, parser_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.exceptions import AuthenticationFailed
 from django.views.decorators.http import require_GET, require_POST
@@ -22,11 +22,13 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 import mercadopago
 import traceback
+from rest_framework.parsers import MultiPartParser, FormParser
 
 import os
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from email.mime.application import MIMEApplication
 
 mp = mercadopago.SDK(settings.MERCADOPAGO_ACCESS_TOKEN)
 
@@ -255,20 +257,20 @@ def cart_remove(request):
     request.session.modified = True
     return JsonResponse({'cart': cart})
 
-@api_view(['GET'])
-@permission_classes([AllowAny])
-def listar_sucursales(request):
+# @api_view(['GET'])
+# @permission_classes([AllowAny])
+# def listar_sucursales(request):
 
-    sucursales = Sucursal.objects.all()
-    datos = [
-        {
-            'id':   suc.id_sucursal,
-            'nombre': suc.nom_sucursal,
-            'comuna': suc.comuna_id
-        }
-        for suc in sucursales
-    ]
-    return Response({'sucursales': datos})
+#     sucursales = Sucursal.objects.all()
+#     datos = [
+#         {
+#             'id':   suc.id_sucursal,
+#             'nombre': suc.nom_sucursal,
+#             'comuna': suc.comuna_id
+#         }
+#         for suc in sucursales
+#     ]
+#     return Response({'sucursales': datos})
 
 @csrf_exempt
 @require_POST
@@ -285,9 +287,9 @@ def crear_preference(request):
                 "unit_price": float(total),
             }],
             "back_urls": {
-                "success": "https://0c4b-186-189-103-186.ngrok-free.app/pago/exitosa/",
-                "failure": "https://0c4b-186-189-103-186.ngrok-free.app/pago/fallida/",
-                "pending": "https://0c4b-186-189-103-186.ngrok-free.app/pago/pendiente/",
+                "success": "https://10d69d28d107.ngrok-free.app/pago/exitosa/",
+                "failure": "https://10d69d28d107.ngrok-free.app/pago/fallida/",
+                "pending": "https://10d69d28d107.ngrok-free.app/pago/pendiente/",
             },
             # "auto_return": "approved",  # LO COMENTAMOS POR AHORA
         }
@@ -369,9 +371,11 @@ def agregar_inventario(request):
         nuevo = Inventario.objects.create(
             desc_inventario=data['desc_inventario'],
             cant_dispo=int(data['cant_dispo']),
+            cant_original=int(data['cant_original']),
             fecha_ingreso=fecha,
             sucursal_id=sucursal
         )
+
         return Response({'mensaje': 'Producto agregado', 'id': nuevo.id_inventario}, status=201)
     except Sucursal.DoesNotExist:
         return Response({'error': 'Sucursal no existe'}, status=400)
@@ -383,15 +387,16 @@ def agregar_inventario(request):
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def listar_sucursales(request):
-    sucursales = Sucursal.objects.all()
-    data = [
+    sucursales = Sucursal.objects.select_related('comuna').all()
+    datos = [
         {
-            'id_sucursal': s.id_sucursal,
-            'nom_sucursal': s.nom_sucursal
+            'id':      suc.id_sucursal,
+            'nombre':  suc.nom_sucursal,
+            'comuna':  suc.comuna.desc_comuna
         }
-        for s in sucursales
+        for suc in sucursales
     ]
-    return Response({'sucursales': data})
+    return Response({'sucursales': datos})
 
 
 def enviar_alerta_stock(productos_bajos):
@@ -514,4 +519,66 @@ def eliminar_producto(request):
             return JsonResponse({"success": False, "message": str(e)})
     return JsonResponse({"success": False, "message": "Método no permitido."})
 
+@csrf_exempt
+@api_view(['POST'])
+@permission_classes([AllowAny])
+@parser_classes([MultiPartParser, FormParser])
+def transferencia_comprobante(request):
+    if 'comprobante' not in request.FILES:
+        return Response({'error': 'No se recibió ningún archivo bajo la clave "comprobante".'}, status=400)
 
+    comprobante = request.FILES['comprobante']
+
+    # Verificar token y obtener usuario
+    auth_header = request.headers.get('Authorization')
+    if not auth_header or not auth_header.startswith('Bearer '):
+        return Response({'error': 'Token no proporcionado o formato inválido'}, status=401)
+    
+    try:
+        token = auth_header.split(' ')[1]
+        decoded = firebase_auth.verify_id_token(token)
+        correo_user = decoded.get("email")
+        
+        if not correo_user:
+            return Response({'error': 'Correo no encontrado en token'}, status=400)
+            
+        usuario = Usuario.objects.get(correo_user=correo_user)
+        nombre_usuario = f"{usuario.p_nombre} {usuario.p_apellido} ({usuario.correo_user})"
+        
+    except (IndexError, RevokedIdTokenError, ValueError) as e:
+        return Response({'error': f'Token inválido: {str(e)}'}, status=401)
+    except Usuario.DoesNotExist:
+        return Response({'error': 'Usuario no registrado en la base de datos'}, status=404)
+    except Exception as e:
+        return Response({'error': f'Error al obtener usuario: {str(e)}'}, status=500)
+
+    # Configurar datos del correo
+    remitente = "dkasociados0001@gmail.com"
+    destinatario = "dkasociados0001@gmail.com"
+    asunto = "Nuevo comprobante de transferencia"
+    cuerpo = (
+        f"<p><strong>Usuario:</strong> {nombre_usuario}</p>"
+        f"<p><strong>Fecha:</strong> {datetime.now().strftime('%d-%m-%Y %H:%M:%S')}</p>"
+        f"<p>Adjunto va el comprobante de la transferencia.</p>"
+    )
+
+    # Preparamos el mensaje
+    msg = MIMEMultipart()
+    msg["From"] = remitente
+    msg["To"] = destinatario
+    msg["Subject"] = asunto
+    msg.attach(MIMEText(cuerpo, "html"))
+
+    # Adjuntamos el comprobante
+    part = MIMEApplication(comprobante.read(), Name=comprobante.name)
+    part['Content-Disposition'] = f'attachment; filename="{comprobante.name}"'
+    msg.attach(part)
+
+    # Envío SMTP
+    try:
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as servidor:
+            servidor.login(remitente, "jquw hnft eync huko")
+            servidor.send_message(msg)
+        return Response({'ok': '✅ Comprobante enviado correctamente por correo.'}, status=200)
+    except Exception as e:
+        return Response({'error': f'❌ No se pudo enviar el correo: {str(e)}'}, status=500)

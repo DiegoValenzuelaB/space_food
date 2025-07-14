@@ -95,8 +95,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const spanNombreNuevo = filaNueva.querySelector("#nombre_sucursal_nuevo");
       inputIdNuevo.addEventListener("input", () => {
         const id = parseInt(inputIdNuevo.value);
-        const suc = sucursales.find((s) => s.id_sucursal === id);
-        spanNombreNuevo.textContent = suc ? suc.nom_sucursal : "No encontrada";
+        const suc = sucursales.find((s) => s.id === id);
+        spanNombreNuevo.textContent = suc ? suc.nombre : "No encontrada";
       });
 
       // Cancelar: elimina fila y vuelve a mostrar botón
@@ -126,6 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
           body: JSON.stringify({
             desc_inventario: desc,
             cant_dispo: cant,
+            cant_original: cant,
             fecha_ingreso: fecha,
             sucursal_id: sucId,
           }),
@@ -190,8 +191,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (inputSucursalId && nombreSucursal) {
     inputSucursalId.addEventListener("input", () => {
       const id = parseInt(inputSucursalId.value);
-      const suc = sucursales.find((s) => s.id_sucursal === id);
-      nombreSucursal.textContent = suc ? suc.nom_sucursal : "No encontrada";
+      const suc = sucursales.find((s) => s.id === id);
+      nombreSucursal.textContent = suc ? suc.nombre : "No encontrada";
     });
   }
 });

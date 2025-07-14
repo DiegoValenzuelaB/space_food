@@ -37,6 +37,7 @@ urlpatterns = [
     path('api/listar_productos/', listar_productos, name='listar_productos'),
     path('api/actualizar_producto/', actualizar_producto, name='actualizar_producto'),
     path('api/eliminar_producto/', eliminar_producto, name='eliminar_producto'),
+    path('api/cart/transferencia_comprobante/', transferencia_comprobante, name='transferencia_comprobante'),
 
 
     # URLs para back_urls de MercadoPago

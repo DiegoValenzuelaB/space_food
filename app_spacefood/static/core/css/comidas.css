@@ -1,3 +1,29 @@
+.bienvenido {
+  text-align: center;
+  color: #00ffe7;
+  font-family: 'Orbitron', sans-serif;
+  text-shadow:
+    0 0 0.625rem rgba(0, 255, 231, 0.7),
+    0 0 1.25rem rgba(0, 255, 231, 0.7);
+  margin-top: 3.75rem;
+  margin-bottom: 1.125rem;
+  animation: glowing 1.5s ease-in-out infinite alternate;
+}
+
+/* Si no tienes la animación glowing, agrégala: */
+@keyframes glowing {
+  from {
+    text-shadow:
+      0 0 0.625rem rgba(0, 255, 231, 0.7),
+      0 0 1.25rem rgba(0, 255, 231, 0.7);
+  }
+  to {
+    text-shadow:
+      0 0 1rem rgba(0, 255, 231, 1),
+      0 0 1.875rem rgba(0, 255, 231, 1);
+  }
+}
+
 #cards-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(28rem, 1fr)); /* 2 tarjetas */
