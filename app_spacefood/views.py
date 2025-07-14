@@ -1,6 +1,6 @@
 import os
 from django.shortcuts import render, redirect
-from django.utils.text import slugify
+from jupyterlab_server import slugify
 
 from spacefood import settings
 from .models import *
@@ -19,7 +19,30 @@ from django.shortcuts import render, redirect
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 
+from functools import wraps
+
+def user_type_required(allowed_types):
+    if not isinstance(allowed_types, (list, tuple)):
+        allowed_types = [allowed_types]
+
+    def decorator(view_func):
+        @wraps(view_func)
+        def _wrapped_view(request, *args, **kwargs):
+            if not request.session.get('p_nombre'):
+                return redirect('login')
+
+            tipo_user = request.session.get('tipo_usuario')  # Nota: revisa que uses la key correcta en sesión
+            if tipo_user not in allowed_types:
+                # En vez de redirigir a 'home', redirige a otra vista segura
+                # Por ejemplo a 'quienes_somos' o una página "sin permiso"
+                return redirect('quienes_somos')  # Cambia por la URL que tenga sentido en tu app
+
+            return view_func(request, *args, **kwargs)
+        return _wrapped_view
+    return decorator
+
 def home(request):
+
     # Todos los productos para la cuadrícula
     productos = Producto.objects.all()
 
@@ -161,24 +184,28 @@ def quienes_somos(request):
     }
     return render(request, 'core/pages/quienes_somos.html', aux)
 
+@user_type_required([1,2,3,4,5])
 def miperfil(request):
     aux = {
         'segment': 'miperfil'
     }
     return render(request, 'core/pages/miperfil.html', aux)
 
+@user_type_required([5])
 def panelusuarios(request):
     aux = {
         'segment': 'panelusuarios'
     }
     return render(request, 'core/pages/panelusuarios.html', aux)
 
+@user_type_required([3,4,5])
 def panelcocinero(request):
     aux = {
         'segment': 'panelcocinero'
     }
     return render(request, 'core/pages/panelcocinero.html', aux)
 
+@user_type_required([2,5])
 def crearproducto(request):
     if request.method == 'POST':
         nom_producto      = request.POST.get('nom_producto')
@@ -253,6 +280,8 @@ def comidas(request):
     productos = Producto.objects.all()
     return render(request, 'core/pages/comidas.html', {'productos': productos})
 
+@user_type_required([2,5])
 def panelcomidas(request):
     productos = Producto.objects.all()
     return render(request, 'core/pages/panelcomidas.html', {'productos': productos, 'segment': 'panelcomidas'})
+

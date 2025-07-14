@@ -14,20 +14,25 @@
 
     {% block css %}
     <link rel="stylesheet" href="{% static 'core/css/base.css' %}">
+    <style>
+      .nav-link.active {
+        color: #00cfff !important;
+        font-weight: bold;
+      }
+    </style>
     {% endblock %}
 
     {% block extra %}{% endblock %}
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="..." crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" crossorigin="anonymous" />
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
   </head>
 
-<body>
-    <!-- Overlay -->
+  <body>
+        <!-- Overlay -->
     <div id="cartOverlay"></div>
 
     <!-- Cart Drawer -->
@@ -75,96 +80,102 @@
         <button id="finalizarCompraBtn" class="btn btn-primary w-100">Finalizar Compra</button>
       </footer>
     </aside>
-
-    <!-- Navbar -->
     {% with request.resolver_match.url_name as current_url %}
-      <nav class="navbar navbar-expand-lg navbar-dark bg-black bg-opacity-50 py-2 shadow-sm">
-        <div class="container-fluid">
-          <!-- Logo -->
-          <a class="navbar-brand" href="{% url 'home' %}">
-            <img src="{% static 'core/imgs/logo.png' %}" class="img-logo" alt="Logo">
-          </a>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-black bg-opacity-50 py-2 shadow-sm">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'home' %}">
+          <img src="{% static 'core/imgs/logo.png' %}" class="img-logo" alt="Logo" />
+        </a>
 
-          <!-- Toggler -->
-          <button class="navbar-toggler" 
-                  type="button"
-                  data-bs-toggle="collapse" 
-                  data-bs-target="#navbarNav" 
-                  aria-controls="navbarNav" 
-                  aria-expanded="false" 
-                  aria-label="Alternar navegación">
-            <span class="navbar-toggler-icon"></span>
-          </button>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-          <!-- Menu -->
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav align-items-center w-100">
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav align-items-center w-100">
+            {% if not request.session.p_nombre %}
               <li class="nav-item">
-                <a class="nav-link {% if current_url == 'home' %}active{% endif %}"href="{% url 'home' %}">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link {% if current_url == 'panelusuarios' %}active{% endif %}"href="{% url 'panelusuarios' %}">Panel usuarios</a>
+                <a class="nav-link {% if current_url == 'home' %}active{% endif %}" href="{% url 'home' %}">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link {% if current_url == 'panelcocinero' %}active{% endif %}" href="{% url 'panelcocinero' %}">Panel cocinero</a>
-              </li>
-              <li>
-                <a class="nav-link {% if current_url == 'crearproducto' %}active{% endif %}" href="{% url 'crearproducto' %}">Crear Productos</a>
-              </li>
-              <li>
                 <a class="nav-link {% if current_url == 'comidas' %}active{% endif %}" href="{% url 'comidas' %}">Comidas</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link {% if current_url == 'panelcomidas' %}active{% endif %}" href="{% url 'panelcomidas' %}">Panel Comidas</a>
+                <a class="nav-link {% if current_url == 'register' %}active{% endif %}" href="{% url 'register' %}">Regístrate</a>
               </li>
-
-              {% if not request.session.p_nombre %}
-                <li class="nav-item">
-                  <a class="nav-link {% if current_url == 'register' %}active{% endif %}"  href="{% url 'register' %}">Regístrate</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link {% if current_url == 'login' %}active{% endif %}"  href="{% url 'login' %}">Login</a>
-                </li>
-
-                {# Cuando NO está logueado, empujamos carrito+“Quienes somos” al extremo derecho #}
-                <li class="nav-item ms-auto">
-                  <button id="openCartBtn" class="btn btn-outline-light position-relative">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">0</span>
-                  </button>
-                </li>
-                <li class="nav-item">
+              <li class="nav-item">
+                <a class="nav-link {% if current_url == 'login' %}active{% endif %}" href="{% url 'login' %}">Login</a>
+              </li>
+              <li class="nav-item ms-auto">
+                <button id="openCartBtn" class="btn btn-outline-light position-relative">
+                  <i class="fas fa-shopping-cart"></i>
+                  <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">0</span>
+                </button>
+              </li>
+              <li class="nav-item" style="margin-left:10px">
                   <a class="nav-link quienes-somos {% if current_url == 'quienes_somos' %}active{% endif %}"
                     href="{% url 'quienes_somos' %}">
                     Quienes somos
                   </a>
                 </li>
 
-              {% else %}
-                {# Cuando SÍ está logueado, empujamos “Hola, nombre”+carrito+“Quienes somos” juntos al extremo derecho #}
-                <li class="nav-item ms-auto">
-                  <a class="nav-link d-flex align-items-center p-0 {% if current_url == 'miperfil' %}active{% endif %}" href="{% url 'miperfil' %}">
-                    <span class="navbar-text me-1">Hola, {{ request.session.p_nombre }}</span>
-                    <i class="fas fa-user user-icon"></i>
-                  </a>
+            {% else %}
+              <!-- Repite para cada grupo de tipo_usuario como hiciste, pero con {% if current_url == '...' %}active{% endif %} -->
+              <li class="nav-item">
+                <a class="nav-link {% if current_url == 'home' %}active{% endif %}" href="{% url 'home' %}">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if current_url == 'comidas' %}active{% endif %}" href="{% url 'comidas' %}">Comidas</a>
+              </li>
+              {% if request.session.tipo_usuario == 2 %}
+                <li class="nav-item">
+                  <a class="nav-link {% if current_url == 'panelcomidas' %}active{% endif %}" href="{% url 'panelcomidas' %}">Panel Comidas</a>
                 </li>
-                <li class="nav-item" style="margin-left:10px">
-                  <button id="openCartBtn" class="btn btn-outline-light position-relative">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">0</span>
-                  </button>
+                <li class="nav-item">
+                  <a class="nav-link {% if current_url == 'crearproducto' %}active{% endif %}" href="{% url 'crearproducto' %}">Crear Productos</a>
                 </li>
-                <li class="nav-item" style="margin-left:10px">
-                  <a class="nav-link quienes-somos {% if current_url == 'quienes_somos' %}active{% endif %}"
-                    href="{% url 'quienes_somos' %}">
-                    Quienes somos
-                  </a>
+              {% elif request.session.tipo_usuario == 3 or request.session.tipo_usuario == 4 %}
+                <li class="nav-item">
+                  <a class="nav-link {% if current_url == 'panelcocinero' %}active{% endif %}" href="{% url 'panelcocinero' %}">Panel cocinero</a>
+                </li>
+              {% elif request.session.tipo_usuario == 5 %}
+                <li class="nav-item">
+                  <a class="nav-link {% if current_url == 'panelusuarios' %}active{% endif %}" href="{% url 'panelusuarios' %}">Panel usuarios</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link {% if current_url == 'panelcocinero' %}active{% endif %}" href="{% url 'panelcocinero' %}">Panel cocinero</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link {% if current_url == 'crearproducto' %}active{% endif %}" href="{% url 'crearproducto' %}">Crear Productos</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link {% if current_url == 'panelcomidas' %}active{% endif %}" href="{% url 'panelcomidas' %}">Panel Comidas</a>
                 </li>
               {% endif %}
-            </ul>
-          </div>
+              <li class="nav-item ms-auto">
+                <a class="nav-link d-flex align-items-center p-0 {% if current_url == 'miperfil' %}active{% endif %}" href="{% url 'miperfil' %}">
+                  <span class="navbar-text me-1">Hola, {{ request.session.p_nombre }}</span>
+                  <i class="fas fa-user user-icon"></i>
+                </a>
+              </li>
+              <li class="nav-item" style="margin-left:10px">
+                <button id="openCartBtn" class="btn btn-outline-light position-relative">
+                  <i class="fas fa-shopping-cart"></i>
+                  <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">0</span>
+                </button>
+              </li>
+              {# Cuando NO está logueado, empujamos carrito+“Quienes somos” al extremo derecho #}
+                <li class="nav-item" style="margin-left:10px">
+                  <a class="nav-link quienes-somos {% if current_url == 'quienes_somos' %}active{% endif %}"
+                    href="{% url 'quienes_somos' %}">
+                    Quienes somos
+                  </a>
+                </li>
+            {% endif %}
+          </ul>
         </div>
-      </nav>
+      </div>
+    </nav>
     {% endwith %}
 
     <main class="flex-fill">
