@@ -9,6 +9,7 @@ urlpatterns = [
     path('register/', register, name='register'),
     path('login/', login, name='login'),
     path('quienes_somos/', quienes_somos, name='quienes_somos'),
+    path('panelbodeguero/', panelbodeguero, name='panelbodeguero'),
     path('miperfil/', miperfil, name='miperfil'),
     path('api/miperfil/', api_miperfil, name='api_miperfil'),
     path('api/logout/', logout_view, name='api_logout'),
@@ -25,6 +26,12 @@ urlpatterns = [
     path('api/mercadopago/preference/', crear_preference, name='mp_preference'),
     path('api/payment-status/', payment_status, name='payment_status'),
     path('api/cart/clear/', clear_cart, name='cart_clear'),
+    path('api/listar_inventario/', listar_inventario, name='listar_inventario'),
+    path('api/agregar_inventario/', agregar_inventario, name='agregar_inventario'),
+    path('api/listar_sucursales/', listar_sucursales, name='listar_sucursales'),
+    path('api/enviar_alerta_stock/', enviar_alerta_stock, name='enviar_alerta_stock'),
+    path('api/productos_stock_bajo/', productos_stock_bajo, name='productos_stock_bajo'),
+
 
     # URLs para back_urls de MercadoPago
     path('pago/exitosa/', pago_exitosa, name='mp_success'),

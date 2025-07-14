@@ -5,12 +5,15 @@ import core.firebase_app         # ← Esto fuerza a que Firebase Admin se inici
 from django.shortcuts import render, redirect
 from django.db import transaction, IntegrityError
 from django.contrib import messages
-from .models import Usuario, TipoUser, Sucursal
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 
 from firebase_admin import auth as firebase_auth
+
+from django.shortcuts import render, redirect
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
 
 def home(request):
     # Todos los productos para la cuadrícula
@@ -166,4 +169,8 @@ def panelusuarios(request):
     }
     return render(request, 'core/pages/panelusuarios.html', aux)
 
-
+def panelbodeguero(request):
+    aux = {
+        'segment': 'panelbodeguero'
+    }
+    return render(request, 'core/pages/panelbodeguero.html', aux)

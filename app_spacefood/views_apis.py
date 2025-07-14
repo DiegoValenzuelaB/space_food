@@ -1,3 +1,4 @@
+from datetime import datetime 
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -21,6 +22,11 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 import mercadopago
 import traceback
+
+import os
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 mp = mercadopago.SDK(settings.MERCADOPAGO_ACCESS_TOKEN)
 
@@ -279,9 +285,9 @@ def crear_preference(request):
                 "unit_price": float(total),
             }],
             "back_urls": {
-                "success": "https://8931-186-189-95-219.ngrok-free.app/pago/exitosa/",
-                "failure": "https://8931-186-189-95-219.ngrok-free.app/pago/fallida/",
-                "pending": "https://8931-186-189-95-219.ngrok-free.app/pago/pendiente/",
+                "success": "https://0c4b-186-189-103-186.ngrok-free.app/pago/exitosa/",
+                "failure": "https://0c4b-186-189-103-186.ngrok-free.app/pago/fallida/",
+                "pending": "https://0c4b-186-189-103-186.ngrok-free.app/pago/pendiente/",
             },
             # "auto_return": "approved",  # LO COMENTAMOS POR AHORA
         }
@@ -334,3 +340,102 @@ def listar_productos(request):
     productos = Producto.objects.all()
     serializer = ProductoSerializer(productos, many=True)
     return Response({'productos': serializer.data})
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def listar_inventario(request):
+    inventario = Inventario.objects.all()
+    datos = []
+    for item in inventario:
+        datos.append({
+            'id_inventario': item.id_inventario,
+            'desc_inventario': item.desc_inventario,
+            'cant_original': item.cant_original,
+            'cant_dispo': item.cant_dispo,
+            'fecha_ingreso': item.fecha_ingreso.strftime('%d-%m-%Y') if item.fecha_ingreso else '',
+            'sucursal_id': item.sucursal_id.id_sucursal if item.sucursal_id else None,
+            'sucursal_nombre': item.sucursal_id.nom_sucursal if item.sucursal_id else '',
+        })
+    return Response({'inventario': datos})
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def agregar_inventario(request):
+    data = request.data
+    print("Datos recibidos:", data)
+    try:
+        sucursal = Sucursal.objects.get(id_sucursal=data['sucursal_id'])
+        fecha = datetime.strptime(data['fecha_ingreso'], '%Y-%m-%d').date()
+        nuevo = Inventario.objects.create(
+            desc_inventario=data['desc_inventario'],
+            cant_dispo=int(data['cant_dispo']),
+            fecha_ingreso=fecha,
+            sucursal_id=sucursal
+        )
+        return Response({'mensaje': 'Producto agregado', 'id': nuevo.id_inventario}, status=201)
+    except Sucursal.DoesNotExist:
+        return Response({'error': 'Sucursal no existe'}, status=400)
+    except ValueError as ve:
+        return Response({'error': 'Error de formato: ' + str(ve)}, status=400)
+    except Exception as e:
+        return Response({'error': str(e)}, status=400)
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def listar_sucursales(request):
+    sucursales = Sucursal.objects.all()
+    data = [
+        {
+            'id_sucursal': s.id_sucursal,
+            'nom_sucursal': s.nom_sucursal
+        }
+        for s in sucursales
+    ]
+    return Response({'sucursales': data})
+
+
+def enviar_alerta_stock(productos_bajos):
+    remitente = "dkasociados0001@gmail.com"
+    destinatario = "dkasociados0001@gmail.com"
+    asunto = "Alerta: Stock bajo en inventario"
+    
+    cuerpo = "<h2>Productos con stock disponible igual o menor a 15</h2><ul>"
+    for prod in productos_bajos:
+        cant_orig = prod.get("cant_original", "N/A")
+        cuerpo += (
+            f"<li><strong>{prod['desc_inventario']}</strong> - "
+            f"{prod['cant_dispo']} unidades (Sucursal {prod['sucursal_id']}), "
+            f"Cantidad original: {cant_orig}</li>"
+        )
+    cuerpo += "</ul>"
+
+    msg = MIMEMultipart()
+    msg["From"] = remitente
+    msg["To"] = destinatario
+    msg["Subject"] = asunto
+    msg.attach(MIMEText(cuerpo, "html"))
+
+    try:
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as servidor:
+            servidor.login(remitente, "jquw hnft eync huko")
+            servidor.send_message(msg)
+        print("✅ Correo enviado correctamente")
+    except Exception as e:
+        print(f"❌ Error enviando correo: {e}")
+
+@api_view(['GET'])
+@permission_classes([AllowAny])  # Puedes usar AllowAny si no necesitas autenticación
+def productos_stock_bajo(request):
+    productos_bajos = Inventario.objects.filter(cant_dispo__lte=15).values(
+        'desc_inventario',
+        'cant_dispo',
+        'cant_original',
+        'sucursal_id'
+    )
+    enviar_alerta_stock(productos_bajos)
+
+    if not productos_bajos:
+        return Response({"mensaje": "No hay productos con stock bajo."}, status=200)
+
+    return Response({"productos_bajos": list(productos_bajos)}, status=200)
+

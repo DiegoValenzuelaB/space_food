@@ -1,0 +1,34 @@
+{% extends 'core/layout/base.html' %}
+{% load static %}
+
+{% block css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'core/css/panelbodeguero.css' %}">
+{% endblock %}
+
+{% block contenido %}
+<div class="user-table-container">
+  <table id="tabla-inventario" class="user-table">
+    <thead>
+        <th>
+            <button id="btn-agregar-producto" class="btn-icon btn-edit">Agregar Producto</button>
+        </th>
+        <th>
+            <button id="btn-enviar-informe" class="btn-icon btn-send">Enviar Informe Stock Bajo</button>
+        </th>
+      <tr>
+        <th>ID</th>
+        <th>Descripción</th>
+        <th>Cantidad Original</th>
+        <th>Cantidad Disponible</th>
+        <th>Fecha de Ingreso</th>
+        <th>ID Sucursal</th>
+        <th>Sucursal</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+  <script type="module" src="{% static 'core/js/panelbodeguero.js' %}"></script>
+{% endblock %}

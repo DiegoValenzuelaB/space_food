@@ -34,9 +34,10 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',         # si tienes uno
-    '8931-186-189-95-219.ngrok-free.app'  # <--- ¡aquí!
+    '0c4b-186-189-103-186.ngrok-free.app'  # <--- ¡aquí!
 ]
 
+# Visa	4509953566233704	12/2025	  123	 APRO	 12345678
 
 # Application definition
 
@@ -140,4 +141,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MERCADOPAGO_ACCESS_TOKEN = 'TEST-7850470991568439-052303-9c35edae31086c9e2250e724111e790d-2174830936'
 
-# Visa	4509953566233704	12/2025	  123	 APRO	 12345678
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

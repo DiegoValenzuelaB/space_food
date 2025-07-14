@@ -75,6 +75,7 @@ class Marca(models.Model):
 class Inventario(models.Model):
     id_inventario = models.AutoField(primary_key=True)
     desc_inventario = models.CharField(max_length=100)
+    cant_original = models.IntegerField('Cantidad original')
     cant_dispo = models.IntegerField('Cantidad disponible')
     fecha_ingreso = models.DateField('Fecha de ingreso')
     sucursal_id = models.ForeignKey(Sucursal, on_delete=models.DO_NOTHING, db_column='sucursal_id')
@@ -97,7 +98,6 @@ class Producto(models.Model):
     fecha_vencimiento = models.DateField('Vencimiento', blank=True, null=True)
     tipo_producto     = models.ForeignKey(TipoProducto, on_delete=models.DO_NOTHING, db_column='tipo_producto_id')
     marca             = models.ForeignKey(Marca,        on_delete=models.DO_NOTHING, db_column='marca_id')
-    inventario        = models.ForeignKey(Inventario,   on_delete=models.DO_NOTHING, db_column='inventario_id')
 
     class Meta:
         db_table = 'producto'
