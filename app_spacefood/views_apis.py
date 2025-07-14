@@ -397,9 +397,18 @@ def listar_sucursales(request):
 def enviar_alerta_stock(productos_bajos):
     remitente = "dkasociados0001@gmail.com"
     destinatario = "dkasociados0001@gmail.com"
-    asunto = "Alerta: Stock bajo en inventario"
-    
-    cuerpo = "<h2>Productos con stock disponible igual o menor a 15</h2><ul>"
+
+    # Obtener fecha y hora actual
+    ahora = datetime.now()
+    fecha_hora_str = ahora.strftime("%d/%m/%Y %H:%M:%S")
+
+    # Asunto con fecha y hora
+    asunto = f"Alerta: Stock bajo en inventario ({fecha_hora_str})"
+
+    # Cuerpo HTML
+    cuerpo = f"<h2>📅 Informe generado el {fecha_hora_str}</h2>"
+    cuerpo += "<h3>Productos con stock disponible igual o menor a 15</h3><ul>"
+
     for prod in productos_bajos:
         cant_orig = prod.get("cant_original", "N/A")
         cuerpo += (
